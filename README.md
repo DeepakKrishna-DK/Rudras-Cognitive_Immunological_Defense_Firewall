@@ -470,14 +470,6 @@ Security built on trust requires building it trustworthily.
 
 ---
 
-## 📄 License
-
-This project is licensed under the **MIT License**.
-
-You are free to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of this software, subject to the conditions of the MIT License.
-
----
-
 <div align="center">
 
 **Rudras v3.0 — Cognitive Immunological Defense Firewall**
@@ -490,3 +482,7 @@ You are free to use, copy, modify, merge, publish, distribute, sublicense, and/o
 *"The immune system does not build walls. It learns, remembers, and evolves. So does Rudras."*
 
 </div>
+
+---
+
+Comming Soon....
