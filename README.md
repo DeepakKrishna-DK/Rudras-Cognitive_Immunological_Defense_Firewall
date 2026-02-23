@@ -5,8 +5,7 @@
 [![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange.svg)](https://www.rust-lang.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)]()
 ![Status](https://img.shields.io/badge/Status-In%20Development-bluelight.svg)
-[![Version](https://img.shields.io/badge/Version-3.0%20Enterprise-blueviolet.svg)]() <br>
-still platforms focus Linux,MAC,IOS,Android
+[![Version](https://img.shields.io/badge/Version-3.0%20Enterprise-blueviolet.svg)]()
 **A next-generation, self-healing firewall that thinks like an immune system.**
 
 *Last Updated: February 2026*
@@ -483,5 +482,5 @@ Security built on trust requires building it trustworthily.
 </div>
 
 ---
-
+still platforms focus Linux,MAC,IOS,Android
 Comming Soon....
