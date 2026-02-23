@@ -3,9 +3,11 @@
 <div align="center">
 
 [![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange.svg)](https://www.rust-lang.org/)
+[![Built with Go](https://img.shields.io/badge/Built%20with-Go-blue.svg?style=for-the-badge)](https://golang.org/)
+[![Built with Python](https://img.shields.io/badge/Built%20with-Python-yellow.svg?style=for-the-badge)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)]()
-![Status](https://img.shields.io/badge/Status-In%20Development-bluelight.svg)
-[![Version](https://img.shields.io/badge/Version-3.0%20Enterprise-blueviolet.svg)]()
+![Status](https://img.shields.io/badge/Status-In%20Development-bluelight.svg)()
+[![Version](https://img.shields.io/badge/Version-3.0%20Enterprise-blueviolet.svg)]() <br>
 **A next-generation, self-healing firewall that thinks like an immune system.**
 
 *Last Updated: February 2026*
