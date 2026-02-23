@@ -15,7 +15,7 @@
 </div>
 
 ---
-
+![RudraS Logo](https://github.com/TwinCiphers/HylexCrypt-TU2050/blob/main/docs/Logo.jpeg)
 ## Table of Contents
 
 1. [The History of Firewalls](#-the-history-of-firewalls)
