@@ -364,30 +364,6 @@ To truly secure the world, Rudras must exist natively across all infrastructure 
 
 ---
 
-## 📋 Changelog
-
-### 🆕 v3.0.0 — March 2026
-- ✅ **NEW** Interactive deployment mode prompt at startup — no more silent Client default
-- ✅ **NEW** Malicious domain blocking at DNS layer (UDP/TCP port 53) against live IOC feeds
-- ✅ **NEW** 4 additional threat feeds: CINS Score, Emerging Threats, ThreatFox IOCs, URLhaus
-- ✅ **NEW** Domain blocklist persisted to `data/intel/malicious_domains.txt` — survives restarts
-- 🔄 **CHANGED** Country-level GeoIP blocking removed — replaced with precision IOC-based IP/domain blocking
-- 🔄 **CHANGED** `process_monitor_kill_mode` default → `false` (warn-only, no process termination)
-- 🔄 **CHANGED** `promiscuous_capture` default → `false` (host traffic only)
-- 🔄 **CHANGED** `block_anonymization_networks` default → `false` (Tor/I2P not blocked)
-- 🐛 **FIXED** All three ethically-sensitive settings now require explicit entries in `[blocking]` TOML section
-- 🐛 **FIXED** Unicode escape sequences in startup log messages (`\u2705` → `\u{2705}`)
-- 🐛 **FIXED** PowerShell GeoIP script: approved function verb (`Get-CIDRNotation`), removed unused variables
-
-### 🚀 v2.0.0 — February 2026
-- ✅ Initial release with 20 active security systems
-- ✅ Full IDS/IPS engine with 200+ Snort-compatible signatures
-- ✅ Distributed Immunity P2P grid
-- ✅ Zero Trust AD/SAML/OAuth integration
-- ✅ SIEM integration (Splunk HEC + ELK)
-
----
-
 ## 🗂️ Version Control & Repository Status
 
 **Repository:** [github.com/DeepakKrishna-DK/Rudras](https://github.com/DeepakKrishna-DK/Rudras)  
@@ -399,35 +375,7 @@ To truly secure the world, Rudras must exist natively across all infrastructure 
 git clone https://github.com/DeepakKrishna-DK/Rudras.git
 cd Rudras
 ```
-
-### 🏗️ Implementation Status by Plane
-
-| Plane | Language | Status | Location |
-|-------|----------|--------|----------|
-| **Data Plane** (Packet Engine) | Rust | ✅ Complete — 32 source files | `src/` |
-| **Control Plane** (Policy Orchestration) | Go | 🔄 Planned — gRPC schema defined | `control-plane/` |
-| **Intelligence Plane** (AI/ML Engine) | Python | 🔄 Planned — dependencies defined | `intelligence/` |
-
-> **Note:** GitHub currently reports 100% Rust because the Go and Python source code is not yet written. The `control-plane/pkg/grpc/proto/controlplane.proto` file defines the Go gRPC interface, and `requirements.txt` defines the Python ML dependencies — both are ready to scaffold.
-
-### 📜 Commit History
-
-| Commit | Message | Date |
-|--------|---------|------|
-| `88f4420` | start — full data plane source added | Mar 1, 2026 |
-| `9112fb5` | Delete WinDivert.zip — removed large binary | Mar 1, 2026 |
-| `d101cc6` | chore: remove build artifacts and ignored files from tracking | Mar 1, 2026 |
-| `11fd040` | first commit — initial project structure | Mar 1, 2026 |
-
 ### 🔐 What Is NOT in the Repo (by design)
-
-| Excluded | Reason |
-|----------|--------|
-| `target/` (Rust build output) | Gitignored — regenerated via `cargo build` |
-| `npcap-sdk/`, `WinDivert*/` | Large native SDKs — must be installed manually |
-| `data/geoip/*.mmdb` | Regenerated via `scripts/fetch_geoip.ps1` |
-| `*.key`, `*.pem` | Security secrets — never committed |
-| `data/intel/` cache files | Regenerated on startup from live threat feeds |
 
 ---
 
