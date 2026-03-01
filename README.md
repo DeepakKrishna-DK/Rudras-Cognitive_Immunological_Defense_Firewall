@@ -5,7 +5,7 @@
 
 [![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange.svg)](https://rust-lang.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)]()
-[![Status](https://img.shields.io/badge/Status-in%20development-Alpha-bluelight.svg)]()
+[![Status](https://img.shields.io/badge/status-in%20development%20(alpha)-informational.svg)]()
 [![Version](https://img.shields.io/badge/Version-3.0%20Alpha-blueviolet.svg)]()
 
 **A next-generation, self-healing firewall that thinks like an immune system.**
