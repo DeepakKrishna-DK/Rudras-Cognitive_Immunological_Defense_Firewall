@@ -1,5 +1,5 @@
 <div align="center">
-<b style="text-align: center; margin-top: 20px; margin-bottom: 20px; font-size:2000px"> 
+<b style="text-align: center; margin-top: 20px; margin-bottom: 20px; size:200px"> 
   🔥 Rudras — Cognitive Immunological Defense Firewall
 </b> <br>
   <b>
