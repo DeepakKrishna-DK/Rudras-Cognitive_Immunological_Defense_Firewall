@@ -1,5 +1,7 @@
 # 🔥 Rudras — Cognitive Immunological Defense Firewall
+<div align="center">
 ### The Boss of Firewalls.
+</div>
 
 <div align="center">
 
