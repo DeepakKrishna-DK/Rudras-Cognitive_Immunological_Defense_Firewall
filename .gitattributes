@@ -1,0 +1,38 @@
+# =============================================================================
+# Rudras — .gitattributes
+# Normalize line endings: store LF in repo, auto-convert on checkout
+# =============================================================================
+
+# Default: auto-detect text files and normalize to LF in the repo
+* text=auto eol=lf
+
+# Rust source
+*.rs     text eol=lf
+*.toml   text eol=lf
+
+# Protobuf
+*.proto  text eol=lf
+
+# Docs & config
+*.md     text eol=lf
+*.txt    text eol=lf
+*.json   text eol=lf
+*.yaml   text eol=lf
+*.yml    text eol=lf
+
+# Windows scripts — must use CRLF
+*.ps1    text eol=crlf
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+
+# Binary files — no conversion
+*.mmdb   binary
+*.zip    binary
+*.gz     binary
+*.tar    binary
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.ico    binary
+*.exe    binary
+*.dll    binary

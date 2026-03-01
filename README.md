@@ -219,7 +219,7 @@ Rudras ships with conservative, legally safe defaults. All behaviours that could
 | **MSVC Build Tools 2022** | ✅ Yes | Windows C++ linker (Desktop C++ + Windows SDK) |
 | **Npcap Driver** | ✅ Yes | Runtime packet capture |
 | **Npcap SDK** | ✅ Yes | Build-time capture headers (`NPCAP_SDK_PATH` env var) |
-| **Git** | ⚠️ Recommended | Version control |
+| **Git** | ✅ Yes | Version control |
 | **Python 3.x** | ⚠️ Optional | VM test scripts only |
 
 ```powershell
