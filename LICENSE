@@ -1,0 +1,87 @@
+RUDRAS PROPRIETARY SOFTWARE LICENSE
+=====================================
+
+Copyright (c) 2026 Deepak Krishna (TwinCiphers). All Rights Reserved.
+
+SOFTWARE: Rudras — Cognitive Immunological Defense Firewall
+VERSION:  3.0 Alpha
+AUTHOR:   Deepak Krishna
+CONTACT:  twinciphers@gmail.com
+REPO:     https://github.com/DeepakKrishna-DK/Rudras
+
+=====================================
+TERMS AND CONDITIONS
+=====================================
+
+1. OWNERSHIP
+   This software and all associated source code, documentation, configuration
+   files, research notes, algorithms, cryptographic implementations, and any
+   other materials contained within this repository (collectively, "the
+   Software") are the exclusive intellectual property of Deepak Krishna
+   ("the Author"). All rights are reserved.
+
+2. RESTRICTIONS
+   You may NOT, without prior written permission from the Author:
+
+   a) Copy, reproduce, or duplicate the Software in whole or in part.
+   b) Distribute, publish, sublicense, sell, or transfer the Software or
+      any derivative work to any third party.
+   c) Modify, adapt, translate, reverse-engineer, decompile, disassemble,
+      or create derivative works based on the Software.
+   d) Use the Software, in whole or in part, in any commercial product,
+      service, or offering.
+   e) Remove or alter any proprietary notices, labels, or markings on the
+      Software.
+   f) Use the name "Rudras", "TwinCiphers", or the Author's name to endorse
+      or promote products derived from this Software without prior written
+      consent.
+
+3. PERMITTED USE
+   You MAY:
+
+   a) View and read the source code for personal, non-commercial, educational
+      study purposes only.
+   b) Clone the repository for local evaluation purposes, provided no
+      modifications are distributed.
+   c) Reference the documented architectural concepts in academic work with
+      full attribution to the Author.
+
+4. CLASSIFIED MATERIALS
+   The contents of the `Research_Notes/secrets/` directory — including but
+   not limited to proprietary algorithms, anti-tamper mechanisms, and
+   cryptographic implementations — are strictly confidential. Any
+   unauthorized access, reproduction, or disclosure of these materials
+   constitutes a violation of this license and may be subject to civil and
+   criminal penalties.
+
+5. NO WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+   IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING
+   FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+   DEALINGS IN THE SOFTWARE.
+
+6. TERMINATION
+   Any breach of these terms automatically terminates your rights under this
+   license. Upon termination, you must immediately destroy all copies of the
+   Software in your possession.
+
+7. GOVERNING LAW
+   This license shall be governed by and construed in accordance with the
+   laws of India. Any disputes arising under or in connection with this
+   license shall be subject to the exclusive jurisdiction of the courts of
+   India.
+
+8. CONTACT FOR PERMISSIONS
+   For licensing inquiries, commercial use requests, or permission to use
+   any part of the Software, contact:
+
+   Deepak Krishna
+   Email: twinciphers@gmail.com
+   GitHub: https://github.com/DeepakKrishna-DK
+
+=====================================
+ALL RIGHTS RESERVED — DEEPAK KRISHNA — 2026
+=====================================

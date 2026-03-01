@@ -8,6 +8,7 @@
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)]()
 [![Status](https://img.shields.io/badge/status-in%20development%20(alpha)-informational.svg)]()
 [![Version](https://img.shields.io/badge/Version-3.0%20Alpha-blueviolet.svg)]()
+[![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 
 **A next-generation, self-healing firewall that thinks like an immune system.**
 
@@ -369,7 +370,7 @@ To truly secure the world, Rudras must exist natively across all infrastructure 
 
 **Repository:** [github.com/DeepakKrishna-DK/Rudras](https://github.com/DeepakKrishna-DK/Rudras)  
 **Branch:** `main`  
-**License:** Proprietary — All Rights Reserved
+**License:** Proprietary — All Rights Reserved. See [LICENSE](LICENSE) for full terms.
 
 ### 📦 Clone & Setup
 ```powershell
