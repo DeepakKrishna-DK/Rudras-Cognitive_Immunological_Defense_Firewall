@@ -1,20 +1,12 @@
-
-# 🔥 Rudras — Cognitive Immunological Defense Firewall 
-
-<div align="center">
-  <b>
-    The Boss of Firewalls
-  </b>
-</div>
+# 🔥 Rudras — Cognitive Immunological Defense Firewall
+### The Boss of Firewalls.
 
 <div align="center">
 
-[![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange.svg)](https://www.rust-lang.org/)
-[![Built with Go](https://img.shields.io/badge/Built%20with-Go-blue.svg)](https://golang.org/)
-[![Built with Python](https://img.shields.io/badge/Built%20with-Python-yellow.svg)](https://www.python.org/)
+[![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange.svg)](https://rust-lang.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)]()
-[![Status](https://img.shields.io/badge/Status-In%20Development-bluelight.svg)]()
-[![Version](https://img.shields.io/badge/Version-3.0%20Enterprise-blueviolet.svg)]()
+[![Status](https://img.shields.io/badge/status-in%20development%20(alpha)-informational.svg)]()
+[![Version](https://img.shields.io/badge/Version-3.0%20Alpha-blueviolet.svg)]()
 
 **A next-generation, self-healing firewall that thinks like an immune system.**
 
@@ -31,7 +23,7 @@
 2. [💡 Why I Built Rudras](#-why-i-built-rudras)
 3. [🛡️ What is Rudras?](#️-what-is-rudras)
 4. [🧠 The Philosophy — From Wall to Nervous System](#-the-philosophy--from-wall-to-nervous-system)
-5. [⚙️ Core Enterprise Capabilities (v3.0)](#️-core-capabilities-v30)
+5. [⚙️ Core Enterprise Capabilities (v3.0)](#️-core-capabilities-v3.0)
 6. [🗏️ Dual-Mode Architecture & Deployment](#️-dual-mode-architecture)
 7. [🧬 The CyberImmune System](#-the-cyberimmune-system)
 8. [🎯 Threat Intelligence & IOC Feeds](#-threat-intelligence--ioc-feeds)
@@ -41,9 +33,8 @@
 12. [📊 Real-World Performance](#-real-world-performance)
 13. [🚀 Firewall Trends — How Rudras Stays Ahead](#-firewall-trends--how-rudras-stays-ahead)
 14. [📅 Development Journey](#-development-journey)
-15. [📚 Engineering Research & Secrets](#-engineering-research--secrets)
-16. [🔭 Future Vision & Platforms](#-future-vision--platforms)
-17. [📋 Changelog](#-changelog)
+15. [🔭 Future Vision & Platforms](#-future-vision--platforms)
+16. [🤝 Philosophy & Ethics](#-Philosophy-&-Ethics)
 
 ---
 
@@ -226,7 +217,7 @@ Rudras ships with conservative, legally safe defaults. All behaviours that could
 | **MSVC Build Tools 2022** | ✅ Yes | Windows C++ linker (Desktop C++ + Windows SDK) |
 | **Npcap Driver** | ✅ Yes | Runtime packet capture |
 | **Npcap SDK** | ✅ Yes | Build-time capture headers (`NPCAP_SDK_PATH` env var) |
-| **Git** | ⚠️ Recommended | Version control |
+| **Git** | ✅ Yes | Version control |
 | **Python 3.x** | ⚠️ Optional | VM test scripts only |
 
 ```powershell
@@ -368,32 +359,6 @@ To truly secure the world, Rudras must exist natively across all infrastructure 
 | 🍎 **macOS** | Apple Network Extensions | Endpoint-scale |
 | 📱 **iOS & Android** | Lightweight mobile packet-filter nodes | Mobile-scale |
 | 🔐 **Post-Quantum Cryptography** | Lattice-based NIST PQC standards | All platforms |
-
----
-
-## 📋 Changelog
-
-### 🆕 v3.0.0 — March 2026
-- ✅ **NEW** Interactive deployment mode prompt at startup — no more silent Client default
-- ✅ **NEW** Malicious domain blocking at DNS layer (UDP/TCP port 53) against live IOC feeds
-- ✅ **NEW** 4 additional threat feeds: CINS Score, Emerging Threats, ThreatFox IOCs, URLhaus
-- ✅ **NEW** Domain blocklist persisted to `data/intel/malicious_domains.txt` — survives restarts
-- 🔄 **CHANGED** Country-level GeoIP blocking removed — replaced with precision IOC-based IP/domain blocking
-- 🔄 **CHANGED** `process_monitor_kill_mode` default → `false` (warn-only, no process termination)
-- 🔄 **CHANGED** `promiscuous_capture` default → `false` (host traffic only)
-- 🔄 **CHANGED** `block_anonymization_networks` default → `false` (Tor/I2P not blocked)
-- 🐛 **FIXED** All three ethically-sensitive settings now require explicit entries in `[blocking]` TOML section
-- 🐛 **FIXED** Unicode escape sequences in startup log messages (`\u2705` → `\u{2705}`)
-- 🐛 **FIXED** PowerShell GeoIP script: approved function verb (`Get-CIDRNotation`), removed unused variables
-
-### 🚀 v2.0.0 — February 2026
-- ✅ Initial release with 20 active security systems
-- ✅ Full IDS/IPS engine with 200+ Snort-compatible signatures
-- ✅ Distributed Immunity P2P grid
-- ✅ Zero Trust AD/SAML/OAuth integration
-- ✅ SIEM integration (Splunk HEC + ELK)
-
----
 
 ## 🤝 Philosophy & Ethics
 
