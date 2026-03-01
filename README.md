@@ -36,6 +36,7 @@
 15. [📚 Engineering Research & Secrets](#-engineering-research--secrets)
 16. [🔭 Future Vision & Platforms](#-future-vision--platforms)
 17. [📋 Changelog](#-changelog)
+18. [🗂️ Version Control & Repository Status](#️-version-control--repository-status)
 
 ---
 
@@ -384,6 +385,49 @@ To truly secure the world, Rudras must exist natively across all infrastructure 
 - ✅ Distributed Immunity P2P grid
 - ✅ Zero Trust AD/SAML/OAuth integration
 - ✅ SIEM integration (Splunk HEC + ELK)
+
+---
+
+## 🗂️ Version Control & Repository Status
+
+**Repository:** [github.com/DeepakKrishna-DK/Rudras](https://github.com/DeepakKrishna-DK/Rudras)  
+**Branch:** `main`  
+**License:** Proprietary — All Rights Reserved
+
+### 📦 Clone & Setup
+```powershell
+git clone https://github.com/DeepakKrishna-DK/Rudras.git
+cd Rudras
+```
+
+### 🏗️ Implementation Status by Plane
+
+| Plane | Language | Status | Location |
+|-------|----------|--------|----------|
+| **Data Plane** (Packet Engine) | Rust | ✅ Complete — 32 source files | `src/` |
+| **Control Plane** (Policy Orchestration) | Go | 🔄 Planned — gRPC schema defined | `control-plane/` |
+| **Intelligence Plane** (AI/ML Engine) | Python | 🔄 Planned — dependencies defined | `intelligence/` |
+
+> **Note:** GitHub currently reports 100% Rust because the Go and Python source code is not yet written. The `control-plane/pkg/grpc/proto/controlplane.proto` file defines the Go gRPC interface, and `requirements.txt` defines the Python ML dependencies — both are ready to scaffold.
+
+### 📜 Commit History
+
+| Commit | Message | Date |
+|--------|---------|------|
+| `88f4420` | start — full data plane source added | Mar 1, 2026 |
+| `9112fb5` | Delete WinDivert.zip — removed large binary | Mar 1, 2026 |
+| `d101cc6` | chore: remove build artifacts and ignored files from tracking | Mar 1, 2026 |
+| `11fd040` | first commit — initial project structure | Mar 1, 2026 |
+
+### 🔐 What Is NOT in the Repo (by design)
+
+| Excluded | Reason |
+|----------|--------|
+| `target/` (Rust build output) | Gitignored — regenerated via `cargo build` |
+| `npcap-sdk/`, `WinDivert*/` | Large native SDKs — must be installed manually |
+| `data/geoip/*.mmdb` | Regenerated via `scripts/fetch_geoip.ps1` |
+| `*.key`, `*.pem` | Security secrets — never committed |
+| `data/intel/` cache files | Regenerated on startup from live threat feeds |
 
 ---
 
