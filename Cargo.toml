@@ -1,0 +1,89 @@
+[package]
+name    = "rudras"
+version = "4.0.0"
+edition = "2021"
+authors = ["Rudras Security"]
+description = "Rudras Enterprise Firewall — Cognitive Immunological Defense"
+
+[[bin]]
+name = "rudras"
+path = "src/main.rs"
+
+[dependencies]
+# Async runtime
+tokio            = { version = "1",  features = ["full"] }
+
+# CLI argument parsing
+clap             = { version = "4",  features = ["derive"] }
+
+# Error handling
+anyhow           = "1"
+
+# Serialisation / deserialisation
+serde            = { version = "1",  features = ["derive"] }
+serde_json       = "1"
+toml             = "0.8"
+
+# Logging / tracing
+tracing          = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json", "fmt"] }
+tracing-appender = "0.2"
+
+# Network packet parsing
+pnet             = "0.35"
+pnet_base        = "0.35"
+pcap             = "2"
+
+# IP network utilities
+ipnetwork        = "0.20"
+
+# Concurrent data structures
+parking_lot      = "0.12"
+dashmap          = "6"
+
+# HTTP client (threat intel feed downloads)
+reqwest          = { version = "0.12", features = ["json", "blocking"] }
+
+# Time
+chrono           = { version = "0.4", features = ["serde"] }
+
+# Random numbers
+rand             = "0.8"
+
+# UUID
+uuid             = { version = "1", features = ["v4"] }
+
+# Regex
+regex            = "1"
+
+# Encoding utilities
+base64           = "0.22"
+hex              = "0.4"
+
+# One-time initialization
+once_cell        = "1"
+lazy_static      = "1"
+
+# Channel
+crossbeam-channel = "0.5"
+flume            = "0.11"
+
+# Byte utilities
+bytes            = "1"
+sysinfo          = "0.38.2"
+
+# Cryptography (Solving Sabotage, Sybil, and Blindness)
+sha2             = "0.10"
+hmac             = "0.12"
+rsa              = "0.9"
+
+[profile.dev]
+opt-level = 0
+debug     = true
+
+[profile.release]
+opt-level     = 3
+lto           = true
+codegen-units = 1
+strip         = true
+panic         = "abort"

@@ -1,0 +1,81 @@
+﻿syntax = "proto3";
+
+package controlplane;
+
+option go_package = "Rudras-controlplane/pkg/grpc/proto";
+
+// ControlPlaneService defines the gRPC service for Rudras control plane
+service ControlPlaneService {
+  // SyncPolicy synchronizes firewall policies with data plane nodes
+  rpc SyncPolicy(PolicySyncRequest) returns (PolicySyncResponse);
+  
+  // StreamEvents streams real-time events from data plane to control plane
+  rpc StreamEvents(EventStreamRequest) returns (stream Event);
+  
+  // ReportMetrics allows data plane nodes to report performance metrics
+  rpc ReportMetrics(MetricsReport) returns (MetricsAck);
+}
+
+// PolicySyncRequest is sent by data plane nodes to request policy updates
+message PolicySyncRequest {
+  string node_id = 1;
+  uint64 current_version = 2;
+  string region = 3;
+  string cloud_provider = 4;
+}
+
+// PolicySyncResponse contains the latest policies for data plane
+message PolicySyncResponse {
+  bool success = 1;
+  repeated Policy policies = 2;
+  uint64 version = 3;
+  string error_message = 4;
+}
+
+// Policy represents a single firewall rule
+message Policy {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string source_ip = 4;
+  string dest_ip = 5;
+  string protocol = 6;
+  string action = 7; // allow, block, rate_limit, inspect
+  uint64 rate_limit_pps = 8;
+  int64 created_at = 9;
+  int64 updated_at = 10;
+}
+
+// EventStreamRequest initiates an event stream
+message EventStreamRequest {
+  string node_id = 1;
+  repeated string event_types = 2; // Types of events to stream
+}
+
+// Event represents a security or operational event
+message Event {
+  int64 timestamp = 1;
+  string node_id = 2;
+  string event_type = 3;
+  bytes data = 4;
+}
+
+// MetricsReport contains performance metrics from data plane
+message MetricsReport {
+  string node_id = 1;
+  int64 timestamp = 2;
+  uint64 packets_processed = 3;
+  uint64 packets_allowed = 4;
+  uint64 packets_blocked = 5;
+  double packet_rate_pps = 6;
+  double cpu_usage_percent = 7;
+  double memory_usage_mb = 8;
+  double avg_latency_us = 9;
+}
+
+// MetricsAck acknowledges receipt of metrics
+message MetricsAck {
+  bool success = 1;
+  string message = 2;
+}
+

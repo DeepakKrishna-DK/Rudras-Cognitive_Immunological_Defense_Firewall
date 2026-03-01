@@ -1,0 +1,380 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║   Rudras Enterprise Firewall — Master Configuration File         ║
+# ║   Location: config/rudras.toml                                   ║
+# ║   Edit this file to configure all enterprise security modules.   ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# ── Core ───────────────────────────────────────────────────────────────────
+interface = "\\Device\\NPF_{9907D15D-21D0-430D-A08B-CA76839DA2BD}"  # Wi-Fi (Realtek 8852BE)
+# Other available interfaces (uncomment to switch):
+# interface = "\\Device\\NPF_{6CE0071C-6FE3-4D6C-B7C0-5FFD145CC660}"  # VMware VMnet1
+# interface = "\\Device\\NPF_{C2142375-E6A1-44CA-8293-95F9DE351A75}"  # VMware VMnet8
+# interface = "\\Device\\NPF_{C58E8311-1C0E-407D-9BA8-ECBE51A92CC9}"  # Ethernet (disconnected)
+log_level    = "info"               # trace | debug | info | warn | error
+metrics_port = 9091                 # Prometheus metrics endpoint port
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  DEPLOYMENT MODE
+# ║
+# ║  Controls which protection profile is loaded at startup.
+# ║
+# ║  client — Endpoint / workstation / laptop protection
+# ║           • Outbound C2/exfil focus (60% outbound, 40% inbound attention)
+# ║           • Lower noise, quiet logging, user-friendly thresholds
+# ║           • Detects: malware callbacks, credential theft, browser exploits
+# ║           • Best for: developer laptops, corporate workstations, home PCs
+# ║
+# ║  server — Gateway / rack / perimeter protection
+# ║           • Inbound attack focus (80% inbound attention)
+# ║           • Aggressive IPS thresholds, verbose audit logging
+# ║           • Detects: port scans, brute force, exploit kits, lateral movement
+# ║           • Best for: web servers, API gateways, internal services, racks
+# ║
+# ║  auto   — Auto-detect (default): checks listening ports to decide.
+# ║           If any server port (80,443,22,etc.) is open → server mode.
+# ║           Otherwise → client mode.
+# ╚══════════════════════════════════════════════════════════════════════════════
+[mode]
+deployment = "auto"           # auto | client | server
+
+# ── Server Mode: Exposed Service Ports ────────────────────────────────────────
+# When running in server mode, only these inbound ports are expected.
+# Traffic to other ports will be flagged as suspicious and inspected.
+# (Leave empty [] if you want Rudras to use its built-in defaults.)
+exposed_ports = [
+    80,    # HTTP
+    443,   # HTTPS
+    22,    # SSH management
+    8080,  # Alternative HTTP / app servers
+    8443,  # Alternative HTTPS
+]
+
+# ── Client Mode: Trusted Home Networks ────────────────────────────────────────
+# Subnets treated as trusted LAN in client mode (less aggressive on local traffic)
+trusted_networks = [
+    "192.168.0.0/16",
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+]
+
+# Distributed Immunity — peer firewall nodes for rule synchronisation
+# peers = ["http://node-2:8080", "http://node-3:8080"]
+peers = []
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  SIEM INTEGRATION
+# ║  Events are buffered locally and flushed to connectors every
+# ║  flush_interval_seconds.  Enable only the connectors you have.
+# ══════════════════════════════════════════════════════════════════════════════
+[siem]
+enabled                 = true
+buffer_size             = 10000   # Max events held in memory before flush
+flush_interval_seconds  = 30      # How often to push events to SIEM
+retry_attempts          = 3       # Retry on transient failures
+
+# ── Splunk HTTP Event Collector (HEC) ──────────────────────────────────────
+splunk_enabled    = false
+splunk_hec_url    = "https://your-splunk-server:8088/services/collector"
+splunk_hec_token  = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+# Enable steps:
+#   1. In Splunk: Settings > Data Inputs > HTTP Event Collector > New Token
+#   2. Copy the token above
+#   3. Set splunk_enabled = true
+
+# ── Elasticsearch / OpenSearch ─────────────────────────────────────────────
+elasticsearch_enabled   = false
+elasticsearch_url       = "http://localhost:9200"
+elasticsearch_index     = "rudras-"   # Index prefix (date appended: rudras-2026.02.22)
+# elasticsearch_username = "elastic"
+# elasticsearch_password = "changeme"
+# Enable steps:
+#   1. Ensure Elasticsearch is running
+#   2. Set elasticsearch_enabled = true
+#   3. Indices are auto-created daily
+
+# ── IBM QRadar (Syslog/RFC-5424) ────────────────────────────────────────────
+qradar_enabled  = false
+qradar_host     = "qradar.internal"
+qradar_port     = 514
+# Enable steps:
+#   1. Configure a Syslog Log Source in QRadar (TCP, port 514)
+#   2. Set qradar_enabled = true and update qradar_host
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  ZERO TRUST ENGINE
+# ║  Enable the identity backends your organisation uses.
+# ║  All are optional — leave flags false to run without SSO.
+# ══════════════════════════════════════════════════════════════════════════════
+[zero_trust]
+enabled                      = true
+
+# Device compliance thresholds (applied to all auth methods)
+min_device_compliance_score  = 0.70   # 0.0–1.0  (0.70 = 70% compliant)
+require_antivirus            = true
+require_disk_encryption      = true
+max_patch_age_days           = 30     # Patches must be ≤ 30 days old
+
+# ── Microsoft Active Directory / LDAP ──────────────────────────────────────
+ad_enabled  = false
+ad_server   = "dc01.company.com"       # Hostname or IP of your domain controller
+ad_domain   = "company.com"            # FQDN of the AD domain
+# Enable steps:
+#   1. Ensure the firewall host can reach ad_server on TCP 389 (LDAP)
+#   2. Set ad_enabled = true
+
+# ── SAML 2.0 SSO (Okta / Azure AD / ADFS / Google Workspace) ──────────────
+saml_enabled      = false
+saml_idp_url      = "https://your-idp.okta.com/app/rudras/sso/saml"
+saml_sp_entity_id = "rudras-firewall"
+# Enable steps:
+#   1. Register Rudras as a Service Provider in your IdP
+#   2. Set Assertion Consumer Service URL → https://<firewall-ip>/saml/acs
+#   3. Copy IdP SSO URL into saml_idp_url
+#   4. Set saml_enabled = true
+
+# ── OAuth 2.0 (Azure AD / Google / GitHub / Keycloak) ─────────────────────
+oauth_enabled        = false
+oauth_client_id      = "rudras-client-id"
+oauth_client_secret  = "YOUR_OAUTH_CLIENT_SECRET"
+oauth_auth_url       = "https://login.microsoftonline.com/YOUR_TENANT/oauth2/v2.0/authorize"
+# Enable steps:
+#   1. Register an App Registration in Azure AD (or your OAuth provider)
+#   2. Copy client_id, client_secret, and authorization URL above
+#   3. Set oauth_enabled = true
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  MICRO-SEGMENTATION ZONES
+# ║  Each zone is a named group of subnets with an isolation level:
+# ║    strict   → No traffic in unless explicitly whitelisted
+# ║    moderate → Default deny; explicit allow required
+# ║    minimal  → Default allow; explicit deny overrides
+# ║
+# ║  allowed_zones = other zones this zone MAY connect to.
+# ║  Update networks to match YOUR actual IP addressing scheme.
+# ══════════════════════════════════════════════════════════════════════════════
+[segmentation]
+enabled = true
+
+# ── DMZ ────────────────────────────────────────────────────────────────────
+[[segmentation.zones]]
+name          = "dmz"
+description   = "Public-facing services (web, email, DNS)"
+networks      = ["10.0.1.0/24"]
+isolation     = "strict"
+allowed_zones = ["application"]
+
+# ── Application Tier ───────────────────────────────────────────────────────
+[[segmentation.zones]]
+name          = "application"
+description   = "Application / API servers"
+networks      = ["10.0.11.0/24"]
+isolation     = "moderate"
+allowed_zones = ["database", "dmz"]
+
+# ── Production Database ────────────────────────────────────────────────────
+[[segmentation.zones]]
+name          = "database"
+description   = "Production databases (MySQL, PostgreSQL, MongoDB)"
+networks      = ["10.0.10.0/24"]
+isolation     = "strict"
+allowed_zones = ["application", "management"]
+
+# ── Finance (PCI-DSS) ──────────────────────────────────────────────────────
+[[segmentation.zones]]
+name          = "finance"
+description   = "Finance — PCI-DSS regulated systems"
+networks      = ["10.0.20.0/24"]
+isolation     = "strict"
+allowed_zones = ["management"]
+
+# ── R&D / Intellectual Property ────────────────────────────────────────────
+[[segmentation.zones]]
+name          = "research"
+description   = "R&D — proprietary IP and experimentation"
+networks      = ["10.0.30.0/24"]
+isolation     = "strict"
+allowed_zones = ["management"]
+
+# ── Corporate Workstations ─────────────────────────────────────────────────
+[[segmentation.zones]]
+name          = "corporate"
+description   = "Corporate desktops, laptops, printers"
+networks      = ["10.0.100.0/24", "192.168.1.0/24"]
+isolation     = "moderate"
+allowed_zones = ["application", "dmz"]
+
+# ── Guest Wi-Fi ────────────────────────────────────────────────────────────
+[[segmentation.zones]]
+name          = "guest"
+description   = "Guest Wi-Fi — internet only, no internal access"
+networks      = ["192.168.200.0/24"]
+isolation     = "strict"
+allowed_zones = []
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  COMPREHENSIVE THREAT BLOCKER
+# ║  Shield 0: Deep Packet Inspection (DPI) and AI Anomaly detection.
+# ║  Covers all 10 threat categories from L3 to AI layers.
+# ══════════════════════════════════════════════════════════════════════════════
+[blocking]
+enabled = true
+
+# Process Monitor kill mode (default: false — warn only, no termination)
+# Set to true ONLY after reviewing legal guidance in src/process_monitor.rs.
+# When false, Rudras logs suspicious processes but does NOT terminate them.
+process_monitor_kill_mode = false
+
+# Promiscuous capture (default: false — capture only traffic to this host)
+# Set to true only when you own the entire network segment (e.g., SPAN port).
+# Promiscuous-mode on a shared segment may violate wiretapping law (ECPA/RIPA).
+promiscuous_capture = false
+
+# Block anonymization networks — Tor, I2P, SOCKS ports (default: false)
+# Tor is legal in most countries and used by journalists/researchers.
+# Enable only when required by organisational policy and local law permits it.
+block_anonymization_networks = false
+
+# Category-specific toggles (Shield 0)
+enable_l7_dpi        = true   # SQLi, XSS, Cmd Injection signatures
+enable_malware_scan  = true   # PE/EXE, PowerShell, Reverse shell signatures
+enable_dns_filtering = true   # DGA detection, DNS Tunneling, Blocked domains
+enable_exfil_check   = true   # Abnormal outbound volume detection
+enable_anomaly_ai    = true   # Traffic spikes and unusual port spreads
+enable_iot_defense   = true   # UPnP, default credentials, Mirai beacons
+enable_auth_shield   = true   # Brute-force and credential stuffing protection
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  PERFORMANCE TUNING (3-Layer Pipeline)
+# ║
+# ║  Flow Engine fast-path: only flows with risk_score < suspicious_threshold
+# ║  go through the cheap allow path. Suspicious/blocked flows hit the full
+# ║  shield stack (ComprehensiveBlocker → Policy → ThreatIntel → Micro-Seg →
+# ║  CyberImmune AI).
+# ║
+# ║  Lower suspicious_threshold → more traffic inspected (safer, slower)
+# ║  Higher suspicious_threshold → more traffic fast-pathed (faster, less safe)
+# ╚══════════════════════════════════════════════════════════════════════════════
+[performance]
+
+# Risk score above which a flow is sent to the full shield stack
+# Range: 0.0 – 1.0   Default: 0.65
+# Recommended: 0.65 (home/office) | 0.50 (enterprise strict)
+suspicious_threshold = 0.65
+
+# Risk score above which a flow is BLOCKED immediately by the flow engine
+# (without going through full shields — treats it as confirmed threat)
+# Range: 0.0 – 1.0   Default: 0.85
+block_threshold = 0.85
+
+# Maximum number of simultaneous flows tracked by the Flow Engine
+# Higher = more memory, better accuracy   Lower = less RAM, some false negatives
+max_tracked_flows = 200000
+
+# How often (seconds) stale flows are evicted from the flow table
+# The heartbeat task also calls cleanup every 60 s regardless of this value
+flow_timeout_secs = 120
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  PRIVACY & LEGAL COMPLIANCE
+# ║
+# ║  Rudras is designed for metadata-only inspection by default.
+# ║  Full payload inspection (DPI) runs ONLY for suspicious flows.
+# ║  These settings give you control over what is logged/stored.
+# ╚══════════════════════════════════════════════════════════════════════════════
+[privacy]
+
+# Store full packet payload in SIEM events?
+# ⚠️  Enabling this may violate GDPR / IT Act in your jurisdiction.
+#    Keep false unless you have explicit user / legal consent.
+log_packet_payload = false
+
+# Inspect TLS/HTTPS content (Man-in-the-Middle DPI)?
+# Requires additional certificate deployment on endpoints.
+# ⚠️  Never enable without explicit written consent from all users.
+enable_tls_inspection = false
+
+# Keep per-flow logs for forensic analysis?
+# When true: flow records are written to logs/flows.jsonl (metadata only)
+enable_flow_logging = false
+
+# Automatically delete logs older than N days (0 = never delete)
+log_retention_days = 30
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  IPS — Intrusion Prevention System
+# ║
+# ║  The IPS sits AFTER the IDS in the pipeline:
+# ║    Firewall → IDS (detect) → IPS (prevent) → SIEM (log)
+# ║
+# ║  PENALTY SCORING (exponential decay — half-life: 30 minutes):
+# ║    CRITICAL alert: +50 pts    HIGH: +20 pts
+# ║    MEDIUM alert:  +10 pts    LOW:   +2 pts
+# ║
+# ║  GRADUATED RESPONSE LADDER:
+# ║    penalty ≥ rate_limit_threshold  → throttle to rate_limit_pps pps
+# ║    penalty ≥ rst_threshold         → send TCP RST (terminate connection)
+# ║    penalty ≥ block_threshold       → WFP kernel block (block_duration_secs)
+# ║    penalty ≥ quarantine_threshold  → quarantine (quarantine_duration_secs)
+# ║    penalty ≥ blacklist_threshold   → permanent blacklist
+# ╚══════════════════════════════════════════════════════════════════════════════
+[ips]
+
+# Enable IPS inline prevention mode
+# true  = INLINE: active blocking, RST injection, WFP rules
+# false = PASSIVE: IDS alerts only, no blocking (useful for testing)
+enabled = true
+
+# ── Penalty Thresholds ──────────────────────────────────────────────────────
+
+# Penalty score to trigger token-bucket rate limiting (10 pps default)
+# Single MEDIUM alert = 10 pts → two MEDIUM alerts within 30 min → rate-limited
+rate_limit_threshold = 30.0
+
+# Penalty score to send TCP RST to tear down suspicious connections
+# One HIGH + one MEDIUM alert → RST
+rst_threshold = 60.0
+
+# Penalty score to install a WFP kernel block rule (lasts block_duration_secs)
+# Persistent kernel-level drop: ~zero CPU cost for subsequent packets
+block_threshold = 100.0
+
+# Penalty score to quarantine an IP (24h block + SIEM critical alert)
+quarantine_threshold = 200.0
+
+# Penalty score for permanent blacklist (never unblocked without manual review)
+blacklist_threshold = 350.0
+
+# ── Block Durations ─────────────────────────────────────────────────────────
+
+# How long (seconds) a WFP block rule stays active
+# 3600 = 1 hour | 7200 = 2 hours | 86400 = 24 hours
+block_duration_secs = 3600
+
+# How long (seconds) a quarantined IP stays blocked
+# 86400 = 24 hours | 604800 = 7 days
+quarantine_duration_secs = 86400
+
+# ── Rate Limiting ────────────────────────────────────────────────────────────
+
+# Max packets per second allowed when an IP is in rate-limit state
+# 10 pps = heavily throttled (recommended for suspicious scanners)
+rate_limit_pps = 10
+
+# ── Immediate Block Triggers (overrides penalty ladder) ─────────────────────
+
+# Block immediately on first HIGH-severity IDS alert (no penalty accumulation)
+# Recommended: false (let penalty accumulate to reduce false positives)
+auto_block_high = false
+
+# Block immediately on first CRITICAL-severity IDS alert
+# Recommended: true (CRITICAL = confirmed exploit / Cobalt Strike / EternalBlue)
+auto_block_critical = true
+
+# ── Whitelist (never blocked by IPS) ────────────────────────────────────────
+# Add management station IPs, monitoring systems, etc.
+# Loopback (127.0.0.1, ::1) is always exempt regardless of this list.
+whitelist = [
+    "127.0.0.1",
+    "::1",
+    # "192.168.1.10",   # ← add management IPs here
+]

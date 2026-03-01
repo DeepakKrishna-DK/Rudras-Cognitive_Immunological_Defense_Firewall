@@ -1,0 +1,6 @@
+# Cargo project config — Npcap SDK linker paths for Windows MSVC builds
+[env]
+PCAP_LIB_PATH = "C:\\npcap-sdk\\Lib\\x64"
+
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-L", "C:\\npcap-sdk\\Lib\\x64"]

@@ -1,0 +1,123 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║   Rudras Enterprise Firewall — CLIENT Mode Config               ║
+# ║   For: Endpoint / Workstation / Developer Laptop                 ║
+# ║   Usage: rudras.exe --mode client --config config/client.toml   ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# ── Core ─────────────────────────────────────────────────────────────────────
+# Set your Wi-Fi or Ethernet interface name (find with `rudras.exe --help`)
+interface = "\\Device\\NPF_{9907D15D-21D0-430D-A08B-CA76839DA2BD}"
+log_level    = "info"     # Use "warn" for silent mode on laptops
+metrics_port = 9091
+
+[mode]
+deployment = "client"
+
+# Trusted home/office networks — less aggressive inspection here
+trusted_networks = [
+    "192.168.0.0/16",
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+]
+exposed_ports = []   # No inbound services expected on a workstation
+
+peers = []  # No P2P sync needed for single endpoint
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  SIEM — local buffer only for a workstation; enable Splunk/ELK if you
+# ║  want to forward logs to a SOC.
+# ══════════════════════════════════════════════════════════════════════════════
+[siem]
+enabled                 = true
+buffer_size             = 5000
+flush_interval_seconds  = 60
+retry_attempts          = 3
+splunk_enabled          = false
+splunk_hec_url          = "https://your-splunk:8088/services/collector"
+splunk_hec_token        = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+elasticsearch_enabled   = false
+elasticsearch_url       = "http://localhost:9200"
+elasticsearch_index     = "rudras-"
+qradar_enabled          = false
+qradar_host             = "qradar.internal"
+qradar_port             = 514
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  ZERO TRUST — Keep enabled even on endpoints.
+# ║  Device posture enforcement catches unpatched machines.
+# ══════════════════════════════════════════════════════════════════════════════
+[zero_trust]
+enabled                      = true
+min_device_compliance_score  = 0.70
+require_antivirus            = true
+require_disk_encryption      = true
+max_patch_age_days           = 30
+ad_enabled                   = false
+ad_server                    = "dc01.company.com"
+ad_domain                    = "company.com"
+saml_enabled                 = false
+saml_idp_url                 = "https://your-idp.okta.com/app/rudras/sso/saml"
+saml_sp_entity_id            = "rudras-firewall"
+oauth_enabled                = false
+oauth_client_id              = "rudras-client-id"
+oauth_client_secret          = "YOUR_OAUTH_CLIENT_SECRET"
+oauth_auth_url               = "https://login.microsoftonline.com/YOUR_TENANT/oauth2/v2.0/authorize"
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  MICRO-SEGMENTATION — Simplified for workstation use
+# ══════════════════════════════════════════════════════════════════════════════
+[segmentation]
+enabled = false   # Typically not needed for a single workstation
+
+[[segmentation.zones]]
+name          = "corporate"
+description   = "Corporate network"
+networks      = ["10.0.0.0/8", "192.168.0.0/16"]
+isolation     = "minimal"
+allowed_zones = []
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  COMPREHENSIVE THREAT BLOCKER — Full protection on endpoint
+# ══════════════════════════════════════════════════════════════════════════════
+[blocking]
+enabled              = true
+enable_l7_dpi        = true
+enable_malware_scan  = true
+enable_dns_filtering = true
+enable_exfil_check   = true   # HIGH priority for endpoints (data theft)
+enable_anomaly_ai    = true
+enable_iot_defense   = false  # Less relevant on workstation
+enable_auth_shield   = true
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  PERFORMANCE — Tuned for single-core workstation
+# ══════════════════════════════════════════════════════════════════════════════
+[performance]
+suspicious_threshold = 0.60   # More aggressive (client mode) 
+block_threshold      = 0.80
+max_tracked_flows    = 50000  # Reduced for workstation RAM
+flow_timeout_secs    = 90
+
+[privacy]
+log_packet_payload    = false
+enable_tls_inspection = false
+enable_flow_logging   = false
+log_retention_days    = 14    # 2 weeks on client
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  IPS — Client-mode thresholds (slightly more lenient than server)
+# ║  The mode_profile overrides these automatically when --mode client is set.
+# ══════════════════════════════════════════════════════════════════════════════
+[ips]
+enabled                  = true
+rate_limit_threshold     = 35.0
+rst_threshold            = 70.0
+block_threshold          = 110.0
+quarantine_threshold     = 220.0
+blacklist_threshold      = 400.0
+block_duration_secs      = 3600
+quarantine_duration_secs = 86400
+rate_limit_pps           = 10
+auto_block_high          = false
+auto_block_critical      = true
+whitelist                = ["127.0.0.1", "::1"]

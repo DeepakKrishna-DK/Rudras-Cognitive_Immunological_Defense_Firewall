@@ -1,0 +1,176 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║   Rudras Enterprise Firewall — SERVER Mode Config               ║
+# ║   For: Web Server / API Gateway / Rack / Perimeter              ║
+# ║   Usage: rudras.exe --mode server --config config/server.toml   ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# ── Core ─────────────────────────────────────────────────────────────────────
+# Replace with your server's network interface name
+interface = "\\Device\\NPF_{9907D15D-21D0-430D-A08B-CA76839DA2BD}"
+log_level    = "info"    # Use "debug" for full audit / pentest visibility
+metrics_port = 9091      # Prometheus scrape → Grafana dashboard
+
+[mode]
+deployment = "server"
+
+# Ports this server legitimately exposes (traffic to other ports = suspicious)
+exposed_ports = [
+    80,    # HTTP
+    443,   # HTTPS
+    22,    # SSH management (restrict with allow_ssh_from if possible)
+    8080,  # Alternative HTTP
+    8443,  # Alternative HTTPS
+    3000,  # Node/API common dev port
+    # 3306,  # MySQL      — uncomment if DB server
+    # 5432,  # PostgreSQL  — uncomment if DB server
+    # 6379,  # Redis       — uncomment if cache layer
+]
+
+# Trusted LAN ranges — peer nodes / monitoring / management IPs
+trusted_networks = [
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+]
+
+# ── Distributed Immunity peers (same-cluster firewall nodes) ─────────────────
+# peers = ["http://10.0.1.11:8080", "http://10.0.1.12:8080"]
+peers = []
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  SIEM — Forward to your SOC; servers MUST have audit trails
+# ══════════════════════════════════════════════════════════════════════════════
+[siem]
+enabled                 = true
+buffer_size             = 50000    # Large buffer for high-traffic servers
+flush_interval_seconds  = 15       # Flush every 15 s for near-real-time SIEM
+retry_attempts          = 5
+
+# ── Splunk HEC (recommended for SOC) ─────────────────────────────────────────
+splunk_enabled    = false
+splunk_hec_url    = "https://your-splunk-server:8088/services/collector"
+splunk_hec_token  = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+
+# ── Elasticsearch / OpenSearch (ELK stack) ────────────────────────────────────
+elasticsearch_enabled   = false
+elasticsearch_url       = "http://localhost:9200"
+elasticsearch_index     = "rudras-"
+
+# ── IBM QRadar (Syslog/RFC-5424) ─────────────────────────────────────────────
+qradar_enabled  = false
+qradar_host     = "qradar.internal"
+qradar_port     = 514
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  ZERO TRUST — Critical on servers; enforce device posture
+# ══════════════════════════════════════════════════════════════════════════════
+[zero_trust]
+enabled                      = true
+min_device_compliance_score  = 0.80   # Stricter than client (0.70)
+require_antivirus            = true
+require_disk_encryption      = true
+max_patch_age_days           = 14     # Servers must be patched within 2 weeks
+
+# Active Directory — enable to require domain credentials for admin access
+ad_enabled  = false
+ad_server   = "dc01.company.com"
+ad_domain   = "company.com"
+
+saml_enabled      = false
+saml_idp_url      = "https://your-idp.okta.com/app/rudras/sso/saml"
+saml_sp_entity_id = "rudras-firewall"
+
+oauth_enabled       = false
+oauth_client_id     = "rudras-client-id"
+oauth_client_secret = "YOUR_OAUTH_CLIENT_SECRET"
+oauth_auth_url      = "https://login.microsoftonline.com/YOUR_TENANT/oauth2/v2.0/authorize"
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  MICRO-SEGMENTATION — Essential for servers; isolate tiers
+# ══════════════════════════════════════════════════════════════════════════════
+[segmentation]
+enabled = true
+
+# ── DMZ (this server, public-facing) ────────────────────────────────────────
+[[segmentation.zones]]
+name          = "dmz"
+description   = "Public-facing services (web, API, DNS)"
+networks      = ["10.0.1.0/24"]
+isolation     = "strict"
+allowed_zones = ["application"]
+
+# ── Application Tier ─────────────────────────────────────────────────────────
+[[segmentation.zones]]
+name          = "application"
+description   = "Application / API servers"
+networks      = ["10.0.11.0/24"]
+isolation     = "moderate"
+allowed_zones = ["database", "dmz"]
+
+# ── Database Tier ────────────────────────────────────────────────────────────
+[[segmentation.zones]]
+name          = "database"
+description   = "Production databases — NO direct internet access"
+networks      = ["10.0.10.0/24"]
+isolation     = "strict"
+allowed_zones = ["application", "management"]
+
+# ── Management ───────────────────────────────────────────────────────────────
+[[segmentation.zones]]
+name          = "management"
+description   = "IT management / bastion hosts"
+networks      = ["10.0.0.0/24"]
+isolation     = "moderate"
+allowed_zones = ["dmz", "application", "database"]
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  COMPREHENSIVE THREAT BLOCKER — Maximum protection for servers
+# ══════════════════════════════════════════════════════════════════════════════
+[blocking]
+enabled              = true
+enable_l7_dpi        = true   # Block SQLi / XSS / SSRF / XXE
+enable_malware_scan  = true   # Block PE uploads, reverse shells
+enable_dns_filtering = true   # Block DGA / DNS tunnelling
+enable_exfil_check   = true   # Prevent DB exfiltration
+enable_anomaly_ai    = true   # Detect unusual traffic patterns
+enable_iot_defense   = true   # Mirai / UPnP defence
+enable_auth_shield   = true   # Brute-force / credential stuffing
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  PERFORMANCE — Tuned for high-throughput server deployment
+# ╚══════════════════════════════════════════════════════════════════════════════
+[performance]
+suspicious_threshold = 0.65   # Server-mode default (balanced)
+block_threshold      = 0.85
+max_tracked_flows    = 500000  # Much larger flow table for server traffic
+flow_timeout_secs    = 120
+
+[privacy]
+log_packet_payload    = false   # Keep false unless you have legal consent
+enable_tls_inspection = false   # Only enable with explicit user consent + cert deploy
+enable_flow_logging   = true    # Enable on servers for compliance (metadata only)
+log_retention_days    = 90      # 90 days for SOC / compliance
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  IPS — Server-mode: AGGRESSIVE thresholds (faster blocking)
+# ║  The --mode server profile automatically applies these tighter values.
+# ║  The mode_profile loaded by Rust overrides with:
+# ║    RateLimit=20 | RST=45 | Block=80 | Quarantine=160 | Blacklist=280
+# ╚══════════════════════════════════════════════════════════════════════════════
+[ips]
+enabled                  = true
+rate_limit_threshold     = 20.0    # Faster rate-limiting on servers
+rst_threshold            = 45.0    # Send RST on confirmed suspicious
+block_threshold          = 80.0    # WFP kernel block (1 hr)
+quarantine_threshold     = 160.0   # 24 hr quarantine
+blacklist_threshold      = 280.0   # Permanent block after sustained attacks
+block_duration_secs      = 7200    # 2 hours for server blocks (vs 1hr client)
+quarantine_duration_secs = 604800  # 7 days server quarantine (vs 24hr client)
+rate_limit_pps           = 5       # Tighter rate limit (5 pps vs 10 client)
+auto_block_high          = true    # Block HIGH immediately on servers
+auto_block_critical      = true
+whitelist = [
+    "127.0.0.1",
+    "::1",
+    # "10.0.0.10",   # ← add your management/monitoring IPs
+    # "10.0.0.11",
+]

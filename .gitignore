@@ -1,0 +1,55 @@
+# =============================================================================
+# Rudras — .gitignore
+# =============================================================================
+
+# Rust build output — never commit this
+/target/
+
+# Python virtual environments — never commit these
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Cargo lock for binary crates (keep for reproducible builds; remove line if library)
+# Cargo.lock
+
+# Editor & IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Npcap / WinDivert SDKs (large native libs — keep out of repo)
+npcap-sdk/
+WinDivert*/
+
+# Secrets & keys — never commit
+*.key
+*.pem
+*.p12
+*.pfx
+emergency_override.key
+
+# Log files
+logs/*.log
+logs/*.log.*
+
+# GeoIP database files (regenerated via fetch_geoip.ps1)
+data/geoip/*.mmdb
+data/geoip/*.tar.gz
+
+# Threat intel caches (regenerated on startup)
+data/intel/global_iocs.json
+data/intel/malicious_domains.txt
+
+# Compiled scripts / temp
+*.tmp
+*.bak
