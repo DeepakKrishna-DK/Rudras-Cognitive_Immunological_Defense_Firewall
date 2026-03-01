@@ -1,4 +1,5 @@
 ﻿# 🔥 Rudras — Cognitive Immunological Defense Firewall
+ 
 ### The Boss of Firewalls.
 
 <div align="center">
@@ -375,9 +376,6 @@ To truly secure the world, Rudras must exist natively across all infrastructure 
 git clone https://github.com/DeepakKrishna-DK/Rudras.git
 cd Rudras
 ```
-### 🔐 What Is NOT in the Repo (by design)
-
----
 
 ## 🤝 Philosophy & Ethics
 
