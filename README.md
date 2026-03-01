@@ -1,10 +1,10 @@
-<div style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
-  <h1 style="font-size: 2.4rem; margin: 0.4em 0;">
-    🔥 Rudras — Cognitive Immunological Defense Firewall
-  </h1>
-  <h2 style="font-size: 1.6rem; font-weight: 600; margin: 0.2em 0; color: #ff4b4b;">
+<div align="center">
+<b style="text-align: center; margin-top: 20px; margin-bottom: 20px; font-size:50px"> 
+  🔥 Rudras — Cognitive Immunological Defense Firewall
+</b>
+  <b>
     The Boss of Firewalls
-  </h2>
+  </b>
 </div>
 
 <div align="center">
