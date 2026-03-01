@@ -1,5 +1,5 @@
 <div align="center">
-# 🔥 Rudras — Cognitive Immunological Defense Firewall
+<b style:size= 200px> 🔥 Rudras — Cognitive Immunological Defense Firewall </b>
 <b> The Boss of Firewalls </b>
 </div>
 
