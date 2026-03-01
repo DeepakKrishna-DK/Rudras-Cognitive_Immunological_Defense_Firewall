@@ -1,6 +1,7 @@
 # 🔥 Rudras — Cognitive Immunological Defense Firewall
-### The Boss of Firewalls.
-
+<div align="center">
+<b>The Boss of Firewalls</b>
+</div>
 <div align="center">
 
 [![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange.svg)](https://rust-lang.org/)
