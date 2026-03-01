@@ -337,8 +337,7 @@ Security built on trust requires building it trustworthily.
 - 📖 Open documentation — we document precisely how Rudras solves mathematical flaws in older firewalls to advance the field forward globally.
 
 ---
-**License:** Proprietary — All Rights Reserved. See [LICENSE](LICENSE) for full terms.
----
+**License:** Proprietary — All Rights Reserved. 
 
 <div align="center">
 
