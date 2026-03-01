@@ -35,7 +35,7 @@
 13. [🚀 Firewall Trends — How Rudras Stays Ahead](#-firewall-trends--how-rudras-stays-ahead)
 14. [📅 Development Journey](#-development-journey)
 15. [🔭 Future Vision & Platforms](#-future-vision--platforms)
-16. [🤝 Philosophy & Ethics](#-philosophy-&-ethics)
+16. [🤝 Philosophy & Ethics](#-philosophy--ethics)
 
 ---
 
