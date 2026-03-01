@@ -3,12 +3,10 @@
 
 <div align="center">
 
-[![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange.svg)](https://www.rust-lang.org/)
-[![Built with Go](https://img.shields.io/badge/Built%20with-Go-blue.svg)](https://golang.org/)
-[![Built with Python](https://img.shields.io/badge/Built%20with-Python-yellow.svg)](https://www.python.org/)
+[![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange.svg)](https://rust-lang.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)]()
-[![Status](https://img.shields.io/badge/Status-In%20Development-bluelight.svg)]()
-[![Version](https://img.shields.io/badge/Version-3.0%20Enterprise-blueviolet.svg)]()
+[![Status](https://img.shields.io/badge/Status-in%20development-Alpha-bluelight.svg)]()
+[![Version](https://img.shields.io/badge/Version-3.0%20Alpha-blueviolet.svg)]()
 
 **A next-generation, self-healing firewall that thinks like an immune system.**
 
@@ -25,7 +23,7 @@
 2. [💡 Why I Built Rudras](#-why-i-built-rudras)
 3. [🛡️ What is Rudras?](#️-what-is-rudras)
 4. [🧠 The Philosophy — From Wall to Nervous System](#-the-philosophy--from-wall-to-nervous-system)
-5. [⚙️ Core Enterprise Capabilities (v3.0)](#️-core-capabilities-v30)
+5. [⚙️ Core Enterprise Capabilities (v3.0)](#️-core-capabilities-v3.0)
 6. [🗏️ Dual-Mode Architecture & Deployment](#️-dual-mode-architecture)
 7. [🧬 The CyberImmune System](#-the-cyberimmune-system)
 8. [🎯 Threat Intelligence & IOC Feeds](#-threat-intelligence--ioc-feeds)
