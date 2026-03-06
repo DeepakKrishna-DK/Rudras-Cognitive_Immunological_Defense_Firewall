@@ -42,6 +42,7 @@
 17. [🔭 Future Vision & Platforms](#-future-vision--platforms)
 18. [📋 Changelog](#-changelog)
 19. [🗂️ Version Control & Repository Status](#️-version-control--repository-status)
+20. [📚 References & Bibliography](#-references--bibliography)
 
 ---
 
@@ -567,6 +568,215 @@ To truly secure the world, Rudras must exist natively across all infrastructure 
 git clone https://github.com/DeepakKrishna-DK/Rudras.git
 cd Rudras
 ```
+
+---
+
+## 📚 References & Bibliography
+
+All algorithms, datasets, protocols, standards, threat-intel feeds, open-source libraries, and third-party tools used in or referenced by Rudras are listed below. Citations are provided so that original authors receive full credit and so that operators can verify licensing compliance before deploying Rudras in their environment.
+
+---
+
+### 1 — Security Frameworks & Standards
+
+| # | Reference | Used In |
+|---|-----------|---------|
+| [F1] | MITRE ATT&CK® Knowledge Base, MITRE Corporation, 2015 – present. https://attack.mitre.org | `framework_alignment.rs`, `attribution_scoring.rs`, `ids_engine.rs`, `endpoint_security.rs` |
+| [F2] | OWASP Top 10 Web Application Security Risks (2021 Edition), Open Web Application Security Project. https://owasp.org/www-project-top-ten/ | `ids_engine.rs`, `framework_alignment.rs`, WAF detection logic |
+| [F3] | NIST Special Publication 800-207 — Zero Trust Architecture, Rose, S., Borchert, O., Mitchell, S., Connelly, S. National Institute of Standards and Technology, 2020. https://doi.org/10.6028/NIST.SP.800-207 | `zero_trust.rs`, `identity_policy.rs` |
+| [F4] | NIST Cybersecurity Framework v2.0, National Institute of Standards and Technology, 2024. https://doi.org/10.6028/NIST.CSWP.29 | Overall architecture design |
+| [F5] | CIS Controls v8, Center for Internet Security, 2021. https://www.cisecurity.org/controls/v8 | Micro-segmentation, endpoint posture scoring |
+| [F6] | Zero Trust Networks (BeyondCorp Model) — Ward, E., Beyer, B., et al., Google, 2014. https://research.google/pubs/pub43231/ | `zero_trust.rs` design philosophy |
+| [F7] | Kindervag, J. "Build Security Into Your Network's DNA: The Zero Trust Network Architecture." Forrester Research, 2010. | Zero Trust conceptual foundation |
+
+---
+
+### 2 — Network Protocols & IETF RFCs
+
+| # | Reference | Used In |
+|---|-----------|---------|
+| [R1] | RFC 791 — Internet Protocol (IPv4), Postel, J., IETF, 1981. https://www.rfc-editor.org/rfc/rfc791 | `capture.rs`, `comprehensive_blocker.rs`, `ids_engine.rs` |
+| [R2] | RFC 793 — Transmission Control Protocol, Postel, J., IETF, 1981. https://www.rfc-editor.org/rfc/rfc793 | SYN-flood detection, stateful tracking |
+| [R3] | RFC 768 — User Datagram Protocol, Postel, J., IETF, 1980. https://www.rfc-editor.org/rfc/rfc768 | UDP flood & amplification detection |
+| [R4] | RFC 792 — Internet Control Message Protocol, Postel, J., IETF, 1981. https://www.rfc-editor.org/rfc/rfc792 | ICMP flood, Ping of Death, Smurf detection |
+| [R5] | RFC 826 — An Ethernet Address Resolution Protocol, Plummer, D., IETF, 1982. https://www.rfc-editor.org/rfc/rfc826 | `l2_engine.rs`, ARP spoofing detection |
+| [R6] | RFC 1918 — Address Allocation for Private Internets, Rekhter, Y., Moskowitz, R., et al., IETF, 1996. https://www.rfc-editor.org/rfc/rfc1918 | `comprehensive_blocker.rs` private-range allow-list |
+| [R7] | RFC 3927 — Dynamic Configuration of IPv4 Link-Local Addresses, Cheshire, S., IETF, 2005. https://www.rfc-editor.org/rfc/rfc3927 | `comprehensive_blocker.rs` |
+| [R8] | RFC 6598 — IANA-Reserved IPv4 Prefix for Shared Address Space, Weil, J., IETF, 2012. https://www.rfc-editor.org/rfc/rfc6598 | `comprehensive_blocker.rs` |
+| [R9] | RFC 4291 — IP Version 6 Addressing Architecture, Hinden, R., Deering, S., IETF, 2006. https://www.rfc-editor.org/rfc/rfc4291 | IPv6 special-range handling |
+| [R10] | RFC 6890 — Special-Purpose IP Address Registries, Cotton, M., et al., IETF, 2013. https://www.rfc-editor.org/rfc/rfc6890 | `comprehensive_blocker.rs` |
+| [R11] | RFC 5735 — Special Use IPv4 Addresses (obsoleted by RFC 6890), Cotton, M., IETF, 2010. https://www.rfc-editor.org/rfc/rfc5735 | `comprehensive_blocker.rs` comments |
+| [R12] | RFC 5737 — IPv4 Address Blocks Reserved for Documentation, Arkko, J., IETF, 2010. https://www.rfc-editor.org/rfc/rfc5737 | TEST-NET-2/3 (203.0.113.0/24) |
+| [R13] | RFC 2544 — Benchmarking Methodology for Network Interconnect Devices, Bradner, S., IETF, 1999. https://www.rfc-editor.org/rfc/rfc2544 | 198.18.0.0/15 benchmarking range |
+| [R14] | RFC 5771 — IANA Guidelines for IPv4 Multicast Address Assignments, Cotton, M., IETF, 2010. https://www.rfc-editor.org/rfc/rfc5771 | Multicast range (224.0.0.0/4) |
+| [R15] | RFC 1035 — Domain Names — Implementation and Specification, Mockapetris, P., IETF, 1987. https://www.rfc-editor.org/rfc/rfc1035 | DNS query inspection, DGA detection |
+| [R16] | RFC 2104 — HMAC: Keyed-Hashing for Message Authentication, Krawczyk, H., Bellare, M., Canetti, R., IETF, 1997. https://www.rfc-editor.org/rfc/rfc2104 | `distributed_immunity.rs` gossip message signing |
+| [R17] | RFC 8446 — The Transport Layer Security (TLS) Protocol Version 1.3, Rescorla, E., IETF, 2018. https://www.rfc-editor.org/rfc/rfc8446 | TLS downgrade detection, BEAST/POODLE |
+
+---
+
+### 3 — Cryptography Standards
+
+| # | Reference | Used In |
+|---|-----------|---------|
+| [C1] | FIPS PUB 180-4 — Secure Hash Standard (SHA-256), National Institute of Standards and Technology, 2015. https://doi.org/10.6028/NIST.FIPS.180-4 | `config.rs` config integrity, `advanced_security.rs` |
+| [C2] | FIPS PUB 198-1 — The Keyed-Hash Message Authentication Code (HMAC), National Institute of Standards and Technology, 2008. https://doi.org/10.6028/NIST.FIPS.198-1 | `distributed_immunity.rs` |
+| [C3] | Rivest, R. L., Shamir, A., Adleman, L. — "A Method for Obtaining Digital Signatures and Public-Key Cryptosystems." *Communications of the ACM* 21(2), 1978. https://dl.acm.org/doi/10.1145/359340.359342 | `advanced_security.rs` Adaptive RSA Dropper |
+| [C4] | NIST Post-Quantum Cryptography Standardization (FIPS 203 / 204 / 205), National Institute of Standards and Technology, 2024. https://www.nist.gov/pqcrypto | Future roadmap (`README.md` Vision section) |
+
+---
+
+### 4 — Machine Learning Algorithms & Models
+
+| # | Reference | Used In |
+|---|-----------|---------|
+| [M1] | Shannon, C. E. — "A Mathematical Theory of Communication." *Bell System Technical Journal* 27(3), 1948. https://doi.org/10.1002/j.1538-7305.1948.tb01338.x | Shannon entropy for DGA detection, ransomware entropy analysis (`ids_engine.rs`) |
+| [M2] | Bottou, L. — "Stochastic Gradient Descent Tricks." *Neural Networks: Tricks of the Trade*, Springer, 2012. https://doi.org/10.1007/978-3-642-35289-8_25 | Online SGD layer in `ai_engine.rs` |
+| [M3] | Domingos, P., Hulten, G. — "Mining High-Speed Data Streams." *KDD 2000*. https://dl.acm.org/doi/10.1145/347090.347107 | Hoeffding Tree / VFDT online learning (`ai_engine.rs`) |
+| [M4] | Holland, J. H. — *Adaptation in Natural and Artificial Systems*. University of Michigan Press, 1975. | Genetic Algorithm antibody evolution (`cyber_immune.rs`) |
+| [M5] | Liu, F. T., Ting, K. M., Zhou, Z. H. — "Isolation Forest." *ICDM 2008*. https://doi.org/10.1109/ICDM.2008.17 | Behavioral anomaly scoring in `ai_engine.rs` |
+| [M6] | Hunter, P. — Exponential Moving Average for real-time anomaly detection. *General signal processing principle.* | Per-IP EMA packet/byte rate profiles (`ai_engine.rs`) |
+| [M7] | Forrest, S., Perelson, A. S., Allen, L., Cherukuri, R. — "Self-Nonself Discrimination in a Computer." *IEEE S&P 1994*. https://doi.org/10.1109/RISP.1994.296580 | Artificial Immune System design — the conceptual foundation for `cyber_immune.rs` |
+| [M8] | Matzinger, P. — "Tolerance, Danger, and the Extended Family." *Annual Review of Immunology* 12, 1994. https://doi.org/10.1146/annurev.iy.12.040194.000323 | Danger Theory — inspiration for the "Boiling Frog / Immutable Anchor" threat escalation model |
+
+---
+
+### 5 — Research Datasets
+
+| # | Reference | Used In |
+|---|-----------|---------|
+| [D1] | Neto, E. C. P., et al. — "CICIoT2023: A Real-Time Dataset and Benchmark for Large-Scale Attacks in IoT Environments." *Sensors* 23(13), 2023. https://doi.org/10.3390/s23135941 | `advanced_ml.rs` IoT attack classification (33 classes, 8 categories) |
+| [D2] | Moustafa, N., Slay, J. — "UNSW-NB15: A Comprehensive Data Set for Network Intrusion Detection Systems." *MilCIS 2015*. https://doi.org/10.1109/MilCIS.2015.7348942 | `advanced_ml.rs` 9-family threat classification |
+| [D3] | Sharafaldin, I., Lashkari, A. H., Ghorbani, A. A. — "Toward Generating a New Intrusion Detection Dataset and Intrusion Traffic Characterization." *ICISSP 2018*. https://doi.org/10.5220/0006639801080116 | CIC-IDS-2017/2018 — flow feature design reference for `flow_engine.rs` |
+| [D4] | Lashkari, A. H., et al. — "CICFlowMeter: Network Traffic Biflow Generator and Analyser." *ICCST 2017*. https://www.unb.ca/cic/research/applications.html | Flow feature set (fwd/bwd packet counts, flow bytes/s, flow duration) in `flow_engine.rs` |
+
+---
+
+### 6 — Threat Intelligence Feeds
+
+| # | Reference | Provider | Used In |
+|---|-----------|----------|---------|
+| [T1] | Feodo Tracker — Botnet C2 IP Blocklist. abuse.ch, 2010 – present. https://feodotracker.abuse.ch | abuse.ch | `threat_intelligence.rs` |
+| [T2] | SSL Blacklist (SSLBL) — Malicious SSL Certificate Blocklist. abuse.ch. https://sslbl.abuse.ch | abuse.ch | `threat_intelligence.rs` |
+| [T3] | ThreatFox — IOC Sharing Platform (C2 IPs + domains). abuse.ch. https://threatfox.abuse.ch | abuse.ch | `threat_intelligence.rs` |
+| [T4] | URLhaus — Malware URL Blocklist (hostfile format). abuse.ch. https://urlhaus.abuse.ch | abuse.ch | `threat_intelligence.rs` |
+| [T5] | CINS Score — Collective Intelligence Network Security Threat Feed. cinsscore.com. https://cinsscore.com | CINS | `threat_intelligence.rs` |
+| [T6] | Emerging Threats Open Ruleset — Compromised IP blocklist. Proofpoint (emergingthreats.net). https://rules.emergingthreats.net | Proofpoint / ET | `threat_intelligence.rs` |
+
+---
+
+### 7 — IDS / IPS Signature Systems
+
+| # | Reference | Used In |
+|---|-----------|---------|
+| [S1] | Roesch, M. — "Snort: Lightweight Intrusion Detection for Networks." *USENIX LISA 1999*. https://www.usenix.org/conference/lisa-99/snort-lightweight-intrusion-detection-networks | Snort rule format and signature design patterns (`ids_engine.rs` — 68+ rules) |
+| [S2] | Open Information Security Foundation (OISF) — Suricata IDS/IPS Engine. https://suricata.io | Signature taxonomy, protocol decoders (`comprehensive_blocker.rs`) |
+| [S3] | Paxson, V. — "Bro: A System for Detecting Network Intruders in Real-Time." *Computer Networks* 31(23), 1999 (now Zeek). https://doi.org/10.1016/S1389-1286(99)00112-7 | Behavioral detection methodology reference |
+
+---
+
+### 8 — Operating System & Platform Technologies
+
+| # | Reference | Used In |
+|---|-----------|---------|
+| [P1] | Microsoft Corporation — Windows Filtering Platform (WFP) API. https://learn.microsoft.com/en-us/windows/win32/fwp/windows-filtering-platform-start-page | `wfp_engine.rs` — kernel-level IP blocking |
+| [P2] | Basil00 — WinDivert: Windows Packet Divert. https://reqrypt.org/windivert.html. License: LGPL 3.0 | `windivert_engine.rs` — DPI userspace packet interception |
+| [P3] | Nmap Project — Npcap: Packet Capture Library for Windows. https://npcap.com. License: Npcap OEM License | `npcap_forensic.rs`, `capture.rs` — ring-layer packet forensics |
+| [P4] | The Tcpdump Group — libpcap: Portable C/C++ library for network traffic capture. https://www.tcpdump.org. License: BSD | `pcap` Rust crate dependency |
+| [P5] | Microsoft Corporation — Windows Management Instrumentation (WMI). https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-start-page | `process_monitor.rs` process metadata access |
+
+---
+
+### 9 — Distributed Systems
+
+| # | Reference | Used In |
+|---|-----------|---------|
+| [G1] | Demers, A., Greene, D., Hauser, C., et al. — "Epidemic Algorithms for Replicated Database Maintenance." *PODC 1987*. https://dl.acm.org/doi/10.1145/41840.41841 | Gossip protocol design in `distributed_immunity.rs` |
+| [G2] | Birman, K., Hayden, M., Ozkasap, O., et al. — "Bimodal Multicast." *ACM TOCS 17(2)*, 1999. https://dl.acm.org/doi/10.1145/312203.312207 | P2P antibody broadcast convergence model |
+| [G3] | Apache Software Foundation — Apache Kafka. https://kafka.apache.org. License: Apache 2.0 | Conceptual reference for event streaming in SIEM pipeline |
+
+---
+
+### 10 — SIEM Platforms Referenced
+
+| # | Reference | Used In |
+|---|-----------|---------|
+| [SI1] | Splunk Inc. — HTTP Event Collector (HEC) API Documentation. https://docs.splunk.com/Documentation/Splunk/latest/Data/UsetheHTTPEventCollector | `siem_integration.rs` Splunk HEC connector |
+| [SI2] | Elastic N.V. — Elasticsearch REST API Documentation. https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html. License: Server Side Public License (SSPL) / Elastic License 2.0 | `siem_integration.rs` ELK connector |
+| [SI3] | IBM Corporation — QRadar SIEM. Syslog event ingestion reference. https://www.ibm.com/products/qradar-siem | `siem_integration.rs` QRadar syslog connector |
+
+---
+
+### 11 — Offensive Security References (Detection Only)
+
+> These references describe offensive tools and techniques that Rudras is designed to **detect and block**. They are cited for transparency so operators understand the threat models, not to facilitate offensive use.
+
+| # | Reference | Detected In |
+|---|-----------|-------------|
+| [O1] | Cobalt Strike — Adversarial Simulation Platform. Fortra. https://www.cobaltstrike.com | Beacon C2 signatures in `comprehensive_blocker.rs` |
+| [O2] | Metasploit Framework. Rapid7. https://www.metasploit.com. License: BSD 3-Clause | Meterpreter/stager signatures in `comprehensive_blocker.rs` |
+| [O3] | PowerSploit / Empire. https://github.com/EmpireProject/Empire (archived) | C2 User-Agent fingerprints in `comprehensive_blocker.rs` |
+| [O4] | Sliver — Open Source C2 Framework. BishopFox. https://github.com/BishopFox/sliver. License: GPL 3.0 | C2 User-Agent detection in `comprehensive_blocker.rs` |
+| [O5] | Mythic — Cross-Platform RedTeam C2. https://github.com/its-a-feature/Mythic. License: BSD 3-Clause | Lynx/Poseidon C2 agent signatures |
+| [O6] | Mimikatz — Windows Credential Dumper. Gentilkiwi. https://github.com/gentilkiwi/mimikatz. License: CC BY 4.0 | Process name detection in `endpoint_security.rs` |
+| [O7] | LOLBins / LOLBAS Project. https://lolbas-project.github.io. License: GPL 3.0 | LOLBin detection list in `endpoint_security.rs` |
+| [O8] | Nmap Security Scanner. Gordon Lyon. https://nmap.org. License: NPSL / GPL 2 | Null/XMAS/SYN-FIN evasion scan detection in `ids_engine.rs` |
+
+---
+
+### 12 — Rust Programming Language & Core Crates
+
+| # | Crate | Version | Purpose | License |
+|---|-------|---------|---------|---------|
+| [L1] | The Rust Programming Language. Mozilla Research / Rust Foundation. https://rust-lang.org | — | Core language | Apache 2.0 / MIT |
+| [L2] | `tokio` | 1.x | Async runtime (networking, timers, tasks) | MIT |
+| [L3] | `clap` | 4.x | CLI argument parsing | MIT / Apache 2.0 |
+| [L4] | `anyhow` | 1.x | Ergonomic error handling | MIT / Apache 2.0 |
+| [L5] | `serde` + `serde_json` | 1.x | Serialisation / deserialisation | MIT / Apache 2.0 |
+| [L6] | `toml` | 0.8 | TOML config file parsing | MIT / Apache 2.0 |
+| [L7] | `tracing` + `tracing-subscriber` + `tracing-appender` | 0.1–0.3 | Structured async-aware logging | MIT |
+| [L8] | `pnet` + `pnet_base` | 0.35 | Raw packet parsing (TCP/IP/Ethernet) | MIT |
+| [L9] | `pcap` | 2.x | Libpcap / Npcap Rust bindings | MIT |
+| [L10] | `ipnetwork` | 0.20 | CIDR matching and IP range utilities | MIT / Apache 2.0 |
+| [L11] | `parking_lot` | 0.12 | High-performance `RwLock` / `Mutex` | MIT / Apache 2.0 |
+| [L12] | `dashmap` | 6.x | Concurrent `HashMap` (lock-free reads) | MIT |
+| [L13] | `reqwest` | 0.12 | Async HTTP client (threat feed downloads) | MIT / Apache 2.0 |
+| [L14] | `chrono` | 0.4 | Date/time handling | MIT / Apache 2.0 |
+| [L15] | `rand` | 0.8 | Random number generation | MIT / Apache 2.0 |
+| [L16] | `uuid` | 1.x | UUID v4 event/alert IDs | MIT / Apache 2.0 |
+| [L17] | `regex` | 1.x | Pattern matching (DPI signatures) | MIT / Apache 2.0 |
+| [L18] | `base64` | 0.22 | Base64 encoding for SIEM payloads | MIT / Apache 2.0 |
+| [L19] | `hex` | 0.4 | Hex encoding for hash display | MIT / Apache 2.0 |
+| [L20] | `once_cell` | 1.x | Safe, lazy global initialisation | MIT / Apache 2.0 |
+| [L21] | `lazy_static` | 1.x | Lazy static initialisation | MIT / Apache 2.0 |
+| [L22] | `crossbeam-channel` | 0.5 | Lock-free MPMC channels | MIT / Apache 2.0 |
+| [L23] | `flume` | 0.11 | Bounded async/sync inter-thread channels | MIT / Apache 2.0 |
+| [L24] | `bytes` | 1.x | Efficient byte buffer management | MIT |
+| [L25] | `sysinfo` | 0.38 | OS process metadata (PID, name, path) | MIT |
+| [L26] | `sha2` | 0.10 | SHA-256 implementation (RustCrypto) | MIT / Apache 2.0 |
+| [L27] | `hmac` | 0.12 | HMAC generic implementation (RustCrypto) | MIT / Apache 2.0 |
+| [L28] | `rsa` | 0.9 | RSA public-key cryptography (RustCrypto) | MIT / Apache 2.0 |
+
+All crate licenses are confirmed compatible with proprietary distribution under standard dual MIT/Apache 2.0 Rust ecosystem terms. Full dependency tree is available via `cargo tree`.
+
+---
+
+### 13 — Regulatory & Legal References
+
+| # | Reference | Relevant To |
+|---|-----------|-------------|
+| [LG1] | Computer Fraud and Abuse Act (CFAA), 18 U.S.C. § 1030, United States Congress, 1986. | `process_monitor_kill_mode = false` default |
+| [LG2] | Computer Misuse Act 1990 (CMA), UK Parliament. https://www.legislation.gov.uk/ukpga/1990/18 | `process_monitor_kill_mode = false` default |
+| [LG3] | Directive 2013/40/EU on Attacks Against Information Systems, European Parliament, 2013. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex:32013L0040 | `kill_mode = false` default |
+| [LG4] | Electronic Communications Privacy Act (ECPA) / Wiretap Act, 18 U.S.C. § 2511, United States Congress, 1986. | `promiscuous_capture = false` default |
+| [LG5] | Regulation of Investigatory Powers Act 2000 (RIPA), UK Parliament. https://www.legislation.gov.uk/ukpga/2000/23 | `promiscuous_capture = false` default |
+| [LG6] | Regulation (EU) 2016/679 — General Data Protection Regulation (GDPR), European Parliament, 2016. https://eur-lex.europa.eu/eli/reg/2016/679/oj | `log_packet_payload = false` default, no PII retention |
+
+---
+
+> **Attribution Notice:** All registered trademarks (MITRE ATT&CK®, Splunk®, Cobalt Strike®, Metasploit®, Elasticsearch®, IBM QRadar®) are the property of their respective owners. References are made solely for technical identification and interoperability purposes — no affiliation, endorsement, or sponsorship is implied.
+
+---
 
 ## 🤝 Philosophy & Ethics
 
