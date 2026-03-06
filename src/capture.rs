@@ -49,6 +49,7 @@ use crate::policy::{ActionType, HybridRule, PolicyEngine, RuleOrigin};
 use tokio::sync::mpsc;
 
 use crate::advanced_security::AdvancedSecurity;
+use crate::attribution_scoring::AttributionEngine;
 use crate::comprehensive_blocker::{BlockVerdict, ComprehensiveBlocker, Direction as BlkDir};
 use crate::flow_engine::{FlowDecision, FlowEngine, SUSPICIOUS_RISK_THRESHOLD};
 use crate::micro_segmentation::MicroSegmentationEngine;
@@ -89,6 +90,8 @@ pub struct WindowsPacketCapture {
     // ── IDS + IPS ────────────────────────────────────────────────────────────
     ids_engine: Arc<IdsEngine>, // 🔍 Snort-style detection
     ips_engine: Arc<IpsEngine>, // 🛡️  Inline prevention
+    // ── Attack Attribution ───────────────────────────────────────────────────
+    attribution_engine: Arc<AttributionEngine>, // 🎯 Probabilistic actor classification
     // ── Deployment Mode Profile ──────────────────────────────────────────────
     mode_profile: ModeProfile, // 🎯 client | server thresholds
     // ── Counters ────────────────────────────────────────────────────────────
@@ -119,6 +122,7 @@ impl WindowsPacketCapture {
         l2_engine: Arc<L2Engine>,
         ids_engine: Arc<IdsEngine>,
         ips_engine: Arc<IpsEngine>,
+        attribution_engine: Arc<AttributionEngine>,
         mode_profile: ModeProfile,
     ) -> Result<Self> {
         Ok(Self {
@@ -141,6 +145,7 @@ impl WindowsPacketCapture {
             l2_engine,
             ids_engine,
             ips_engine,
+            attribution_engine,
             mode_profile,
             packets_processed: AtomicU64::new(0),
             packets_allowed: AtomicU64::new(0),
@@ -983,6 +988,23 @@ impl WindowsPacketCapture {
                                 "🔍 IDS LOW      [SID:{}] {} → {}: {}",
                                 alert.rule_id, source_ip, dest_ip, alert.rule_name
                             );
+                        }
+                    }
+                }
+
+                // ── ATTRIBUTION SCORING ──────────────────────────────────────
+                if let Some(report) = self.attribution_engine.attribute(src_addr_v4, &ids_alerts) {
+                    if report.confidence >= 0.60 {
+                        warn!(
+                            "🎯 ATTRIBUTION [{}]: {} | confidence={:.0}% | pattern={} | alerts={}",
+                            src_addr_v4,
+                            report.primary_label,
+                            report.confidence * 100.0,
+                            report.attack_pattern.label(),
+                            report.total_alerts_observed
+                        );
+                        if !report.mitre_hints.is_empty() {
+                            debug!("   MITRE hints: {}", report.mitre_hints.join(" | "));
                         }
                     }
                 }

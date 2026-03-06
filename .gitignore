@@ -38,6 +38,9 @@ WinDivert*/
 *.pfx
 emergency_override.key
 
+# Internal design documents containing security-sensitive information
+Research_Notes/secrets/
+
 # Log files
 logs/*.log
 logs/*.log.*

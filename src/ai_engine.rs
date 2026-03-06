@@ -115,6 +115,10 @@ pub struct AiEngine {
     // Config values
     max_learning_multiplier: f32,
     enable_state_persistence: bool,
+    // Layer 3: Online SGD model weights
+    // Feature order: [syn_bit, rst_bit, byte_norm, port_norm, is_tcp, threat_score]
+    sgd_weights: RwLock<[f32; 6]>,
+    sgd_bias: RwLock<f32>,
 }
 
 impl AiEngine {
@@ -154,6 +158,9 @@ impl AiEngine {
             block_threshold: RwLock::new(config.initial_block_threshold),
             max_learning_multiplier: config.max_learning_multiplier,
             enable_state_persistence: config.enable_state_persistence,
+            // Initial weights mirror the feature importance ordering in predict()
+            sgd_weights: RwLock::new([0.25, 0.10, 0.20, 0.15, 0.05, 0.30]),
+            sgd_bias: RwLock::new(0.0),
         }
     }
 
@@ -242,16 +249,65 @@ impl AiEngine {
         }
     }
 
-    /// Online learning: update model from labelled samples
+    /// Online learning: update model weights via Stochastic Gradient Descent (SGD).
+    /// Adjusts six feature weights and a bias term using labelled TrainingSamples.
     pub fn train_online(&self, samples: Vec<TrainingSample>) {
         if samples.is_empty() {
             return;
         }
         let n = samples.len();
-        debug!("🧠 AI: Online training with {} samples", n);
-        // In production: update Hoeffding Tree / SGD weights
-        // Here: increment model version to signal adaptation
+        let lr = 0.001_f32; // SGD learning rate
+        let mut weights = self.sgd_weights.write();
+        let mut bias    = self.sgd_bias.write();
+        let mut total_error = 0.0_f32;
+
+        for sample in &samples {
+            // Extract 6 normalised features from TrainingSample
+            // Mirrors the feature importance ordering used in predict()
+            let f_syn   = if sample.tcp_flags & 0x02 != 0 { 1.0_f32 } else { 0.0 };
+            let f_rst   = if sample.tcp_flags & 0x04 != 0 { 1.0_f32 } else { 0.0 };
+            let f_bytes = (sample.payload_len as f32 / 1_500.0).min(1.0);
+            let f_port  = (sample.dst_port.saturating_sub(1024) as f32 / 64_511.0).min(1.0);
+            let f_tcp   = if sample.protocol == 6 { 1.0_f32 } else { 0.0 };
+            let f_score = sample.threat_score;
+            let feats   = [f_syn, f_rst, f_bytes, f_port, f_tcp, f_score];
+
+            // Forward pass: predicted threat score = dot(weights, features) + bias
+            let predicted: f32 = feats
+                .iter()
+                .zip(weights.iter())
+                .map(|(f, w)| f * w)
+                .sum::<f32>()
+                + *bias;
+            let predicted = predicted.clamp(0.0, 1.0);
+
+            // SGD update: w_i += lr × (target − predicted) × feature_i
+            let error = sample.threat_score - predicted;
+            total_error += error.abs();
+            for (w, f) in weights.iter_mut().zip(feats.iter()) {
+                *w = (*w + lr * error * f).clamp(0.0, 1.5);
+            }
+            *bias = (*bias + lr * error).clamp(-0.5, 0.5);
+        }
+        drop(weights);
+        drop(bias);
+
+        // Tighten block thresholds when the model is persistently underestimating threat scores
+        let mean_error = total_error / n as f32;
+        if mean_error > 0.15 {
+            let mut susp  = self.susp_threshold.write();
+            let mut block = self.block_threshold.write();
+            *susp  = (*susp  - 0.005).max(0.40);
+            *block = (*block - 0.005).max(0.65);
+        }
+
         self.model_version.fetch_add(1, Ordering::Relaxed);
+        info!(
+            "🧠 AI: SGD trained on {} samples | mean_error={:.4} | model_v={}",
+            n,
+            mean_error,
+            self.model_version.load(Ordering::Relaxed)
+        );
     }
 
     /// Adapt thresholds to minimize FP rate (called every 5 minutes)

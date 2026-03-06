@@ -64,6 +64,10 @@ mod framework_alignment; // 🗂️  Maps every IDS alert to MITRE ATT&CK techni
 // === COMPREHENSIVE THREAT BLOCKER (ALL 10 CATEGORIES) ===
 mod comprehensive_blocker;
 
+// === ENDPOINT SECURITY + ATTACK ATTRIBUTION ===
+mod attribution_scoring; // 🎯 Probabilistic attack attribution (MITRE ATT&CK aligned)
+mod endpoint_security;   // 🖥️  Host-based endpoint protection (process / posture monitoring)
+
 // === DEPLOYMENT MODE PROFILES ===
 mod mode_profiles; // 🎯 Client / Server / Auto mode profiles
 
@@ -207,6 +211,51 @@ async fn main() -> Result<()> {
     let kill_mode = config.blocking.process_monitor_kill_mode;
     let pm = Arc::new(process_monitor::ProcessMonitor::new(metrics.clone(), kill_mode));
     pm.start();
+
+    // ── [2c] Endpoint Security Agent ─────────────────────────────────────────
+    info!("🖥️  [2c] Activating Endpoint Security Agent...");
+    let endpoint_agent = Arc::new(endpoint_security::EndpointAgent::new(kill_mode));
+    {
+        let ep_bg = endpoint_agent.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(10));
+            loop {
+                interval.tick().await;
+                let alerts = ep_bg.scan();
+                if !alerts.is_empty() {
+                    let posture = ep_bg.get_posture();
+                    info!(
+                        "🖥️  Endpoint | posture={:.0}% | new_alerts={} | active={}",
+                        posture.score * 100.0,
+                        alerts.len(),
+                        posture.active_alert_count
+                    );
+                }
+            }
+        });
+    }
+    info!("✅ Endpoint Security Agent active — scanning every 10s | alert-only={}", !kill_mode);
+
+    // ── [2d] Attack Attribution Engine ───────────────────────────────────────
+    info!("🎯 [2d] Activating Attack Attribution Engine...");
+    let attribution_engine = Arc::new(attribution_scoring::AttributionEngine::new());
+    {
+        let attr_bg = attribution_engine.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(300));
+            loop {
+                interval.tick().await;
+                attr_bg.cleanup(7200); // Prune histories older than 2 hours
+                let st = attr_bg.stats();
+                info!(
+                    "🎯 Attribution | tracked_sources={} | c2={} | exfil={} | apt_indicators={}",
+                    st.tracked_sources, st.with_c2_signals,
+                    st.with_exfil_signals, st.with_apt_indicators
+                );
+            }
+        });
+    }
+    info!("✅ Attribution Engine active — probabilistic, MITRE ATT&CK aligned, LEGAL NOTICE: not legal proof");
 
     // ── [3/8] SIEM Integration ───────────────────────────────────────────────
     info!("📡 [3/8] Initializing SIEM Integration Hub...");
@@ -616,11 +665,12 @@ async fn main() -> Result<()> {
         l2_engine.clone(),
         ids_engine.clone(),
         ips_engine.clone(),
+        attribution_engine.clone(),
         mode_profile, // 🎯 client | server profile
     )?;
 
     info!("🛡️  ═══════════════════════════════════════════════════════════════╗");
-    info!("🛡️  ALL 15 DEFENSE SYSTEMS ACTIVE — Enterprise Firewall+IDS+IPS   ║");
+    info!("🛡️  ALL 17 DEFENSE SYSTEMS ACTIVE — Enterprise Firewall+IDS+IPS   ║");
     info!("🛡️  ┌───────────────────────────────────────────────────────────┐  ║");
     info!("🛡️  │  🔥 FIREWALL LAYER                                        │  ║");
     info!("🛡️  │    🔷 WFP Engine   │ Kernel enforcement  │ ACTIVE          │  ║");
@@ -635,6 +685,14 @@ async fn main() -> Result<()> {
     info!("🛡️  │  🛡️  IPS LAYER (Intrusion Prevention System)               │  ║");
     info!("🛡️  │    Mode=INLINE     │ RateLimit │ TCP-RST │ WFP-Block       │  ║");
     info!("🛡️  │    Quarantine      │ Blacklist │ Penalty decay │ Auto-block │  ║");
+    info!("🛡️  ├───────────────────────────────────────────────────────────┤  ║");
+    info!("🛡️  │  🖥️  ENDPOINT SECURITY (Host-Based Protection)             │  ║");
+    info!("🛡️  │    Process monitor │ LOLBin detect │ Cred-access alerts   │  ║");
+    info!("🛡️  │    Persistence/lateral tools │ Posture score for ZeroTrust│  ║");
+    info!("🛡️  ├───────────────────────────────────────────────────────────┤  ║");
+    info!("🛡️  │  🎯 ATTRIBUTION ENGINE (Probabilistic, MITRE ATT&CK)       │  ║");
+    info!("🛡️  │    Botnet │ OpportunisticScan │ CyberCriminal │ APT-style  │  ║");
+    info!("🛡️  │    Insider │ LOLBin misuse │ NOT legal proof (disclaimer)  │  ║");
     info!("🛡️  └───────────────────────────────────────────────────────────┘  ║");
     info!("🛡️  ═══════════════════════════════════════════════════════════════╝");
 
@@ -702,7 +760,7 @@ fn print_banner() {
     info!("║  ✅ Micro-Segmentation  8 security zones + lateral movement detect   ║");
     info!("║  ✅ Threat Intelligence Feodo + URLhaus + SSLBL (live feeds)          ║");
     info!("║  ✅ SIEM Integration    Splunk / Elasticsearch / QRadar               ║");
-    info!("║  ✅ GeoIP Blocking      MaxMind GeoLite2                             ║");
+    info!("║  ✅ IOC-Based Blocking  Feodo+SSLBL+ThreatFox (no country blocks)    ║");
     info!("║  ✅ Distributed P2P     Rule sync across firewall cluster            ║");
     info!("╠═══════════════════════════════════════════════════════════════════════╣");
     info!("║  ── SECURITY FRAMEWORK ALIGNMENT ───────────────────────────────────  ║");

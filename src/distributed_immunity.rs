@@ -57,6 +57,23 @@ pub struct AntibodyPayload {
     pub auth_hmac: String, // 🔑 Cryptographic Signature for Peer Verification
 }
 
+/// SHA-256 counter-mode stream cipher (encrypt == decrypt — XOR is its own inverse).
+/// Produces a keystream: SHA-256(key || block_index) XOR plaintext, 32 bytes per block.
+fn stream_encrypt(data: &[u8], key: &[u8]) -> Vec<u8> {
+    use sha2::{Digest, Sha256};
+    let mut out = Vec::with_capacity(data.len());
+    for (block_idx, chunk) in data.chunks(32).enumerate() {
+        let mut h = Sha256::new();
+        h.update(key);
+        h.update(&(block_idx as u64).to_le_bytes());
+        let ks = h.finalize();
+        for (byte, key_byte) in chunk.iter().zip(ks.iter()) {
+            out.push(byte ^ key_byte);
+        }
+    }
+    out
+}
+
 pub struct DistributedImmunity {
     peers: Vec<String>,
 }
@@ -111,18 +128,26 @@ impl DistributedImmunity {
                     Err(_) => continue,
                 };
 
+                // Encrypt the payload so passive network observers cannot read P2P rule data.
+                // The HMAC (computed above) provides authentication; this adds confidentiality.
+                let enc_key = get_daily_cluster_key();
+                let enc_body = format!(
+                    "RUDRAS-ENC-V1:{}",
+                    hex::encode(stream_encrypt(json.as_bytes(), &enc_key))
+                );
+
                 for peer in &peers_clone {
                     let url = format!("{}/gossip", peer);
-                    debug!("🚀 Gossip: Syncing rule '{}' to peer: {}", payload.key, url);
+                    debug!("🚀 Gossip: Syncing encrypted rule '{}' to peer: {}", payload.key, url);
 
                     let c = client.clone();
-                    let j = json.clone();
+                    let b = enc_body.clone();
                     // Fire and forget P2P POST
                     tokio::spawn(async move {
                         let _ = c
                             .post(&url)
-                            .header("Content-Type", "application/json")
-                            .body(j)
+                            .header("Content-Type", "text/plain")
+                            .body(b)
                             .send()
                             .await;
                     });
@@ -170,10 +195,44 @@ impl DistributedImmunity {
                             if request.starts_with("POST /gossip") {
                                 // Extract the JSON body (everything after \r\n\r\n)
                                 if let Some(body_start) = request.find("\r\n\r\n") {
-                                    let body = &request[body_start + 4..];
+                                    let raw_body = &request[body_start + 4..];
+
+                                    // Decrypt the payload if it was encrypted by the broadcaster
+                                    let body_owned: String =
+                                        if raw_body.trim_start().starts_with("RUDRAS-ENC-V1:") {
+                                            let hex_part = raw_body
+                                                .trim_start()
+                                                .trim_start_matches("RUDRAS-ENC-V1:");
+                                            match hex::decode(hex_part.trim()) {
+                                                Ok(ciphertext) => {
+                                                    let mut dec: Option<String> = None;
+                                                    for key in get_valid_cluster_keys() {
+                                                        let plain =
+                                                            stream_encrypt(&ciphertext, &key);
+                                                        if let Ok(s) = String::from_utf8(plain) {
+                                                            dec = Some(s);
+                                                            break;
+                                                        }
+                                                    }
+                                                    match dec {
+                                                        Some(s) => s,
+                                                        None => {
+                                                            warn!("⚠️ P2P: Gossip decryption failed from {}", addr);
+                                                            return;
+                                                        }
+                                                    }
+                                                }
+                                                Err(_) => {
+                                                    warn!("⚠️ P2P: Invalid hex-encoded gossip from {}", addr);
+                                                    return;
+                                                }
+                                            }
+                                        } else {
+                                            raw_body.to_owned()
+                                        };
 
                                     if let Ok(payload) =
-                                        serde_json::from_str::<AntibodyPayload>(body)
+                                        serde_json::from_str::<AntibodyPayload>(&body_owned)
                                     {
                                         // ── Cryptographic Peer Verification (Anti-Sybil Attack & KMS Deadlock Fix) ──
                                         // Prevents a hacker from spinning up "Ghost" nodes to forge consensus.

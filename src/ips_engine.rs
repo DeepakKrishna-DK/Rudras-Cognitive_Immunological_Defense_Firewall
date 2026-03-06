@@ -45,7 +45,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use tracing::{debug, error, info, warn};
 
 use crate::ids_engine::{IdsAlert, IdsCategory, IdsSeverity};
-use crate::wfp_engine::{WfpEngine, WfpRuleOrigin};
+use crate::wfp_engine::{WfpDirection, WfpEngine, WfpRuleOrigin};
 
 // ── IPS Mode ──────────────────────────────────────────────────────────────────
 
@@ -527,13 +527,40 @@ impl IpsEngine {
                     alert.rule_name
                 );
                 self.quarantines_active.fetch_add(1, Ordering::Relaxed);
+
+                // 1. WFP kernel-level IP block (covers both inbound and outbound at the IP layer)
                 self.wfp.block_ip(
                     src_ip,
                     &format!("IPS QUARANTINE: {} ({}s)", alert.rule_name, duration_secs),
                     WfpRuleOrigin::CyberImmune,
                 );
-                // In production: move to quarantine VLAN via SDN API
-                // Notify SOC via SIEM critical alert
+
+                // 2. Block outbound on the offending source port to cut off C2 callbacks
+                self.wfp.block_port(
+                    alert.src_port,
+                    WfpDirection::Outbound,
+                    &format!(
+                        "IPS QUARANTINE [C2-CUTOFF]: {} | src={}",
+                        alert.rule_name, src_ip
+                    ),
+                );
+
+                // 3. Immediately tear down the active connection via TCP RST
+                self.inject_tcp_rst(src_ip, alert.dst_ip, alert.src_port, alert.dst_port);
+
+                // 4. Emit a structured SIEM-compatible critical alert (JSON-parseable by any SIEM ingestor)
+                error!(
+                    target: "siem",
+                    "{{\"event\":\"QUARANTINE\",\"src_ip\":\"{}\",\"dst_ip\":\"{}\",\"src_port\":{},\"dst_port\":{},\"rule\":\"{}\",\"category\":\"{}\",\"severity\":\"CRITICAL\",\"duration_secs\":{},\"ts\":{}}}",
+                    src_ip,
+                    alert.dst_ip,
+                    alert.src_port,
+                    alert.dst_port,
+                    alert.rule_name,
+                    alert.category.label(),
+                    duration_secs,
+                    unix_now()
+                );
             }
 
             IpsAction::Blacklist => {
@@ -558,15 +585,59 @@ impl IpsEngine {
     // On Windows: WinDivert or raw socket (IPPROTO_RAW).
 
     fn inject_tcp_rst(&self, src: IpAddr, dst: IpAddr, sport: u16, dport: u16) {
-        // Production implementation:
-        //   1. Create raw socket with SOCK_RAW, IPPROTO_TCP
-        //   2. Build IP header + TCP header with RST flag (0x04)
-        //   3. Set correct sequence numbers from connection state
-        //   4. Send on both directions (src→dst AND dst→src)
-        //
-        // For now: log intent (WFP kernel block handles actual denial)
+        use pnet::packet::ip::IpNextHeaderProtocols;
+        use pnet::packet::tcp::{ipv4_checksum, MutableTcpPacket, TcpFlags};
+        use pnet::transport::{transport_channel, TransportChannelType, TransportProtocol};
+
+        let src4 = match src {
+            IpAddr::V4(a) => a,
+            _ => {
+                debug!("🔌 RST: IPv6 RST not implemented — WFP enforces kernel drop");
+                return;
+            }
+        };
+        let dst4 = match dst {
+            IpAddr::V4(a) => a,
+            _ => return,
+        };
+
+        // Open a raw TCP transport channel (requires elevated privileges — already satisfied by Rudras)
+        let proto = TransportChannelType::Layer4(
+            TransportProtocol::Ipv4(IpNextHeaderProtocols::Tcp),
+        );
+        let (mut tx, _rx) = match transport_channel(1024, proto) {
+            Ok(c) => c,
+            Err(e) => {
+                warn!("🔌 RST: Raw socket unavailable ({}) — WFP kernel block enforces denial", e);
+                return;
+            }
+        };
+
+        // Inject RST in both directions to tear down the connection on both endpoints
+        let pairs = [(src4, dst4, sport, dport), (dst4, src4, dport, sport)];
+        for (s, d, sp, dp) in pairs {
+            let mut buf = [0u8; 20]; // TCP header only, no options
+            let mut pkt = match MutableTcpPacket::new(&mut buf) {
+                Some(p) => p,
+                None => continue,
+            };
+            pkt.set_source(sp);
+            pkt.set_destination(dp);
+            pkt.set_sequence(0);
+            pkt.set_acknowledgement(0);
+            pkt.set_data_offset(5); // 5 × 4 = 20 bytes, no options
+            pkt.set_flags(TcpFlags::RST | TcpFlags::ACK);
+            pkt.set_window(0);
+            pkt.set_urgent_ptr(0);
+            let cksum = ipv4_checksum(&pkt.to_immutable(), &s, &d);
+            pkt.set_checksum(cksum);
+            if let Err(e) = tx.send_to(pkt.to_immutable(), IpAddr::V4(d)) {
+                warn!("🔌 RST {}:{} → {}:{} inject failed: {}", s, sp, d, dp, e);
+            }
+        }
+
         debug!(
-            "🔌 RST: {}:{} → {}:{} (WFP enforces, RST signals graceful teardown)",
+            "🔌 RST INJECTED: {}:{} ↔ {}:{} (bidirectional teardown)",
             src, sport, dst, dport
         );
     }
