@@ -7,12 +7,14 @@
 [![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange.svg)](https://rust-lang.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)]()
 [![Status](https://img.shields.io/badge/status-in%20development%20(alpha)-informational.svg)]()
-[![Version](https://img.shields.io/badge/Version-3.0%20Alpha-blueviolet.svg)]()
+[![Version](https://img.shields.io/badge/Version-3.1%20Alpha-blueviolet.svg)]()
+[![IDS Rules](https://img.shields.io/badge/IDS%20Rules-75%2B%20Categories%20%7C%2068%2B%20Signatures-brightgreen.svg)]()
+[![Attack Coverage](https://img.shields.io/badge/Attack%20Coverage-70%2B%20Types-red.svg)]()
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 
 **A next-generation, self-healing firewall that thinks like an immune system.**
 
-*Last Updated: March 2026*
+*Last Updated: March 6, 2026 — v3.1 Alpha*
 
 </div>
 
@@ -25,20 +27,21 @@
 2. [💡 Why I Built Rudras](#-why-i-built-rudras)
 3. [🛡️ What is Rudras?](#️-what-is-rudras)
 4. [🧠 The Philosophy — From Wall to Nervous System](#-the-philosophy--from-wall-to-nervous-system)
-5. [⚙️ Core Enterprise Capabilities (v3.0)](#️-core-capabilities-v3.0)
+5. [⚙️ Core Enterprise Capabilities (v3.1)](#️-core-capabilities-v31)
 6. [🗏️ Dual-Mode Architecture & Deployment](#️-dual-mode-architecture)
 7. [🧬 The CyberImmune System](#-the-cyberimmune-system)
 8. [🎯 Threat Intelligence & IOC Feeds](#-threat-intelligence--ioc-feeds)
-9. [⚖️ Ethical & Legal Defaults](#️-ethical--legal-defaults)
-10. [🔧 Build Requirements](#-build-requirements)
-11. [🧪 Testing & Validation](#-testing--validation)
-12. [📊 Real-World Performance](#-real-world-performance)
-13. [🚀 Firewall Trends — How Rudras Stays Ahead](#-firewall-trends--how-rudras-stays-ahead)
-14. [📅 Development Journey](#-development-journey)
-15. [📚 Engineering Research & Secrets](#-engineering-research--secrets)
-16. [🔭 Future Vision & Platforms](#-future-vision--platforms)
-17. [📋 Changelog](#-changelog)
-18. [🗂️ Version Control & Repository Status](#️-version-control--repository-status)
+9. [🔍 IDS/IPS Attack Detection Taxonomy](#-idsips-attack-detection-taxonomy)
+10. [⚖️ Ethical & Legal Defaults](#️-ethical--legal-defaults)
+11. [🔧 Build Requirements](#-build-requirements)
+12. [🧪 Testing & Validation](#-testing--validation)
+13. [📊 Real-World Performance](#-real-world-performance)
+14. [🚀 Firewall Trends — How Rudras Stays Ahead](#-firewall-trends--how-rudras-stays-ahead)
+15. [📅 Development Journey](#-development-journey)
+16. [📚 Engineering Research & Secrets](#-engineering-research--secrets)
+17. [🔭 Future Vision & Platforms](#-future-vision--platforms)
+18. [📋 Changelog](#-changelog)
+19. [🗂️ Version Control & Repository Status](#️-version-control--repository-status)
 
 ---
 
@@ -201,6 +204,164 @@ Country-level blocking catches ~1.4 billion legitimate users while determined at
 
 ---
 
+## 🔍 IDS/IPS Attack Detection Taxonomy
+
+Rudras v3.1 implements the complete **Firewall + IDS + IPS detection taxonomy** — 75+ detection categories, 68+ signature rules, covering every attack family that can be realistically detected at the network layer.
+
+### 🦠 1. Malware & Botnet Communication
+Detected via C2 traffic patterns, mining pool connections, and credential spray signatures.
+
+| Attack | Detection Method | Severity |
+|--------|-----------------|----------|
+| Worm propagation | SMB/IPC self-replication signatures | Critical |
+| Trojan / RAT callback | Heartbeat beacon pattern matching | High |
+| Spyware data exfiltration | Keylog & clipboard upload signatures | High |
+| Botnet communication | C2 beaconing + DGA domain detection | High |
+| Cryptojacking | Mining pool stratum protocol (ports 3333/4444/5555+) | High |
+| Dropper download | PE file magic bytes over HTTP | Critical |
+| Backdoor remote access | Reverse shell payload (`bash -i`, `nc -lvp`) | Critical |
+| Banking malware (TrickBot/Dridex/Emotet/QakBot) | Group tag + gtag C2 signatures | Critical |
+| IoT malware (Mirai/Satori) | Default credential spray + busybox signatures | High |
+
+### 🌊 2. Network / DoS / Amplification Attacks
+Detected via behavioral rate analysis and protocol-level signatures.
+
+| Attack | Detection Method | Severity |
+|--------|-----------------|----------|
+| DoS / DDoS | Volumetric traffic anomaly (>1000 pps single source) | Critical |
+| SYN flood | SYN rate > 100 pps + 500 SYN threshold | Critical |
+| UDP flood | UDP packet rate > 1000 pps | Critical |
+| ICMP flood | ICMP rate behavioral detection | High |
+| HTTP flood | HTTP request rate > 300 req/s on web ports | High |
+| Slowloris | Incomplete header connection exhaustion pattern | High |
+| Ping of Death | ICMP payload > 65507 bytes | High |
+| Smurf attack | ICMP to broadcast address | High |
+| Fraggle attack | UDP to broadcast address | High |
+| DNS amplification | ANY/RRSIG/DNSKEY queries to port 53 | High |
+| NTP amplification | NTP monlist opcode (\x17\x00\x03\x2a) | High |
+
+### 🎭 3. Spoofing & Interception
+
+| Attack | Detection Method | Severity |
+|--------|-----------------|----------|
+| ARP spoofing | Gratuitous ARP reply flood pattern | High |
+| DNS spoofing | Poisoned additional section (127.0.0.1 / 169.254.x) | High |
+| IP / MAC spoofing | MITM traffic pattern analysis | High |
+| BGP hijacking | BGP marker byte sequence on port 179 | High |
+| Session hijacking | Cookie replay + PHPSESSID anomaly | High |
+| Packet sniffing | Promiscuous mode / passive capture signal | Medium |
+
+### 🕸️ 4. Web Application Attacks (WAF/IPS)
+Full OWASP Top 10 coverage mapped to MITRE ATT&CK techniques.
+
+| Attack | OWASP | MITRE | Severity |
+|--------|-------|-------|----------|
+| SQL injection (UNION, error-based, auth bypass) | A03 | T1190 | Critical |
+| Blind SQL injection (boolean + time-based) | A03 | T1190 | High |
+| XSS — Stored, Reflected, DOM-based | A03 | T1190 | High |
+| CSRF — Null origin header | A01 | T1185 | Medium |
+| SSRF — Cloud metadata (AWS/GCP/Azure IMDS) | A10 | T1190 | Critical |
+| Command injection | A03 | T1059 | Critical |
+| LDAP injection | A03 | T1190 | High |
+| XPath injection | A03 | T1190 | High |
+| XML/XXE injection | A03 | T1190 | Critical |
+| Remote File Inclusion (RFI) | A06 | T1105 | Critical |
+| Local File Inclusion (LFI) | A01 | T1190 | High |
+| Directory traversal | A01 | T1190 | High |
+| Insecure deserialization (Java/PHP) | A08 | T1203 | Critical |
+| Clickjacking | A01 | T1185 | Medium |
+| HTTP request smuggling (CL.TE / TE.CL) | A05 | T1190 | Critical |
+| HTTP response splitting (CRLF injection) | A03 | T1190 | High |
+| Open redirect | A01 | T1190 | Medium |
+| Webshell upload | — | T1190 | High |
+
+### 🔑 5. Authentication Attacks
+
+| Attack | Detection Method | MITRE | Severity |
+|--------|-----------------|-------|----------|
+| Brute force (SSH/RDP/FTP) | >50 packets to auth ports | T1110 | High |
+| Password spraying | Low-volume across ≥2 auth service ports | T1110.003 | High |
+| Credential stuffing | POST `username=&password=` replay | T1110.004 | High |
+| Session fixation | JSESSIONID / ASP.NET session ID manipulation | T1539 | High |
+| JWT token hijacking | `alg:none` / `eyJhbGciOiJub25lIn0` | T1539 | High |
+| OAuth abuse | Redirect URI hijack to attacker domain | T1539 | High |
+
+### 💥 6. Memory / Exploitation Attacks
+
+| Attack | Detection Method | MITRE | Severity |
+|--------|-----------------|-------|----------|
+| Buffer overflow | NOP sled (\x90 x16) pattern | T1203 | Critical |
+| Format string | `%x%x%x` / `%n%n%n` patterns | T1203 | Critical |
+| Heap spray / use-after-free | `\x0c\x0c\x0c` heap sled | T1203 | Critical |
+| RCE — reverse shell | `/bin/bash -c`, `python -c socket` | T1059 | Critical |
+| Privilege escalation | `sudo su`, `chmod +s`, `setuid(0)` | T1068 | High |
+| Zero-day behavioral anomaly | >10 alerts + diverse ports + <30s window | T1203 | High |
+
+### 🕵️ 7. APT / Advanced Persistent Threat Indicators
+
+| Indicator | Detection Method | MITRE | Severity |
+|-----------|-----------------|-------|----------|
+| Initial access exploit | CVE keyword + `0day` in payload | T1190 | Critical |
+| C2 communication | Cobalt Strike, Meterpreter, custom beacon | T1071 | Critical |
+| Lateral movement | SMB/RDP/WMI pivoting, Mimikatz | T1021 | Critical |
+| Persistence traffic | `schtasks /create`, WMI subscription | T1053 | High |
+| Credential dumping | LSASS, secretsdump, pypykatz over network | T1003 | Critical |
+| Living-off-the-land (LOLBins) | certutil, mshta, BITSADMIN, rundll32 abuse | T1218 | High |
+| Defense evasion | Protocol masquerade (gif/ico C2 channel) | T1027 | High |
+| Data exfiltration | Large POST, DNS tunneling, FTP STOR | T1041 | High |
+
+### ☁️ 8. Cloud & API Attacks
+
+| Attack | Detection Method | MITRE | Severity |
+|--------|-----------------|-------|----------|
+| API enumeration / abuse | Rapid `/api/v*/users/admin` enumeration | T1530 | High |
+| Cloud credential theft | `/latest/meta-data/iam/security-credentials/` | T1552.005 | Critical |
+| Metadata service exploitation | IMDS probe (169.254.169.254) | T1552.005 | Critical |
+| Container escape | Docker socket `/v1.41/containers/create` | T1611 | Critical |
+| Kubernetes API attack | `/api/v1/secrets`, `/api/v1/namespaces/kube-system` | T1190 | Critical |
+
+### 📡 9. Wireless Attacks
+
+| Attack | Detection Method | Severity |
+|--------|-----------------|----------|
+| Evil twin AP | 802.11 Beacon frame SSID spoof | Critical |
+| Rogue access point | Unauthorised corporate SSID beacon | Critical |
+| Wi-Fi deauthentication | 802.11 Deauth frame (\xc0\x00) | High |
+| WPA crack (PMKID) | EAPOL / WPA2-PSK 4-way handshake capture | High |
+| Bluetooth attack | Bluetooth enumeration scanning signal | Medium |
+
+### 🔐 10. Cryptographic Attack Indicators
+
+| Attack | Detection Method | MITRE | Severity |
+|--------|-----------------|-------|----------|
+| TLS downgrade (SSLv3 / TLS 1.0) | SSLv3 record header (\x16\x03\x00) | T1573 | Critical |
+| BEAST attack | TLS 1.0 record (\x16\x03\x01) on HTTPS | T1573 | High |
+| POODLE / Padding oracle | CBC padding exception signatures | T1110 | High |
+| Brute-force decryption | Key exhaustion behavioral pattern | T1110.001 | High |
+
+### 🏢 11. Insider / Supply Chain Indicators
+
+| Indicator | Detection Method | Severity |
+|-----------|-----------------|----------|
+| Insider data exfiltration | Bulk ZIP/TAR/GZ downloads from internal IP | High |
+| Suspicious internal traffic | BloodHound, SharpHound, dsquery over LAN | Medium |
+| Unauthorized external connection | Reverse SSH, Chisel, FRP proxy on unusual ports | High |
+
+### 📊 Framework Coverage Summary
+
+| Framework | Coverage |
+|-----------|----------|
+| **MITRE ATT&CK** | 26+ techniques across all 14 tactics |
+| **OWASP Top 10 (2021)** | All 10 risk categories (A01–A10) |
+| **IDS Categories** | 75+ distinct detection categories |
+| **Signature Rules** | 68+ Snort-style rules with byte + text patterns |
+| **Behavioral Detectors** | 15+ statistical/rate-based behavioral engines |
+| **Total Attack Types** | **70+ realistically detectable attacks** |
+
+> ✅ Achieves the industry benchmark: a properly implemented Firewall + IDS + IPS can realistically detect **40–60+ attack types**. Rudras exceeds this with **70+**.
+
+---
+
 ## ⚖️ Ethical & Legal Defaults
 
 Rudras ships with conservative, legally safe defaults. All behaviours that could create legal risk require **explicit administrator opt-in** in `config/rudras.toml`:
@@ -322,6 +483,7 @@ Rudras was built systematically in structured phases, each verifying a crucial p
 - **🧬 Phase 3 — CyberImmune System:** The ML architecture. Graduated responses scaling automatically based on statistical drift deviations, preventing false positives, and saving rules to disk.
 - **🌐 Phase 4 — Distributed Immunity:** Expanding the logic across a theoretical Swarm using peer-to-peer Gossip to sync Quorum rules.
 - **⚖️ Phase 5 — Ethics & Precision (v3.0):** Full ethical/legal audit. Country blocking replaced with 6-feed IOC precision blocking. DNS-layer malicious domain enforcement added. All legally-sensitive behaviours made explicit opt-in. Interactive deployment mode prompt added.
+- **🔍 Phase 6 — Complete IDS/IPS Taxonomy (v3.1):** Expanded IDS engine from 22 to **75+ detection categories**. Added 58 new Snort-style signature rules (rules 7001–17003). Implemented all 12 attack families from the industry-standard Firewall+IDS+IPS taxonomy. Added MITRE ATT&CK mapping for 26+ new techniques. Full OWASP A01–A10 coverage. New behavioral detectors for UDP flood, HTTP flood, password spraying, zero-day anomaly, Ping of Death, Smurf, Fraggle, and cryptojacking.
 
 ---
 
@@ -370,7 +532,35 @@ To truly secure the world, Rudras must exist natively across all infrastructure 
 
 **Repository:** [github.com/DeepakKrishna-DK/Rudras](https://github.com/DeepakKrishna-DK/Rudras)  
 **Branch:** `main`  
+**Latest Commit:** `e8636e8` — v3.1 Alpha: Complete IDS/IPS attack taxonomy (70+ attack types)  
 **License:** Proprietary — All Rights Reserved. See [LICENSE](LICENSE) for full terms.
+
+## 📋 Changelog
+
+### v3.1 Alpha — March 6, 2026
+- ➕ Expanded `IdsCategory` from 22 → **75+ detection categories**
+- ➕ Added **58 new signature rules** (IDs 7001–17003) covering all 12 attack families
+- ➕ Added **26 new MITRE ATT&CK technique constants** in `framework_alignment.rs`
+- ➕ Full **OWASP Top 10 (A01–A10)** coverage in `map_ids_category()`
+- ➕ New behavioral detectors: UDP flood, HTTP flood, password spraying, zero-day anomaly, Ping of Death, Smurf, Fraggle, cryptojacking, traffic volume anomaly
+- ➕ Extended `inspect_http()`: CSRF, HTTP smuggling, open redirect, RFI, LFI, insecure deserialization, API enumeration
+- ➕ Cloud/Kubernetes/container attack detection (IMDS, Docker socket, K8s API)
+- ➕ Wireless attack detection (evil twin, Wi-Fi deauth, WPA PMKID)
+- ➕ Cryptographic attack detection (TLS downgrade, padding oracle, BEAST)
+- ➕ Insider/supply chain network indicators
+- 🔧 `IdsEngine::new()` now dynamically reports rule count and category count at startup
+
+### v3.0 Alpha — February 2026
+- Full ethical/legal audit + IOC-based precision blocking
+- DNS-layer malicious domain enforcement
+- Interactive deployment mode selector
+- 6-feed threat intelligence integration
+
+### v2.x — January 2026
+- CyberImmune genetic algorithm engine
+- Distributed swarm consensus (P2P gossip)
+- Zero-Knowledge DPI + adaptive RSA vault
+- SIEM integration (Splunk HEC + ELK)
 
 ### 📦 Clone & Setup
 ```powershell
