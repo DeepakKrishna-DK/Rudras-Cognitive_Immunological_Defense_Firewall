@@ -350,6 +350,45 @@ quarantine_threshold = 200.0
 # Penalty score for permanent blacklist (never unblocked without manual review)
 blacklist_threshold = 350.0
 
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  ENDPOINT SECURITY AGENT
+# ║
+# ║  Monitors running processes for hostile/suspicious tools every 10 seconds.
+# ║  Alerts feed into the Zero Trust posture score (lower score = less trust).
+# ║
+# ║  kill_mode: DISABLED by default.
+# ║    When false — Rudras ONLY logs suspicious processes (safe default).
+# ║    When true  — Rudras actively terminates Tier-1 hostile tools
+# ║                 (mimikatz, cobalt-strike, empire, hashcat on prod servers, etc.)
+# ║    ⚠️  Enable kill_mode ONLY on corporate-managed devices where employees
+# ║        have signed an Acceptable Use Policy (AUP).
+# ╖══════════════════════════════════════════════════════════════════════════════
+[endpoint]
+kill_mode    = false   # true = terminate Tier-1 hostile tools (requires AUP)
+scan_interval_secs = 10  # How often to scan running processes (5–60 recommended)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  ATTACK ATTRIBUTION ENGINE
+# ║
+# ║  Probabilistic scoring of attack origin / actor type aligned with
+# ║  MITRE ATT&CK behavioural indicators.  Output is always labelled
+# ║  with probabilistic language: “Likely” / “High probability of” / “Possible”.
+# ║
+# ║  IMPORTANT: Attribution is a classification aid, NOT legal proof.
+# ║  Every report carries a legal disclaimer. Never use as sole evidence.
+# ╖══════════════════════════════════════════════════════════════════════════════
+[attribution]
+enabled = true
+# Minimum confidence (0.0–1.0) to log an attribution report
+# Below this threshold the report is computed but silently discarded
+# 0.60 = only log when attribution is at least 60% confident
+log_confidence_threshold = 0.60
+
+# How long (seconds) to retain per-IP attack history in memory
+# Longer = better APT/persistent-campaign detection; more RAM
+# 7200 = 2 hours | 86400 = 24 hours
+history_retention_secs   = 7200
+
 # ── Block Durations ─────────────────────────────────────────────────────────
 
 # How long (seconds) a WFP block rule stays active

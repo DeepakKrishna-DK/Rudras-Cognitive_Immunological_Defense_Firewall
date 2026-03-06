@@ -214,11 +214,13 @@ async fn main() -> Result<()> {
 
     // ── [2c] Endpoint Security Agent ─────────────────────────────────────────
     info!("🖥️  [2c] Activating Endpoint Security Agent...");
-    let endpoint_agent = Arc::new(endpoint_security::EndpointAgent::new(kill_mode));
+    let ep_kill_mode = config.endpoint.kill_mode;
+    let ep_interval  = config.endpoint.scan_interval_secs.max(5).min(60);
+    let endpoint_agent = Arc::new(endpoint_security::EndpointAgent::new(ep_kill_mode));
     {
         let ep_bg = endpoint_agent.clone();
         tokio::spawn(async move {
-            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(10));
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(ep_interval));
             loop {
                 interval.tick().await;
                 let alerts = ep_bg.scan();
@@ -234,18 +236,21 @@ async fn main() -> Result<()> {
             }
         });
     }
-    info!("✅ Endpoint Security Agent active — scanning every 10s | alert-only={}", !kill_mode);
+    info!("✅ Endpoint Security Agent active — scan_interval={}s | kill_mode={}", ep_interval, ep_kill_mode);
 
     // ── [2d] Attack Attribution Engine ───────────────────────────────────────
     info!("🎯 [2d] Activating Attack Attribution Engine...");
+    let attr_enabled    = config.attribution.enabled;
+    let attr_confidence = config.attribution.log_confidence_threshold;
+    let attr_retention  = config.attribution.history_retention_secs;
     let attribution_engine = Arc::new(attribution_scoring::AttributionEngine::new());
-    {
+    if attr_enabled {
         let attr_bg = attribution_engine.clone();
         tokio::spawn(async move {
             let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(300));
             loop {
                 interval.tick().await;
-                attr_bg.cleanup(7200); // Prune histories older than 2 hours
+                attr_bg.cleanup(attr_retention);
                 let st = attr_bg.stats();
                 info!(
                     "🎯 Attribution | tracked_sources={} | c2={} | exfil={} | apt_indicators={}",
@@ -254,8 +259,12 @@ async fn main() -> Result<()> {
                 );
             }
         });
+        info!("✅ Attribution Engine active — confidence_threshold={:.0}% | history_retention={}s",
+              attr_confidence * 100.0, attr_retention);
+        info!("   LEGAL NOTICE: attribution is probabilistic classification, NOT legal proof");
+    } else {
+        info!("⏸️  Attribution Engine DISABLED in config (attribution.enabled = false)");
     }
-    info!("✅ Attribution Engine active — probabilistic, MITRE ATT&CK aligned, LEGAL NOTICE: not legal proof");
 
     // ── [3/8] SIEM Integration ───────────────────────────────────────────────
     info!("📡 [3/8] Initializing SIEM Integration Hub...");
@@ -762,6 +771,8 @@ fn print_banner() {
     info!("║  ✅ SIEM Integration    Splunk / Elasticsearch / QRadar               ║");
     info!("║  ✅ IOC-Based Blocking  Feodo+SSLBL+ThreatFox (no country blocks)    ║");
     info!("║  ✅ Distributed P2P     Rule sync across firewall cluster            ║");
+    info!("║  ✅ Endpoint Security   LOLBin·CredAccess·Persistence·Posture score  ║");
+    info!("║  ✅ Attribution Engine  Probabilistic MITRE ATT&CK actor scoring     ║");
     info!("╠═══════════════════════════════════════════════════════════════════════╣");
     info!("║  ── SECURITY FRAMEWORK ALIGNMENT ───────────────────────────────────  ║");
     info!("║  🗂  MITRE ATT&CK v14   Every IDS alert tagged with Technique ID     ║");

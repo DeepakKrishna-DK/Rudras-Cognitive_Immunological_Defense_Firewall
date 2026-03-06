@@ -67,6 +67,12 @@ pub struct Config {
 
     #[serde(default)]
     pub ai: AiTomlConfig,
+
+    #[serde(default)]
+    pub endpoint: EndpointConfig,
+
+    #[serde(default)]
+    pub attribution: AttributionConfig,
 }
 
 // ============================================================================
@@ -444,6 +450,52 @@ impl Default for IpsTomlConfig {
 }
 
 // ============================================================================
+// ENDPOINT SECURITY CONFIG
+// ============================================================================
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct EndpointConfig {
+    /// false (default) — alert-only; true — terminate Tier-1 hostile tools.
+    /// Requires an Acceptable Use Policy on all managed devices.
+    pub kill_mode: bool,
+    /// How often (seconds) the background scan loop runs. Range: 5–60.
+    pub scan_interval_secs: u64,
+}
+
+impl Default for EndpointConfig {
+    fn default() -> Self {
+        Self {
+            kill_mode: false,
+            scan_interval_secs: 10,
+        }
+    }
+}
+
+// ============================================================================
+// ATTRIBUTION ENGINE CONFIG
+// ============================================================================
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct AttributionConfig {
+    /// Enable the attribution engine entirely.
+    pub enabled: bool,
+    /// Minimum confidence (0.0–1.0) to log an attribution report.
+    pub log_confidence_threshold: f32,
+    /// How long (seconds) to retain per-IP attack history in memory.
+    pub history_retention_secs: u64,
+}
+
+impl Default for AttributionConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            log_confidence_threshold: 0.60,
+            history_retention_secs: 7_200,
+        }
+    }
+}
+
+// ============================================================================
 // AI CONFIG
 // ============================================================================
 
@@ -535,6 +587,8 @@ impl Default for Config {
             blocking: BlockingConfig::default(),
             ips: IpsTomlConfig::default(),
             ai: AiTomlConfig::default(),
+            endpoint: EndpointConfig::default(),
+            attribution: AttributionConfig::default(),
         }
     }
 }
