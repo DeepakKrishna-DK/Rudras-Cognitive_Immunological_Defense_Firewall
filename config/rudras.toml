@@ -210,7 +210,13 @@ description   = "Guest Wi-Fi — internet only, no internal access"
 networks      = ["192.168.200.0/24"]
 isolation     = "strict"
 allowed_zones = []
-
+# ── IT Management & Monitoring ───────────────────────────────────────────────
+[[segmentation.zones]]
+name          = "management"
+description   = "IT management, monitoring, SIEM, backup systems"
+networks      = ["10.0.255.0/24"]
+isolation     = "strict"
+allowed_zones = ["database", "application", "corporate", "finance", "research"]
 # ══════════════════════════════════════════════════════════════════════════════
 # ║  COMPREHENSIVE THREAT BLOCKER
 # ║  Shield 0: Deep Packet Inspection (DPI) and AI Anomaly detection.
@@ -378,3 +384,43 @@ whitelist = [
     "::1",
     # "192.168.1.10",   # ← add management IPs here
 ]
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ║  AI ENGINE — 4-Layer Adaptive Intelligence
+# ║
+# ║  The AI Engine runs a threat score on every escalated flow:
+# ║    score = pkt_rate + byte_rate + syn_ratio + port_spread + baseline_dev
+# ║
+# ║  THRESHOLDS (auto-adapted every 5 minutes):
+# ║    score ≥ initial_susp_threshold → Escalate to WinDivert deep inspect
+# ║    score ≥ initial_block_threshold → Block + optionally alert SIEM
+# ║
+# ║  STATE PERSISTENCE (Cold Start Amnesia Fix):
+# ║    On each reboot, AI loads the last saved behaviour baselines from disk.
+# ║    This prevents zero-day attacks during the blank 60-second learning phase.
+# ║    File: ai_profiles_snapshot.json (auto-updated every 5 minutes)
+# ╚══════════════════════════════════════════════════════════════════════════════
+[ai]
+
+# Enable AI threat scoring engine
+enabled = true
+
+# Suspicious flow threshold — flows above this score go to deep inspection
+# Range: 0.0–1.0   Default: 0.55
+# Lower = stricter (more inspection, more CPU)   Higher = looser (faster, less safe)
+initial_susp_threshold = 0.55
+
+# Block threshold — flows above this score are blocked immediately
+# Range: 0.0–1.0   Default: 0.80
+initial_block_threshold = 0.80
+
+# Save/restore per-IP behaviour baselines across reboots (Cold Start Amnesia Fix)
+# true (recommended) — loads last session's baselines on reboot
+# false — starts fresh every boot (vulnerable window while learning)
+enable_state_persistence = true
+
+# Anti-drift anchor: maximum multiplier for learning new baseline rates
+# Prevents "Boiling Frog" attack where attacker slowly drifts baseline upward
+# 3.0 = a previously 100pps normal IP can only be accepted as up to 300pps normal
+# Do NOT set above 10.0 — higher values allow significant baseline manipulation
+max_learning_multiplier = 3.0

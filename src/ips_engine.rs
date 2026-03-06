@@ -590,7 +590,9 @@ impl IpsEngine {
             rec.action_until = 0;
             rec.pps_limit = 0;
         }
-        // TODO: wfp.remove_rule() for this IP — needs rule ID tracking
+        // Remove the WFP kernel block rule so packets are no longer dropped at kernel level
+        self.wfp.unblock_ip(&ip);
+        info!("🔷 WFP: Kernel block rule removed for {}", ip);
     }
 
     pub fn set_mode(&self, mode: IpsMode) {
