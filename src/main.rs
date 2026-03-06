@@ -58,6 +58,9 @@ mod windivert_engine; // 🔀 WinDivert — Selective deep inspection (suspiciou
 mod ids_engine; // 🔍 IDS — 200+ Snort rules | protocol decoders | behavioral analysis
 mod ips_engine; // 🛡️  IPS — Inline prevention: RST | WFP block | rate-limit | quarantine
 
+// === SECURITY FRAMEWORK ALIGNMENT (MITRE ATT&CK + OWASP Top 10) ===
+mod framework_alignment; // 🗂️  Maps every IDS alert to MITRE ATT&CK technique + OWASP category
+
 // === COMPREHENSIVE THREAT BLOCKER (ALL 10 CATEGORIES) ===
 mod comprehensive_blocker;
 
@@ -431,6 +434,8 @@ async fn main() -> Result<()> {
     info!("   📖 Rule categories: SQLi·XSS·DirTraversal·CmdInj·RCE·Shellshock");
     info!("   📖 Rule categories: Log4Shell·EternalBlue·Mirai·Cobalt Strike·Mimikatz");
     info!("   📖 Protocols decoded: HTTP·HTTPS(TLS)·DNS·SMB·FTP·SSH");
+    // Print MITRE ATT&CK + OWASP Top 10 detection matrix on startup
+    framework_alignment::log_detection_matrix();
     // Schedule IDS cleanup every 10 minutes
     {
         let ids_hb = ids_engine.clone();
@@ -699,6 +704,14 @@ fn print_banner() {
     info!("║  ✅ SIEM Integration    Splunk / Elasticsearch / QRadar               ║");
     info!("║  ✅ GeoIP Blocking      MaxMind GeoLite2                             ║");
     info!("║  ✅ Distributed P2P     Rule sync across firewall cluster            ║");
+    info!("╠═══════════════════════════════════════════════════════════════════════╣");
+    info!("║  ── SECURITY FRAMEWORK ALIGNMENT ───────────────────────────────────  ║");
+    info!("║  🗂  MITRE ATT&CK v14   Every IDS alert tagged with Technique ID     ║");
+    info!("║     Covers: T1071 C2 | T1110 BruteForce | T1486 Ransomware          ║");
+    info!("║             T1190 ExploitApp | T1041 Exfil | T1498 DoS | T1046 Scan ║");
+    info!("║  🗂  OWASP Top 10 2021  Web-layer alerts cross-referenced to OWASP   ║");
+    info!("║     Covers: A03 Injection | A07 AuthFailure | A02 CryptoFail        ║");
+    info!("║             A01 AccessControl | A05 Misconfig | A10 SSRF            ║");
     info!("╠═══════════════════════════════════════════════════════════════════════╣");
     info!("║  ── PERFORMANCE — FAST-PATH OPTIMIZATION ───────────────────────────  ║");
     info!("║  ⚡ ~95% clean        → Flow Engine fast-path (<1μs, no DPI cost)    ║");

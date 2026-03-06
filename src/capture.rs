@@ -1027,18 +1027,19 @@ impl WindowsPacketCapture {
                             self.metrics.record_blocked();
                             self.metrics.record_threat();
 
-                            // SIEM alert for all IPS blocks
+                            // Build a fully-enriched SIEM event from the primary IDS
+                            // alert.  This carries MITRE ATT&CK technique IDs and OWASP
+                            // category IDs as top-level indexed fields into Splunk /
+                            // Elasticsearch / QRadar — giving SOC analysts structured
+                            // framework context on every blocked event.
                             let primary_alert = &ids_alerts[0];
-                            let siem_event = SecurityEvent::new_threat_detected(
-                                &source_ip.to_string(),
-                                &dest_ip.to_string(),
-                                dest_port,
-                                &format!(
-                                    "IPS-{}: {}",
-                                    decision.action.label(),
-                                    primary_alert.rule_name
-                                ),
-                                primary_alert.confidence as f64,
+                            let action_label = decision.action.label().to_string();
+                            let mut siem_event =
+                                SecurityEvent::from_ids_alert(primary_alert, &action_label);
+                            // Override action_taken with the IPS graduated response label
+                            siem_event.action_taken = format!(
+                                "IPS-{}: {}",
+                                action_label, primary_alert.rule_name
                             );
                             let siem_c = self.siem.clone();
                             tokio::spawn(async move {

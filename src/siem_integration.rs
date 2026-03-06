@@ -48,6 +48,18 @@ pub struct SecurityEvent {
     pub confidence: f64,
     pub severity: String,
     pub action_taken: String,
+    // ── Security Framework Fields (MITRE ATT&CK + OWASP Top 10) ──────────────
+    /// Comma-separated short tags e.g. "MITRE:T1071 | OWASP:A03:2021"
+    /// Empty string when no framework mapping applies.
+    pub framework_tags: String,
+    /// Primary MITRE ATT&CK technique ID (first MITRE tag, if any) e.g. "T1071"
+    pub mitre_technique_id: Option<String>,
+    /// Primary MITRE tactic label e.g. "Command and Control"
+    pub mitre_tactic: Option<String>,
+    /// Primary OWASP Top 10 risk ID (first OWASP tag, if any) e.g. "A03:2021"
+    pub owasp_category_id: Option<String>,
+    /// Primary OWASP risk label e.g. "Injection"
+    pub owasp_category_label: Option<String>,
 }
 
 impl SecurityEvent {
@@ -78,6 +90,75 @@ impl SecurityEvent {
             confidence,
             severity: severity.to_string(),
             action_taken: "BLOCKED".to_string(),
+            framework_tags: String::new(),
+            mitre_technique_id: None,
+            mitre_tactic: None,
+            owasp_category_id: None,
+            owasp_category_label: None,
+        }
+    }
+
+    /// Build a fully-enriched SecurityEvent directly from an `IdsAlert`.
+    ///
+    /// All MITRE ATT&CK and OWASP Top 10 tags already computed by the IDS
+    /// engine are promoted into structured, SIEM-searchable top-level fields.
+    /// This ensures the framework data survives the full pipeline to
+    /// Splunk / Elasticsearch / QRadar — not just the console log.
+    pub fn from_ids_alert(
+        alert: &crate::ids_engine::IdsAlert,
+        action_taken: &str,
+    ) -> Self {
+        use crate::framework_alignment::{format_tags_short, FrameworkTag};
+
+        let severity = match alert.severity {
+            crate::ids_engine::IdsSeverity::Critical => "CRITICAL",
+            crate::ids_engine::IdsSeverity::High     => "HIGH",
+            crate::ids_engine::IdsSeverity::Medium   => "MEDIUM",
+            crate::ids_engine::IdsSeverity::Low      => "LOW",
+        };
+
+        let framework_tags = format_tags_short(&alert.framework_tags);
+
+        // Extract primary MITRE and OWASP fields for top-level SIEM indexing
+        let mut mitre_technique_id = None;
+        let mut mitre_tactic = None;
+        let mut owasp_category_id = None;
+        let mut owasp_category_label = None;
+
+        for tag in &alert.framework_tags {
+            match tag {
+                FrameworkTag::Mitre(t) if mitre_technique_id.is_none() => {
+                    mitre_technique_id = Some(t.effective_id().to_string());
+                    mitre_tactic = Some(t.tactic.label().to_string());
+                }
+                FrameworkTag::Owasp(c) if owasp_category_id.is_none() => {
+                    owasp_category_id = Some(c.id().to_string());
+                    owasp_category_label = Some(c.label().to_string());
+                }
+                _ => {}
+            }
+        }
+
+        Self {
+            timestamp: alert.timestamp,
+            event_type: "IDS_ALERT".to_string(),
+            src_ip: alert.src_ip.to_string(),
+            dst_ip: alert.dst_ip.to_string(),
+            dst_port: alert.dst_port,
+            threat_name: format!(
+                "[SID:{}] {} — {}",
+                alert.rule_id,
+                alert.category.label(),
+                alert.rule_name
+            ),
+            confidence: alert.confidence as f64,
+            severity: severity.to_string(),
+            action_taken: action_taken.to_string(),
+            framework_tags,
+            mitre_technique_id,
+            mitre_tactic,
+            owasp_category_id,
+            owasp_category_label,
         }
     }
 }
@@ -194,11 +275,10 @@ impl SIEMIntegration {
 
     async fn flush_events(&self, events: Vec<SecurityEvent>) {
         if self.connectors.is_empty() {
-            // Local only — log to file via tracing
+            // Local only — log to file via tracing.
+            // Structured fields are emitted as root-level JSON keys, making
+            // them instantly searchable by Splunk or Elasticsearch.
             for e in &events {
-                // By using structured fields, the tracing JSON formatter will natively
-                // emit these as root-level JSON keys, making them instantly searchable
-                // by Splunk or Elasticsearch.
                 info!(
                     security_event = true,
                     timestamp = e.timestamp,
@@ -210,6 +290,15 @@ impl SIEMIntegration {
                     confidence = e.confidence,
                     severity = %e.severity,
                     action_taken = %e.action_taken,
+                    // ── Framework Alignment Fields ─────────────────────────
+                    // Indexed in Splunk/Elastic as dedicated searchable fields.
+                    // Analysts can query: mitre_technique_id="T1071" to find
+                    // all C2 traffic across the entire event history.
+                    framework_tags = %e.framework_tags,
+                    mitre_technique_id = ?e.mitre_technique_id,
+                    mitre_tactic = ?e.mitre_tactic,
+                    owasp_category_id = ?e.owasp_category_id,
+                    owasp_category_label = ?e.owasp_category_label,
                     "SIEM Detection Log"
                 );
             }
