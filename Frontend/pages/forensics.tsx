@@ -57,7 +57,7 @@ export default function ForensicsPage() {
                       } ${p.flagged ? 'border-l-2 border-l-danger' : ''}`}
                     >
                       <td className="px-2 py-2 font-mono text-muted">{i+1}</td>
-                      <td className="px-2 py-2 font-mono text-[10px] text-muted whitespace-nowrap">{p.timestamp.slice(11,19)}</td>
+                      <td className="px-2 py-2 font-mono text-[10px] text-muted whitespace-nowrap">{new Date(p.timestamp).toISOString().slice(11,19)}</td>
                       <td className="px-2 py-2 font-mono text-[10px] whitespace-nowrap">
                         <span className="text-danger">{p.srcIp}</span>
                         <span className="text-border mx-1">→</span>
@@ -96,7 +96,7 @@ export default function ForensicsPage() {
                     ['Destination', selected.dstIp],
                     ['Protocol', selected.protocol],
                     ['Length', `${selected.length} bytes`],
-                    ['Timestamp', selected.timestamp],
+                    ['Timestamp', new Date(selected.timestamp).toISOString().slice(0,19).replace('T',' ')],
                     ['TTL', selected.ttl ?? 'N/A'],
                   ].map(([k,v]) => (
                     <div key={k} className="bg-bg rounded p-2">

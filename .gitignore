@@ -56,3 +56,9 @@ data/intel/malicious_domains.txt
 # Compiled scripts / temp
 *.tmp
 *.bak
+
+# Frontend — Next.js
+Frontend/node_modules/
+Frontend/.next/
+Frontend/.npm/
+Frontend/*.tsbuildinfo

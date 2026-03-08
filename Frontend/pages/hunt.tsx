@@ -147,7 +147,7 @@ export default function HuntPage() {
               <div className="space-y-1 max-h-40 overflow-y-auto">
                 {pivotEvents.map(ev => (
                   <div key={ev.id} className="flex items-center gap-3 text-[10px] font-mono bg-bg rounded px-2 py-1.5 border border-border/50">
-                    <span className="text-muted">{ev.timestamp.slice(11,19)}</span>
+                    <span className="text-muted">{new Date(ev.timestamp).toISOString().slice(11,19)}</span>
                     <span className="text-text">{ev.attackType}</span>
                     <span className="text-danger">{ev.srcIp}</span>
                     <span className="text-border">→</span>

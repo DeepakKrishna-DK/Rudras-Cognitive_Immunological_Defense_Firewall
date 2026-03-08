@@ -28,10 +28,19 @@ interface AttackFeedProps {
 }
 
 export default function AttackFeed({ initialEvents, liveEvents, maxItems = 50, compact = false }: AttackFeedProps) {
-  const [events, setEvents] = useState<AttackEvent[]>(initialEvents.slice(-maxItems).reverse())
+  // Start empty on server to avoid SSR/client mismatch from Math.random() generated data
+  const [events, setEvents] = useState<AttackEvent[]>([])
   const listRef = useRef<HTMLDivElement>(null)
   const [paused, setPaused] = useState(false)
   const [filter, setFilter] = useState<ThreatLevel | 'all'>('all')
+
+  // Populate initial events only after client mount (data is random, differs server vs client)
+  const initializedRef = useRef(false)
+  useEffect(() => {
+    if (initializedRef.current) return
+    initializedRef.current = true
+    setEvents(initialEvents.slice(-maxItems).reverse())
+  }, [initialEvents, maxItems])
 
   // Append live events
   useEffect(() => {
@@ -106,7 +115,7 @@ export default function AttackFeed({ initialEvents, liveEvents, maxItems = 50, c
                     <span className={`text-[10px] px-1.5 py-0.5 rounded ${STATUS_STYLES[status] || 'badge'}`}>
                       {status.toUpperCase()}
                     </span>
-                    <span className="font-mono text-[10px] text-muted">
+                    <span className="font-mono text-[10px] text-muted" suppressHydrationWarning>
                       {format(new Date(ev.timestamp), 'HH:mm:ss')}
                     </span>
                   </div>

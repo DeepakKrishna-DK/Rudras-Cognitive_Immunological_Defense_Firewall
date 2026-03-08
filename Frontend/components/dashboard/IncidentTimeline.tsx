@@ -61,7 +61,7 @@ export default function IncidentTimeline({ events, horizontal = true }: Incident
                   {/* Content */}
                   <div className="text-center">
                     <p className="text-[10px] font-semibold text-text leading-tight mb-0.5">{ev.title}</p>
-                    <p className="text-[9px] text-muted font-mono mb-1">
+                    <p className="text-[9px] text-muted font-mono mb-1" suppressHydrationWarning>
                       {format(new Date(ev.timestamp), 'HH:mm:ss')}
                     </p>
                     {ev.description && (
@@ -113,7 +113,7 @@ export default function IncidentTimeline({ events, horizontal = true }: Incident
               <div className="pb-4 pt-1.5 flex-1">
                 <div className="flex items-center gap-2 mb-0.5">
                   <p className="text-xs font-semibold text-text">{ev.title}</p>
-                  <span className="ml-auto font-mono text-[10px] text-muted">
+                  <span className="ml-auto font-mono text-[10px] text-muted" suppressHydrationWarning>
                     {format(new Date(ev.timestamp), 'HH:mm:ss')}
                   </span>
                 </div>

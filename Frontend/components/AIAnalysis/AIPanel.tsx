@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Brain, ChevronRight, CheckCircle, AlertTriangle, Target, Layers } from 'lucide-react'
 import type { AiAnalysis } from '@/types'
@@ -10,6 +10,11 @@ interface AIPanelProps {
 
 export default function AIPanel({ analysis }: AIPanelProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'mitre' | 'recommendations'>('overview')
+  const [lastAnalyzed, setLastAnalyzed] = useState<string | null>(null)
+
+  useEffect(() => {
+    setLastAnalyzed(new Date().toLocaleTimeString())
+  }, [])
 
   const conf = analysis.confidence
   const confColor = conf >= 90 ? 'text-danger' : conf >= 70 ? 'text-warn' : 'text-safe'
@@ -155,9 +160,9 @@ export default function AIPanel({ analysis }: AIPanelProps) {
 
       {/* Footer */}
       <div className="px-4 py-2 border-t border-border flex justify-between text-[10px] text-muted shrink-0">
-        <span className="flex items-center gap-1">
+        <span className="flex items-center gap-1" suppressHydrationWarning>
           <AlertTriangle size={9} className="text-warn" />
-          Last analyzed: {new Date().toLocaleTimeString()}
+          Last analyzed: {lastAnalyzed ?? ''}
         </span>
         <button className="text-accent hover:text-accent/80 transition-colors">Run Full Analysis</button>
       </div>

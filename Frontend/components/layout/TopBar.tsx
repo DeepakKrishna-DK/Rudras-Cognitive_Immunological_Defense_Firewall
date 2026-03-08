@@ -14,10 +14,11 @@ function formatUptime(secs: number) {
 
 export default function TopBar({ alertCount = 0 }: { alertCount?: number }) {
   const [stats, setStats] = useState<SystemStats>(SYSTEM_STATS)
-  const [time, setTime] = useState(new Date())
+  const [time, setTime] = useState<Date | null>(null)
   const [showAlerts, setShowAlerts] = useState(false)
 
   useEffect(() => {
+    setTime(new Date())
     const t = setInterval(() => setTime(new Date()), 1000)
     const s = setInterval(() => {
       setStats(prev => ({
@@ -71,9 +72,9 @@ export default function TopBar({ alertCount = 0 }: { alertCount?: number }) {
         <span className="text-safe font-medium">LIVE</span>
       </div>
 
-      {/* Clock */}
-      <div className="font-mono text-xs text-text-dim">
-        {time.toLocaleTimeString()}
+      {/* Clock — client-only to avoid SSR hydration mismatch */}
+      <div className="font-mono text-xs text-text-dim w-24 text-center" suppressHydrationWarning>
+        {time ? time.toLocaleTimeString() : ''}
       </div>
 
       {/* Alerts bell */}
