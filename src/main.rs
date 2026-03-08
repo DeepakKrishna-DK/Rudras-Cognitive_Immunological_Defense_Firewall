@@ -172,13 +172,15 @@ async fn main() -> Result<()> {
     let file_appender = tracing_appender::rolling::daily("logs", "Rudras.log");
     let (non_blocking, _guard) = tracing_appender::non_blocking(file_appender);
 
+    let ist_timer = tracing_subscriber::fmt::time::ChronoLocal::new("%Y-%m-%dT%H:%M:%S%.6f%:z".to_string());
     tracing_subscriber::registry()
         .with(tracing_subscriber::EnvFilter::new(&effective_log_level))
-        .with(tracing_subscriber::fmt::layer().with_target(false).pretty())
+        .with(tracing_subscriber::fmt::layer().with_target(false).pretty().with_timer(ist_timer.clone()))
         .with(
             tracing_subscriber::fmt::layer()
                 .with_writer(non_blocking)
-                .json(),
+                .json()
+                .with_timer(ist_timer),
         )
         .init();
 
