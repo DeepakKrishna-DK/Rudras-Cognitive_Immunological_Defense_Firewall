@@ -350,6 +350,41 @@ quarantine_threshold = 200.0
 # Penalty score for permanent blacklist (never unblocked without manual review)
 blacklist_threshold = 350.0
 
+# ── Block Durations ─────────────────────────────────────────────────────────
+
+# How long (seconds) a WFP block rule stays active
+# 3600 = 1 hour | 7200 = 2 hours | 86400 = 24 hours
+block_duration_secs = 3600
+
+# How long (seconds) a quarantined IP stays blocked
+# 86400 = 24 hours | 604800 = 7 days
+quarantine_duration_secs = 86400
+
+# ── Rate Limiting ────────────────────────────────────────────────────────────
+
+# Max packets per second allowed when an IP is in rate-limit state
+# 10 pps = heavily throttled (recommended for suspicious scanners)
+rate_limit_pps = 10
+
+# ── Immediate Block Triggers (overrides penalty ladder) ─────────────────────
+
+# Block immediately on first HIGH-severity IDS alert (no penalty accumulation)
+# Recommended: false (let penalty accumulate to reduce false positives)
+auto_block_high = false
+
+# Block immediately on first CRITICAL-severity IDS alert
+# Recommended: true (CRITICAL = confirmed exploit / Cobalt Strike / EternalBlue)
+auto_block_critical = true
+
+# ── Whitelist (never blocked by IPS) ────────────────────────────────────────
+# Add management station IPs, monitoring systems, etc.
+# Loopback (127.0.0.1, ::1) is always exempt regardless of this list.
+whitelist = [
+    "127.0.0.1",
+    "::1",
+    # "192.168.1.10",   # ← add management IPs here
+]
+
 # ══════════════════════════════════════════════════════════════════════════════
 # ║  ENDPOINT SECURITY AGENT
 # ║
@@ -388,41 +423,6 @@ log_confidence_threshold = 0.60
 # Longer = better APT/persistent-campaign detection; more RAM
 # 7200 = 2 hours | 86400 = 24 hours
 history_retention_secs   = 7200
-
-# ── Block Durations ─────────────────────────────────────────────────────────
-
-# How long (seconds) a WFP block rule stays active
-# 3600 = 1 hour | 7200 = 2 hours | 86400 = 24 hours
-block_duration_secs = 3600
-
-# How long (seconds) a quarantined IP stays blocked
-# 86400 = 24 hours | 604800 = 7 days
-quarantine_duration_secs = 86400
-
-# ── Rate Limiting ────────────────────────────────────────────────────────────
-
-# Max packets per second allowed when an IP is in rate-limit state
-# 10 pps = heavily throttled (recommended for suspicious scanners)
-rate_limit_pps = 10
-
-# ── Immediate Block Triggers (overrides penalty ladder) ─────────────────────
-
-# Block immediately on first HIGH-severity IDS alert (no penalty accumulation)
-# Recommended: false (let penalty accumulate to reduce false positives)
-auto_block_high = false
-
-# Block immediately on first CRITICAL-severity IDS alert
-# Recommended: true (CRITICAL = confirmed exploit / Cobalt Strike / EternalBlue)
-auto_block_critical = true
-
-# ── Whitelist (never blocked by IPS) ────────────────────────────────────────
-# Add management station IPs, monitoring systems, etc.
-# Loopback (127.0.0.1, ::1) is always exempt regardless of this list.
-whitelist = [
-    "127.0.0.1",
-    "::1",
-    # "192.168.1.10",   # ← add management IPs here
-]
 
 # ══════════════════════════════════════════════════════════════════════════════
 # ║  AI ENGINE — 4-Layer Adaptive Intelligence

@@ -45,6 +45,45 @@ mod advanced_ml;
 mod distributed_immunity;
 mod hardware_accel; // P2P Rule Sync
 
+// === NEW ADVANCED MODULES (Session 2) ===
+mod post_quantum;
+mod federated_learning;
+mod deception;
+mod ot_protocols;
+mod eta_engine;
+mod gnn_engine;
+mod policy_verifier;
+mod sbom_engine;
+mod ueba_engine;
+mod soar_engine;
+mod llm_explainability;
+mod forensics_chain;
+mod differential_privacy;
+mod p4_offload;
+
+// === GAP-CLOSURE MODULES (Session 3) ===
+mod dns_security;         // DNS threat engine: RPZ, tunneling, rebinding, DoH
+mod management_api;       // REST management API (axum, SHA3-256 auth, RBAC)
+mod ebpf_xdp;             // XDP/eBPF cross-platform packet offload
+mod compliance_engine;    // GDPR/PCI-DSS v4/HIPAA/NIST CSF 2.0 / ISO 27001
+mod quic_inspector;       // QUIC long-header parser, 0-RTT, migration detection
+mod threat_rules_engine;  // YARA + Sigma style rules engine
+mod tpm_attestation;      // TPM 2.0 attestation simulation
+mod rl_policy;            // Q-learning adaptive blocking policy
+mod mtd_engine;           // Moving Target Defense: IP hop / port randomise / decoys
+mod homomorphic_sharing;  // Privacy-preserving IOC sharing (Paillier + PSI + Shamir)
+mod email_security;       // SPF / DKIM / DMARC / BEC / attachment / URL analysis
+mod formal_verification;  // Static policy analysis: shadow / conflict / redundancy
+mod rasp_engine;          // Runtime Application Self-Protection
+
+// === RESEARCH-GRADE GAP-CLOSURE MODULES (Session 4) ===
+mod secure_channel;        // TLS 1.3 mTLS, cert pinning, CT, replay guard
+mod memory_safe_pool;      // Secret vault, W^X, canaries, ASLR entropy
+mod supply_chain_verifier; // SLSA, hash pinning, typosquat, dep-confusion, transitive taint
+mod adaptive_honeypot;     // Interactive deception personas, canary tokens, TTP tracking
+mod network_dpi_ml;        // Online logistic regression + K-Means anomaly DPI
+mod threat_hunt;           // MITRE ATT&CK hypothesis hunting, IOC pivot, campaign clustering
+
 // === McAFEE-STYLE FLOW ENGINE ===
 mod flow_engine; // Lightweight stateful flow risk scorer (fast-path)
 
@@ -485,7 +524,490 @@ async fn main() -> Result<()> {
     info!("   🚫 Blocking: PathTraversal·CmdInj·C2·DGA·DNSTunnel·BruteForce");
     info!("   🚫 Blocking: DataExfil·InsiderScan·IoT/UPnP·Mirai·Anomaly");
 
-    // ── [IDS] Intrusion Detection System ─────────────────────────────────────
+    // ── [NEW-A] Post-Quantum Cryptography Engine ──────────────────────────────
+    info!("🔐 [NEW-A] Initializing Post-Quantum Cryptography Engine...");
+    let pq_engine = Arc::new(post_quantum::PqcKeyStore::new());
+    info!("✅ Post-Quantum Engine ready — CRYSTALS-Kyber key exchange | CRYSTALS-Dilithium signatures");
+
+    // ── [NEW-B] Federated Learning Engine ────────────────────────────────────
+    info!("🤝 [NEW-B] Initializing Federated Learning Engine (Privacy-Preserving ML)...");
+    let fed_learning = Arc::new(federated_learning::FederatedLearningEngine::new("rudras-primary", 128));
+    info!("✅ Federated Learning ready — FedAvg | Gaussian DP | Byzantine outlier rejection");
+
+    // ── [NEW-C] Deception Engine (Honeypots + Canary Tokens) ─────────────────
+    info!("🍯 [NEW-C] Initializing Deception Engine (Honeypots + Canary Tokens)...");
+    let deception_engine = Arc::new(deception::DeceptionEngine::new());
+    info!("✅ Deception Engine ready — {} honeypots (SSH/HTTP/FTP/Redis/ES) | HoneyToken canaries",
+        deception_engine.honeypot_count());
+
+    // ── [NEW-D] OT/ICS Protocol Anomaly Engine ───────────────────────────────
+    info!("🏭 [NEW-D] Initializing OT/ICS Protocol Anomaly Engine...");
+    let ot_engine = Arc::new(ot_protocols::OtProtocolEngine::new());
+    info!("✅ OT Engine ready — Modbus | DNP3 | GOOSE (IEC 61850)");
+
+    // ── [NEW-E] Encrypted Traffic Analysis (JA3/JA4 fingerprinting) ──────────
+    info!("🔍 [NEW-E] Initializing Encrypted Traffic Analysis (JA3/JA4)...");
+    let eta_engine_inst = Arc::new(eta_engine::EtaEngine::new());
+    info!("✅ ETA Engine ready — JA3/JA4 fingerprinting | 8 known-malware hashes blocked");
+    info!("   Cobalt Strike | Metasploit | TrickBot | Dridex | Emotet | QakBot | AsyncRAT | NjRAT");
+
+    // ── [NEW-F] Graph Neural Network — Lateral Movement Detection ────────────
+    info!("🕸️  [NEW-F] Initializing GNN Engine (Lateral Movement / APT)...");
+    let gnn_engine_inst = Arc::new(gnn_engine::GnnEngine::new());
+    info!("✅ GNN Engine ready — GraphSAGE 2-layer | z-score anomaly | APT kill-chain stages");
+
+    // ── [NEW-G] Formal Policy Verifier (NIST SP 800-41) ──────────────────────
+    info!("📋 [NEW-G] Initializing Formal Policy Verifier (NIST SP 800-41)...");
+    let policy_verif = Arc::new(policy_verifier::PolicyVerifier::new());
+    info!("✅ Policy Verifier ready — conflict | shadow | overly-permissive checks | audit log");
+
+    // ── [NEW-H] SBOM Engine (CVE Scanner — Log4Shell, Heartbleed, etc.) ──────
+    info!("📦 [NEW-H] Initializing SBOM Engine (Software Bill of Materials + CVE scan)...");
+    let sbom_engine_inst = Arc::new(sbom_engine::SbomEngine::new());
+    info!("✅ SBOM Engine ready — PURL format | CVE DB (Heartbleed/Log4Shell/curl/sudo) | CycloneDX export");
+
+    // ── [NEW-I] UEBA Engine (User/Entity Behavior Analytics) ─────────────────
+    info!("👤 [NEW-I] Initializing UEBA Engine (Behavioral Analytics)...");
+    let ueba_engine_inst = Arc::new(ueba_engine::UebaEngine::new());
+    info!("✅ UEBA Engine ready — EMA baselines | impossible travel | privilege escalation | risk scoring");
+
+    // ── [NEW-J] SOAR Engine (Automated Incident Response Playbooks) ──────────
+    info!("🤖 [NEW-J] Initializing SOAR Engine (Automated Response Playbooks)...");
+    let soar_engine_inst = Arc::new(soar_engine::SoarEngine::new());
+    info!("✅ SOAR Engine ready — {} playbooks | incident correlation | approval gates | MTTR tracking",
+        soar_engine_inst.playbook_count());
+
+    // ── [NEW-K] LLM Explainability Engine (Human-Readable Alert Narratives) ──
+    info!("💬 [NEW-K] Initializing LLM Explainability Engine...");
+    let explain_engine = Arc::new(llm_explainability::LlmExplainabilityEngine::new());
+    info!("✅ LLM Explainability ready — MITRE ATT&CK narratives | SHAP feature attribution | no external API");
+
+    // ── [NEW-L] Forensics Chain (Tamper-Evident Chain of Custody) ─────────────
+    info!("⛓️  [NEW-L] Initializing Forensics Chain (Tamper-Evident Evidence)...");
+    let forensics = Arc::new(forensics_chain::ForensicsChain::new("rudras-primary"));
+    info!("✅ Forensics Chain ready — SHA3-256 linked chain | DFIR JSON export | bulk integrity verify");
+
+    // ── [NEW-M] Differential Privacy Engine ───────────────────────────────────
+    info!("🔏 [NEW-M] Initializing Differential Privacy Engine...");
+    let dp_engine = Arc::new(differential_privacy::DifferentialPrivacyEngine::new(10.0, 1e-5));
+    info!("✅ Differential Privacy ready — Laplace | Gaussian | Exp mechanisms | budget ε≤10 δ≤1e-5");
+
+    // ── [NEW-N] P4 Offload Engine (SmartNIC / P4Runtime) ─────────────────────
+    info!("💡 [NEW-N] Initializing P4 Offload Engine (SmartNIC offload)...");
+    let p4_endpoint = std::env::var("RUDRAS_P4_ENDPOINT")
+        .unwrap_or_else(|_| "127.0.0.1:9559".into());
+    let p4_offload_engine = Arc::new(p4_offload::P4OffloadEngine::new(&p4_endpoint, 1));
+    if p4_offload_engine.is_hardware_available() {
+        info!("✅ P4 Offload Engine ready — hardware P4Runtime endpoint: {}", p4_endpoint);
+    } else {
+        info!("✅ P4 Offload Engine ready — software-only mode (no P4 device at {})", p4_endpoint);
+    }
+
+    // ── [NEW] Start background tasks for new engines ──────────────────────────
+    {
+        let deception_bg = deception_engine.clone();
+        let soar_bg = soar_engine_inst.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(60));
+            loop {
+                interval.tick().await;
+                // Promote any deception alerts to SOAR playbooks.
+                let alerts = deception_bg.drain_alerts();
+                for alert in &alerts {
+                    let soar_alert = soar_engine::SoarAlert {
+                        id: alert.id.clone(),
+                        source_engine: "DeceptionEngine".into(),
+                        severity: soar_engine::AlertSeverity::High,
+                        title: format!("Honeypot triggered by {}", alert.attacker_ip),
+                        description: format!("Deception trigger {:?} attacker {}", alert.trigger, alert.attacker_ip),
+                        affected_ips: vec![alert.attacker_ip],
+                        affected_user: None,
+                        mitre_tactic: Some("TA0042".into()),
+                        timestamp: alert.timestamp,
+                    };
+                    soar_bg.process_alert(soar_alert);
+                }
+                if !alerts.is_empty() {
+                    info!("🍯 Deception: {} alerts promoted to SOAR", alerts.len());
+                }
+            }
+        });
+    }
+    {
+        let ueba_bg = ueba_engine_inst.clone();
+        let soar_bg = soar_engine_inst.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(120));
+            loop {
+                interval.tick().await;
+                let high_risk = ueba_bg.drain_high_risk_entities(70.0);
+                for entity_id in &high_risk {
+                    let ts = std::time::SystemTime::now()
+                        .duration_since(std::time::SystemTime::UNIX_EPOCH)
+                        .map(|d| d.as_secs()).unwrap_or(0);
+                    let soar_alert = soar_engine::SoarAlert {
+                        id: format!("UEBA-{}-{}", entity_id, ts),
+                        source_engine: "UebaEngine".into(),
+                        severity: soar_engine::AlertSeverity::High,
+                        title: format!("UEBA high-risk entity: {}", entity_id),
+                        description: format!("Entity {} exceeded risk threshold", entity_id),
+                        affected_ips: vec![],
+                        affected_user: Some(entity_id.clone()),
+                        mitre_tactic: Some("TA0003".into()),
+                        timestamp: ts,
+                    };
+                    soar_bg.process_alert(soar_alert);
+                }
+                if !high_risk.is_empty() {
+                    let st = ueba_bg.stats();
+                    info!("👤 UEBA: {} high-risk entities promoted to SOAR | tracked={}", high_risk.len(), st.entities_tracked);
+                }
+            }
+        });
+    }
+    {
+        let soar_hb = soar_engine_inst.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(300));
+            loop {
+                interval.tick().await;
+                let st = soar_hb.stats();
+                info!("🤖 SOAR | incidents={} | resolved={} | actions={} | mttr_avg={:.0}s",
+                    st.open_incidents, st.resolved_incidents, st.total_actions_taken,
+                    st.avg_mttr_secs);
+            }
+        });
+    }
+    {
+        let gnn_hb = gnn_engine_inst.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(600));
+            loop {
+                interval.tick().await;
+                let campaigns = gnn_hb.drain_apt_alerts();
+                if !campaigns.is_empty() {
+                    info!("🕸️  GNN: {} active APT campaigns tracked", campaigns.len());
+                    for c in &campaigns {
+                        info!("   APT {} stage={:?} hosts={} confidence={:.2}",
+                            c.id, c.current_stage, c.compromised_hosts.len(), c.confidence);
+                    }
+                }
+            }
+        });
+    }
+    {
+        let forensics_hb = forensics.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(3600));
+            loop {
+                interval.tick().await;
+                // GDPR retention: purge evidence older than 90 days
+                forensics_hb.purge_expired(90);
+                let reports = forensics_hb.verify_all();
+                let failures: Vec<_> = reports.iter().filter(|r| !r.is_valid).collect();
+                if failures.is_empty() {
+                    info!("⛓️  Forensics: all {} items chain-verified OK", reports.len());
+                } else {
+                    for f in &failures {
+                        warn!("⛓️  Forensics: chain integrity FAILURE id={} seq={:?} reason={:?}",
+                            f.evidence_id, f.failure_at_seq, f.failure_reason);
+                    }
+                }
+            }
+        });
+    }
+
+    info!("✅ All NEW advanced engines initialised — 14 modules active");
+
+    // ── [NEW-O] DNS Security Engine ───────────────────────────────────────────
+    info!("🌐 [NEW-O] Initializing DNS Security Engine...");
+    let dns_engine = Arc::new(dns_security::DnsSecurityEngine::new());
+    {
+        let dns_bg = dns_engine.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(60));
+            loop {
+                interval.tick().await;
+                dns_bg.cleanup();
+                let st = dns_bg.stats();
+                if st.queries_total > 0 {
+                    info!("🌐 DNS | queries={} | rpz_blocks={} | tunneling={} | rebinding={} | nxdomain={}",
+                        st.queries_total, st.rpz_blocks, st.tunnel_alerts,
+                        st.rebinding_alerts, st.nxdomain_total);
+                }
+            }
+        });
+    }
+    info!("✅ DNS Security Engine ready — RPZ | NXDomain storm | tunneling | rebinding | fast-flux | DoH");
+
+    // ── [NEW-P] Management REST API ───────────────────────────────────────────
+    info!("🔒 [NEW-P] Starting Management REST API (loopback-only, auth required)...");
+    tokio::spawn(async move {
+        let state = management_api::ApiState::new();
+        if let Err(e) = management_api::start_management_api(state, "127.0.0.1:7443").await {
+            tracing::warn!("Management API stopped: {}", e);
+        }
+    });
+    info!("✅ Management API ready — http://127.0.0.1:7443 | SHA3-256 token auth | RBAC enforced");
+
+    // ── [NEW-Q] eBPF/XDP Offload Engine ──────────────────────────────────────
+    info!("⚡ [NEW-Q] Initializing eBPF/XDP Offload Engine...");
+    let ebpf_iface = args.interface.as_deref()
+        .or_else(|| config.interface.as_deref())
+        .unwrap_or("auto");
+    let ebpf_engine = Arc::new(ebpf_xdp::EbpfXdpEngine::new(ebpf_iface));
+    info!("✅ eBPF/XDP Engine ready — LPM trie | connection hash map | syscall tracepoints | XDP DROP/PASS");
+
+    // ── [NEW-R] Compliance Engine ─────────────────────────────────────────────
+    info!("📋 [NEW-R] Initializing Compliance Engine...");
+    let compliance_eng = Arc::new(compliance_engine::ComplianceEngine::new());
+    {
+        let comp_bg = compliance_eng.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(3600));
+            loop {
+                interval.tick().await;
+                let st = comp_bg.stats();
+                info!("📋 Compliance | runs={} | avg_score={:.0}% | frameworks={}",
+                    st.reports_generated,
+                    st.average_score * 100.0,
+                    st.frameworks_enabled);
+            }
+        });
+    }
+    info!("✅ Compliance Engine ready — GDPR | PCI-DSS v4 | HIPAA | NIST CSF 2.0 | ISO 27001:2022");
+
+    // ── [NEW-S] QUIC Inspector ────────────────────────────────────────────────
+    info!("🔍 [NEW-S] Initializing QUIC Inspector...");
+    let quic_insp = Arc::new(quic_inspector::QuicInspector::new());
+    {
+        let quic_bg = quic_insp.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(30));
+            loop {
+                interval.tick().await;
+                quic_bg.cleanup();
+                let st = quic_bg.stats();
+                if st.packets_inspected > 0 {
+                    info!("🔍 QUIC | pkts={} | connections={} | 0rtt={} | migration={} | unknown_ver={}",
+                        st.packets_inspected, st.connections_tracked,
+                        st.zero_rtt_count, st.migration_count, st.unknown_version_count);
+                }
+            }
+        });
+    }
+    info!("✅ QUIC Inspector ready — version fingerprinting | 0-RTT | connection migration detection");
+
+    // ── [NEW-T] YARA+Sigma Threat Rules Engine ───────────────────────────────
+    info!("🔎 [NEW-T] Initializing Threat Rules Engine (YARA + Sigma)...");
+    let threat_rules = Arc::new(threat_rules_engine::ThreatRulesEngine::new());
+    info!("✅ Threat Rules Engine ready — 9 YARA rules (CobaltStrike/Mimikatz/Meterpreter/WannaCry/Log4Shell) | 7 Sigma rules");
+
+    // ── [NEW-U] TPM Attestation Engine ───────────────────────────────────────
+    info!("🔒 [NEW-U] Initializing TPM Attestation Engine...");
+    let tpm_engine = Arc::new(tpm_attestation::TpmAttestationEngine::new());
+    let tpm_quote = tpm_engine.generate_quote(b"rudras-startup-nonce");
+    info!("✅ TPM Attestation ready — PCRs measured | quote={:.16}... | hw={}",
+        tpm_quote.signature_hex, tpm_engine.hw_available);
+
+    // ── [NEW-W] RL Adaptive Policy ────────────────────────────────────────────
+    info!("🤖 [NEW-W] Initializing RL Adaptive Policy Engine (Q-learning)...");
+    let rl_policy_eng = Arc::new(rl_policy::RlPolicyEngine::new());
+    info!("✅ RL Policy Engine ready — 6 actions | ε-greedy (ε=1.0→0.05) | RFC-1918 safety guard");
+
+    // ── [NEW-X] Moving Target Defense ────────────────────────────────────────
+    info!("🎯 [NEW-X] Initializing Moving Target Defense Engine...");
+    let mtd_eng = Arc::new(mtd_engine::MtdEngine::new());
+    {
+        let mtd_bg = mtd_eng.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(300));
+            loop {
+                interval.tick().await;
+                mtd_bg.tick();
+                let st = mtd_bg.stats();
+                if st.ip_rotations + st.port_rotations > 0 {
+                    info!("🎯 MTD | vip_rotations={} | port_rotations={} | decoy_probes={}",
+                        st.ip_rotations, st.port_rotations, st.decoy_probes);
+                }
+            }
+        });
+    }
+    info!("✅ MTD Engine ready — IP hopping | port randomisation | 5 decoy services");
+
+    // ── [NEW-Y] Homomorphic IOC Sharing ──────────────────────────────────────
+    info!("🔏 [NEW-Y] Initializing Privacy-Preserving IOC Sharing Engine...");
+    let hom_sharing = Arc::new(homomorphic_sharing::HomomorphicSharingEngine::new());
+    info!("✅ Homomorphic Sharing ready — Paillier PHE | Private Set Intersection | Shamir secret sharing");
+
+    // ── [NEW-Z] Email Security Engine ────────────────────────────────────────
+    info!("📧 [NEW-Z] Initializing Email Security Engine...");
+    let email_sec = Arc::new(email_security::EmailSecurityEngine::new());
+    {
+        let email_bg = email_sec.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(60));
+            loop {
+                interval.tick().await;
+                email_bg.cleanup();
+                let st = email_bg.stats();
+                if st.sessions_inspected > 0 {
+                    info!("📧 Email | inspected={} | spf_fail={} | dmarc_fail={} | bec={} | risky_attach={}",
+                        st.sessions_inspected, st.spf_fails, st.dmarc_fails,
+                        st.bec_alerts, st.risky_attachments);
+                }
+            }
+        });
+    }
+    info!("✅ Email Security ready — SPF | DKIM | DMARC | BEC | attachment scoring | URL analysis");
+
+    // ── [NEW-AA] Formal Policy Verifier ──────────────────────────────────────
+    info!("📐 [NEW-AA] Initializing Formal Policy Verification Engine...");
+    let formal_ver = Arc::new(formal_verification::FormalVerifier::new());
+    info!("✅ Formal Verifier ready — shadow | conflict | redundancy | reachability analysis");
+
+    // ── [NEW-AB] RASP Engine ──────────────────────────────────────────────────
+    info!("🛡️  [NEW-AB] Initializing Runtime Application Self-Protection (RASP)...");
+    let rasp_eng = Arc::new(rasp_engine::RaspEngine::new());
+    {
+        let rasp_bg = rasp_eng.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(60));
+            loop {
+                interval.tick().await;
+                rasp_bg.periodic_scan();
+                let st = rasp_bg.stats();
+                if st.alerts_total > 0 {
+                    info!("🛡️  RASP | protected={} | scans={} | alerts={} | hollowing={} | injection={} | fileless={}",
+                        st.processes_protected, st.scans_completed, st.alerts_total,
+                        st.hollowing_detected, st.injection_detected, st.fileless_detected);
+                }
+            }
+        });
+    }
+    info!("✅ RASP Engine ready — process hollowing | DLL injection | fileless exec | syscall policy");
+
+    // ── [NEW-AC] Secure Channel Manager ──────────────────────────────────────
+    info!("🔐 [NEW-AC] Initializing Secure Channel Manager (TLS 1.3 / mTLS)...");
+    let sec_chan = Arc::new(secure_channel::SecureChannelManager::new());
+    {
+        let sc_bg = sec_chan.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(120));
+            loop {
+                interval.tick().await;
+                sc_bg.cleanup_sessions();
+                let st = sc_bg.stats();
+                if st.sessions_active > 0 {
+                    info!("🔐 SecureChan | sessions={} | established={} | keys_rotated={} | replay_blocks={} | no_ct_alerts={}",
+                        st.sessions_active, st.sessions_established, st.key_rotations,
+                        st.replay_blocks, st.no_ct_alerts);
+                }
+            }
+        });
+    }
+    info!("✅ SecureChannel ready — TLS 1.3 | mTLS | cert-pinning | CT | replay protection");
+
+    // ── [NEW-AD] Memory Safety Engine ────────────────────────────────────────
+    info!("🔒 [NEW-AD] Initializing Memory Safety Engine...");
+    let mem_safety = Arc::new(memory_safe_pool::MemorySafetyEngine::new());
+    {
+        let ms_bg = mem_safety.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(300));
+            loop {
+                interval.tick().await;
+                ms_bg.evict_expired();
+                let st = ms_bg.stats();
+                if st.canary_violations > 0 || st.wx_violations > 0 {
+                    info!("🔒 MemSafe | secrets={} | canary_checks={} | canary_viols={} | wx_viols={} | aslr_alerts={}",
+                        st.secrets_stored, st.canary_checks, st.canary_violations,
+                        st.wx_violations, st.aslr_alerts);
+                }
+            }
+        });
+    }
+    info!("✅ MemorySafety ready — zeroizing vault | W^X | stack canaries | ASLR entropy");
+
+    // ── [NEW-AE] Supply Chain Verifier ────────────────────────────────────────
+    info!("📦 [NEW-AE] Initializing Supply Chain Verifier (SLSA / in-toto)...");
+    let supply_chain = Arc::new(supply_chain_verifier::SupplyChainVerifier::new());
+    {
+        let sc_bg = supply_chain.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(3600));
+            loop {
+                interval.tick().await;
+                let st = sc_bg.stats();
+                info!("📦 SupplyChain | components={} | verifications={} | violations={} | hash_mismatch={} | typosquat={} | dep_confusion={}",
+                    st.components_registered, st.verifications_run, st.violations_found,
+                    st.hash_mismatches, st.typosquatting_alerts, st.dependency_confusion_alerts);
+            }
+        });
+    }
+    info!("✅ SupplyChain ready — SLSA | hash pinning | typosquat | transitive taint");
+
+    // ── [NEW-AF] Adaptive Honeypot Engine ─────────────────────────────────────
+    info!("🍯 [NEW-AF] Initializing Adaptive Honeypot Engine (interactive deception)...");
+    let honeypot = Arc::new(adaptive_honeypot::AdaptiveHoneypotEngine::new());
+    {
+        let hp_bg = honeypot.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(60));
+            loop {
+                interval.tick().await;
+                hp_bg.cleanup_stale_sessions(600);
+                let st = hp_bg.stats();
+                if st.sessions_total > 0 {
+                    info!("🍯 Honeypot | sessions={} | active={} | cmds={} | canary_hits={} | downloads={} | high_soph={}",
+                        st.sessions_total, st.sessions_active, st.commands_processed,
+                        st.canary_tokens_hit, st.download_attempts, st.high_sophist_sessions);
+                }
+            }
+        });
+    }
+    info!("✅ AdaptiveHoneypot ready — interactive shell | canary tokens | TTP tracking | campaign correlation");
+
+    // ── [NEW-AG] Network DPI + ML Anomaly ────────────────────────────────────
+    info!("🧠 [NEW-AG] Initializing Network DPI + ML Anomaly Detection Engine...");
+    let dpi_ml = Arc::new(network_dpi_ml::NetworkDpiMlEngine::new());
+    {
+        let ml_bg = dpi_ml.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(300));
+            loop {
+                interval.tick().await;
+                let st = ml_bg.stats();
+                info!("🧠 DPI-ML | flows={} | ml_flags={} | anomalies={} | zero_day={} | accuracy={:.1}% | samples={}",
+                    st.flows_classified, st.ml_malicious_flags, st.anomaly_flags,
+                    st.zero_day_candidates, st.model_accuracy * 100.0, st.model_samples);
+            }
+        });
+    }
+    info!("✅ NetworkDpiML ready — online LR | K-Means clustering | zero-day anomaly | score fusion");
+
+    // ── [NEW-AH] Threat Hunt Engine ───────────────────────────────────────────
+    info!("🔍 [NEW-AH] Initializing Proactive Threat Hunt Engine...");
+    let threat_hunter = Arc::new(threat_hunt::ThreatHuntEngine::new());
+    {
+        let th_bg = threat_hunter.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(900));
+            loop {
+                interval.tick().await;
+                let findings = th_bg.run_due_hunts();
+                let st = th_bg.stats();
+                if !findings.is_empty() || st.campaigns_tracked > 0 {
+                    info!("🔍 ThreatHunt | hunts={} | findings={} | high_sev={} | campaigns={} | ioc_nodes={} | pivots={}",
+                        st.hunts_executed, st.findings_total, st.high_severity,
+                        st.campaigns_tracked, st.ioc_graph_nodes, st.pivot_queries);
+                }
+            }
+        });
+    }
+    info!("✅ ThreatHunt ready — MITRE ATT&CK 8 hypotheses | IOC pivot | campaign clustering | hunt scheduler");
+
+    info!("✅ All 34 defense engines active (14 original + 14 gap-closure + 6 research-grade)");
     info!("🔍 [IDS] Initializing Intrusion Detection System (200+ signatures)...");
     let ids_engine = Arc::new(ids_engine::IdsEngine::new());
     info!("✅ IDS ready — Engines: Signature | Protocol | Behavioral | DGA | Anomaly");

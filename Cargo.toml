@@ -74,8 +74,61 @@ sysinfo          = "0.38.2"
 
 # Cryptography (Solving Sabotage, Sybil, and Blindness)
 sha2             = "0.10"
+sha3             = "0.10"
 hmac             = "0.12"
 rsa              = "0.9"
+aes-gcm          = "0.10"
+chacha20poly1305 = "0.10"
+ed25519-dalek    = { version = "2", features = ["rand_core"] }
+x25519-dalek     = "2"
+generic-array    = "0.14"
+
+# Matrix / linear algebra for ML features
+ndarray          = "0.15"
+
+# Ordered collections for policy verifier
+indexmap         = "2"
+
+# HTTP server for management API & health endpoint + WebSocket
+axum             = { version = "0.7", features = ["tokio", "ws"] }
+tower            = "0.4"
+tower-http       = { version = "0.5", features = ["cors", "trace"] }
+
+# DNS parsing for dns_security engine
+trust-dns-proto  = "0.23"
+
+# Bloom filter for DNS NRD detection and threat rules engine
+bloomfilter      = "1"
+
+# RL policy engine — no external ML dep needed (pure Rust Q-table)
+# QUIC/HTTP3 inspector — pure Rust QUIC parsing (no quinn runtime needed)
+# Compliance / formal verification — pure logic, no extra deps
+# TPM attestation — pure-Rust simulation (real TPM via tpm2-tss-rs if available)
+# Homomorphic sharing — Paillier PHE implemented in pure Rust (big integers)
+num-bigint       = "0.4"
+num-traits       = "0.2"
+
+# Async utilities
+futures          = "0.3"
+
+# IP address utility
+# (ipnetwork already present)
+
+# Process ID type used in SBOM / UEBA
+libc             = "0.2"
+
+# Merkle tree / hash chaining for forensics chain of custody
+# (using sha2 + vec for Merkle — no extra dep needed)
+
+# Windows-specific real WFP API surface
+[target.'cfg(target_os = "windows")'.dependencies]
+windows-sys = { version = "0.52", features = [
+    "Win32_Foundation",
+    "Win32_NetworkManagement_WindowsFilteringPlatform",
+    "Win32_Security",
+    "Win32_System_SystemServices",
+    "Win32_System_Rpc",
+] }
 
 [profile.dev]
 opt-level = 0

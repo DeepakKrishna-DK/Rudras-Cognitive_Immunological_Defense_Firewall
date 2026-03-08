@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #020617;
+  --panel: #0f172a;
+  --border: #1e293b;
+  --accent: #06b6d4;
+  --danger: #ef4444;
+  --warn: #f59e0b;
+  --safe: #10b981;
+  --info: #3b82f6;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background: #020617;
+  color: #e2e8f0;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Subtle grid background on main content */
+.soc-grid-bg {
+  background-image: linear-gradient(rgba(6,182,212,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(6,182,212,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Glow effects */
+.glow-cyan  { box-shadow: 0 0 12px rgba(6,182,212,0.4); }
+.glow-red   { box-shadow: 0 0 12px rgba(239,68,68,0.5); }
+.glow-green { box-shadow: 0 0 12px rgba(16,185,129,0.4); }
+
+/* Status dot */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.status-dot.online  { background: #10b981; box-shadow: 0 0 6px #10b981; }
+.status-dot.warning { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+.status-dot.danger  { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+
+/* Panel style */
+.soc-panel {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 0.75rem;
+}
+
+/* Tag badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.badge-danger  { background: rgba(239,68,68,0.15);   color: #ef4444;  border: 1px solid rgba(239,68,68,0.3); }
+.badge-warn    { background: rgba(245,158,11,0.15);  color: #f59e0b;  border: 1px solid rgba(245,158,11,0.3); }
+.badge-safe    { background: rgba(16,185,129,0.15);  color: #10b981;  border: 1px solid rgba(16,185,129,0.3); }
+.badge-info    { background: rgba(59,130,246,0.15);  color: #3b82f6;  border: 1px solid rgba(59,130,246,0.3); }
+.badge-accent  { background: rgba(6,182,212,0.15);   color: #06b6d4;  border: 1px solid rgba(6,182,212,0.3); }
+
+/* Animate scanning line */
+@keyframes scanline {
+  0%   { top: 0; }
+  100% { top: 100%; }
+}
+.scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(6,182,212,0.5), transparent);
+  animation: scanline 3s linear infinite;
+  pointer-events: none;
+}
+
+/* Typewriter blinking cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.cursor { animation: blink 1s step-end infinite; }
+
+/* Attack beam animation on canvas */
+@keyframes beam {
+  0%   { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+/* Ripple effect */
+@keyframes ripple {
+  0%   { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+.ripple {
+  animation: ripple 1.5s ease-out infinite;
+}
+
+/* Fade in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.4s ease; }
+
+/* Table row hover */
+.soc-table tr:hover td { background: rgba(30,41,59,0.5); }
