@@ -7,7 +7,7 @@
 [![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange.svg)](https://rust-lang.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)]()
 [![Status](https://img.shields.io/badge/in%20development-brightgreen.svg)]()
-[![Version](https://img.shields.io/badge/Version-4.0-blueviolet.svg)]()
+[![Version](https://img.shields.io/badge/Version-4.0-alpha-blueviolet.svg)]()
 [![Modules](https://img.shields.io/badge/Security%20Modules-40%2B-blue.svg)]()
 [![IDS Rules](https://img.shields.io/badge/IDS%20Rules-71%20Categories%20%7C%2085%20Signatures-brightgreen.svg)]()
 [![Attack Coverage](https://img.shields.io/badge/Attack%20Coverage-70%2B%20Types-red.svg)]()
