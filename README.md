@@ -6,15 +6,17 @@
 
 [![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange.svg)](https://rust-lang.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)]()
-[![Status](https://img.shields.io/badge/status-in%20development%20(alpha)-informational.svg)]()
-[![Version](https://img.shields.io/badge/Version-3.1%20Alpha-blueviolet.svg)]()
-[![IDS Rules](https://img.shields.io/badge/IDS%20Rules-75%2B%20Categories%20%7C%2068%2B%20Signatures-brightgreen.svg)]()
+[![Status](https://img.shields.io/badge/in%20development-brightgreen.svg)]()
+[![Version](https://img.shields.io/badge/Version-4.0-blueviolet.svg)]()
+[![Modules](https://img.shields.io/badge/Security%20Modules-40%2B-blue.svg)]()
+[![IDS Rules](https://img.shields.io/badge/IDS%20Rules-71%20Categories%20%7C%2085%20Signatures-brightgreen.svg)]()
 [![Attack Coverage](https://img.shields.io/badge/Attack%20Coverage-70%2B%20Types-red.svg)]()
+[![Threat Intel](https://img.shields.io/badge/Threat%20Intel-24%2C358%20IPs%20%7C%201.25M%20Domains-orange.svg)]()
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 
 **A next-generation, self-healing firewall that thinks like an immune system.**
 
-*Last Updated: March 6, 2026 — v3.1 Alpha*
+*Last Updated: March 8, 2026 — v4.0*
 
 </div>
 
@@ -27,7 +29,7 @@
 2. [💡 Why I Built Rudras](#-why-i-built-rudras)
 3. [🛡️ What is Rudras?](#️-what-is-rudras)
 4. [🧠 The Philosophy — From Wall to Nervous System](#-the-philosophy--from-wall-to-nervous-system)
-5. [⚙️ Core Enterprise Capabilities (v3.1)](#️-core-capabilities-v31)
+5. [⚙️ Core Enterprise Capabilities (v4.0)](#️-core-capabilities-v40)
 6. [🗏️ Dual-Mode Architecture & Deployment](#️-dual-mode-architecture)
 7. [🧬 The CyberImmune System](#-the-cyberimmune-system)
 8. [🎯 Threat Intelligence & IOC Feeds](#-threat-intelligence--ioc-feeds)
@@ -113,27 +115,79 @@ Rudras doesn't ask *"Is this on the target blocklist?"* It asks *"Does this beha
 
 ---
 
-## ⚙️ Core Capabilities (v3.0)
+## ⚙️ Core Capabilities (v4.0)
 
-Rudras natively integrates modules that typically require half a dozen separate commercial appliances:
+Rudras integrates **40+ security modules** — capabilities that typically require an entire enterprise security stack:
 
+### 🔵 Foundation Layer
 | Module | Status | What It Does |
 |--------|--------|--------------|
 | 🧬 **CyberImmune Engine** | ✅ Active | Self-healing ML with **Adaptive Trust** and **Immutable State Anchors** stopping Boiling-Frog data poisoning. |
-| 🛡️ **Zero-Trust Anti-Tamper** | ✅ Active | Detects unauthorized sniffers (Wireshark, IDA Pro, Ghidra) in **warn-only** mode by default — no forcible termination unless explicitly opted in. |
-| 🔐 **ZKDPI & Hybrid Vault** | ✅ Active | Generates SHA-256 process hashes. An **Adaptive RSA Dropper** prevents Crypto-DoS while maintaining Asymmetric Decryption vaults. |
-| 🔥 **Core WAF Engine** | ✅ Active | Deep Packet Inspection stops Log4j, SQLi, and Remote Code Execution (RCE) natively. |
-| 🌐 **Swarm Consensus** | ✅ Active | Distributed protocols safely degrade to local **Island Mode** during physical infrastructure failures. |
-| 🦠 **Active C2 Defense** | ✅ Active | Blocks Cobalt Strike & Meterpreter beacons dynamically based on stager signatures. |
-| 🔌 **Protocol Anti-Evasion** | ✅ Active | Shuts down Nmap Null scans, XMAS scans, and SYN-FIN evasion packets at Layer 0. |
-| 🎯 **IOC-Based Threat Blocking** | ✅ Active | Replaces blunt country blocks with **precision IOC blocking** — specific malicious IPs and domains from 6 live feeds updated every 60 min. |
-| 🌍 **Malicious Domain Blocking** | ✅ Active | DNS-layer blocking checks every query against ThreatFox C2 domains and URLhaus delivery hosts before any connection opens. |
-| 🏰 **CIP Whitelisting** | ✅ Active | **Critical Infrastructure Protection** dynamically prevents blocking essential services unless malware is proven mathematically. |
-| 🔗 **Layer 2 Security** | ✅ Active | Analyzes MAC anomalies to stop ARP Spoofing and Cache Poisoning at the Data Link layer. |
-| 📊 **SIEM Integration** | ✅ Active | Splunk HEC and ELK Stack integrations use native **Structured JSON Logging** for instant index ingestion without regex parsers. |
-| 🧩 **Ransomware Sandbox** | ✅ Active | Analyzes SMB payload entropy dynamically to kill encryption attempts at Layer 7 (Shannon entropy > 7.85/8.0 = instant block). |
-| 🪤 **Deception Network** | ✅ Active | Honeypot ports (FTP, MySQL) snare attackers and harvest zero-day payloads for the AI. |
-| 🏙️ **Micro-Segmentation** | ✅ Active | 8 strict security zones designed with intra-VLAN lateral movement detection limiters. |
+| 🔥 **Core WAF/DPI Engine** | ✅ Active | Deep Packet Inspection stops Log4j, SQLi, and RCE natively. Full OWASP A01–A10. |
+| 🔍 **IDS Engine** | ✅ Active | **85 Snort-style rules \| 71 categories** covering 70+ attack types across 12 attack families. |
+| 🛡️ **IPS Engine** | ✅ Active | Inline prevention: TCP-RST, WFP kernel block, rate-limit, quarantine. Escalating penalty system. |
+| 🔷 **WFP Kernel Enforcer** | ✅ Active | Windows Filtering Platform kernel-level IP blocking — zero userspace overhead. |
+| 🔀 **WinDivert Inspector** | ✅ Active | Selective deep inspection of suspicious flows with full packet rewrite capability. |
+| 🔬 **Npcap Forensic** | ✅ Active | Passive ring-layer forensic capture for AI training data and post-incident analysis. |
+| 🧠 **AI Engine** | ✅ Active | 4-layer adaptive threat scoring: EMA profiles + Isolation Forest + Hoeffding Tree + SGD. |
+| 🔗 **Layer 2 Security** | ✅ Active | ARP spoofing, cache poisoning detection at the Data Link layer. |
+| 📦 **Stateful Flow Tracker** | ✅ Active | Per-connection state machine with risk scoring for all TCP/UDP sessions. |
+
+### 🟢 Intelligence & Blocking Layer
+| Module | Status | What It Does |
+|--------|--------|--------------|
+| 🎯 **Threat Intelligence** | ✅ Active | **24,358 malicious IPs + 617 domains** from 6 live feeds (Feodo/SSLBL/CINS/ET/ThreatFox/URLhaus), auto-refreshed every 60 min. |
+| 🛑 **Comprehensive Blocker** | ✅ Active | **84,501 malware signatures \| 1,250,000 blocked domains \| 15 bogon ranges**. Full spectrum blocking. |
+| 🌍 **DNS Security Engine** | ✅ Active | RPZ, DNS tunneling detection, rebinding prevention, DoH analysis, DGA scoring. |
+| 🏰 **CIP Whitelisting** | ✅ Active | Critical Infrastructure Protection — essential services cannot be false-positive blocked. |
+| 🎯 **IOC-Based Precision Blocking** | ✅ Active | Replaces blunt country blocks with per-IP/domain IOC verification — zero collateral damage. |
+| 🦠 **Active C2 Defense** | ✅ Active | Cobalt Strike, Meterpreter, Sliver, Mythic, Empire beacon signatures. |
+
+### 🟡 Enterprise Security Layer
+| Module | Status | What It Does |
+|--------|--------|--------------|
+| 🔐 **Zero Trust Engine** | ✅ Active | Identity-aware policy engine — AD/SAML/OAuth + device posture scoring (min 70%, 30d patch age). |
+| 🏙️ **Micro-Segmentation** | ✅ Active | 8 security zones (dmz/app/db/finance/research/corporate/guest/mgmt) with lateral movement detection. |
+| 🛡️ **Anti-Tamper** | ✅ Active | Detects debuggers, sniffers, reverse engineering tools in **warn-only** mode by default. |
+| 🖥️ **Endpoint Security** | ✅ Active | Host-based process + posture monitor, LOLBin detection, alert-only with 10s scan interval. |
+| 🎯 **Attribution Engine** | ✅ Active | Probabilistic attack attribution mapped to MITRE ATT&CK, confidence threshold 60%. |
+| 📊 **SIEM Hub** | ✅ Active | Splunk HEC + ELK Stack + QRadar syslog — structured JSON, no regex parsers needed. |
+| 🌐 **Distributed Immunity** | ✅ Active | P2P gossip IOC sharing; degrades to standalone Island Mode without peers. |
+| ⛅ **Cloud Native** | ✅ Active | Container escape detection, Kubernetes API attacks, IMDS probe blocking, mTLS anomaly detection. |
+
+### 🔴 Research-Grade Modules (v4.0)
+| Module | Status | What It Does |
+|--------|--------|--------------|
+| 🔬 **Federated Learning** | ✅ Active | Privacy-preserving distributed ML model updates — no raw data leaves nodes. |
+| 🪤 **Adaptive Honeypot** | ✅ Active | Interactive deception personas, canary tokens, TTP tracking of live attackers. |
+| 🤖 **SOAR Engine** | ✅ Active | Automated playbook execution, alert triage, and threat containment workflows. |
+| 🕵️ **UEBA Engine** | ✅ Active | User/entity behavioral profiling — baseline deviation scoring with geo-clustering. |
+| 🏭 **OT/ICS Protocol Guard** | ✅ Active | Modbus, DNP3, EtherNet/IP industrial protocol anomaly detection. |
+| 🔑 **Post-Quantum Crypto** | ✅ Active | NIST FIPS 203/204/205 lattice-based key exchange — quantum-resistant channels. |
+| 📊 **GNN Threat Engine** | ✅ Active | Graph Neural Network lateral movement detection across network topology. |
+| 📐 **Formal Verification** | ✅ Active | Static policy analysis — shadow rules, conflicts, redundancy elimination. |
+| 🔑 **TPM Attestation** | ✅ Active | TPM 2.0 device attestation for Zero Trust posture verification. |
+| 🎲 **RL Adaptive Policy** | ✅ Active | Q-learning reinforcement agent auto-tuning block/allow decisions over time. |
+| 🎭 **MTD Engine** | ✅ Active | Moving Target Defense — IP hopping, port randomization, decoy deployment. |
+| 🔏 **Homomorphic IOC Sharing** | ✅ Active | Paillier + PSI + Shamir secret sharing for privacy-preserving IOC collaboration. |
+| 📧 **Email Security** | ✅ Active | SPF/DKIM/DMARC validation, BEC detection, attachment + URL analysis. |
+| 🛡️ **RASP Engine** | ✅ Active | Runtime Application Self-Protection — in-process attack blocking. |
+| 🔐 **Secure Channel** | ✅ Active | TLS 1.3 mTLS, cert pinning, CT log verification, replay guard. |
+| 🧪 **ETA Engine** | ✅ Active | Encrypted Traffic Analysis — threat classification without decryption. |
+| 📋 **SBOM Engine** | ✅ Active | Software Bill of Materials generation (CycloneDX 1.4) for supply chain visibility. |
+| 🔍 **Supply Chain Verifier** | ✅ Active | SLSA verification, hash pinning, typosquat detection, transitive taint analysis. |
+| 🔎 **Threat Hunt Engine** | ✅ Active | MITRE ATT&CK hypothesis hunting, IOC pivot analysis, campaign clustering. |
+| 📡 **Network DPI-ML** | ✅ Active | Online logistic regression + K-Means anomaly detection on live traffic. |
+| ⚙️ **eBPF/XDP Offload** | ✅ Active | Cross-platform XDP packet offload framework. |
+| 📏 **P4 Hardware Offload** | ✅ Active | P4-programmable data plane offload. |
+| ⚖️ **Compliance Engine** | ✅ Active | GDPR / PCI-DSS v4 / HIPAA / NIST CSF 2.0 / ISO 27001 continuous compliance checks. |
+| 🔬 **QUIC Inspector** | ✅ Active | QUIC long-header parsing, 0-RTT replay detection, connection migration tracking. |
+| 📜 **Threat Rules Engine** | ✅ Active | YARA + Sigma-style custom rule engine for bespoke IOC matching. |
+| 🔗 **Forensics Chain** | ✅ Active | Immutable SHA3-256 chained audit log for tamper-evident forensic evidence. |
+| 🔏 **Differential Privacy** | ✅ Active | Laplace-noise perturbation on telemetry exports — GDPR-compliant metrics sharing. |
+| 📡 **Management REST API** | ✅ Active | Axum-based API on `127.0.0.1:9091` — SHA3-256 auth, RBAC, hot-reload. |
+| 🧠 **LLM Explainability** | ✅ Active | Natural language alert explanations and MITRE ATT&CK technique narration. |
+| 🧪 **Policy Verifier** | ✅ Active | Runtime policy correctness proofs — conflict detection before enforcement. |
 
 ---
 
@@ -181,11 +235,35 @@ Rudras abstracts backend logic into `config/rudras.toml` to allow SOC Administra
   - `promiscuous_capture` — host traffic only by default; set `true` only when you own the full network segment.
   - `block_anonymization_networks` — Tor/I2P not blocked by default; enable only when required by policy.
 
+### 📊 Metrics Server (v4.0)
+Rudras exposes a Prometheus-compatible metrics endpoint on startup:
+```
+URL:  http://127.0.0.1:9091/metrics   (loopback only — never exposed externally)
+Auth: X-Rudras-Auth: <token>           (ephemeral per-run, logged at startup)
+```
+The token is printed in the startup log line:
+```
+INFO  Metrics server listening on 127.0.0.1:9091  token=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+```
+To pin a fixed token across restarts: `$env:RUDRAS_METRICS_TOKEN = "your-token"` before launching.
+
+### 🖥️ SOC Dashboard (v4.0)
+A real-time web SOC dashboard is included under `Frontend/` — built with **Next.js 14 + TypeScript + Tailwind CSS**.
+
+```powershell
+cd Frontend
+npm install
+npm run dev        # Development: http://localhost:3000
+npm run build      # Production build
+```
+
+Features: Live attack feed, IDS/IPS alert timeline, AI analysis panel, threat intelligence overview, glassmorphism UI with futuristic neon aesthetic.
+
 ---
 
 ## 🎯 Threat Intelligence & IOC Feeds
 
-v3.0 replaces blunt country-level GeoIP blocking with **precision IOC-based blocking** from 6 live threat feeds, updated automatically every 60 minutes:
+Rudras replaces blunt country-level GeoIP blocking with **precision IOC-based blocking** from 6 live threat feeds, updated automatically every 60 minutes:
 
 | Feed | Source | Blocks | Confidence |
 |------|--------|--------|------------|
@@ -207,7 +285,7 @@ Country-level blocking catches ~1.4 billion legitimate users while determined at
 
 ## 🔍 IDS/IPS Attack Detection Taxonomy
 
-Rudras v3.1 implements the complete **Firewall + IDS + IPS detection taxonomy** — 75+ detection categories, 68+ signature rules, covering every attack family that can be realistically detected at the network layer.
+Rudras v4.0 implements the complete **Firewall + IDS + IPS detection taxonomy** — 71 detection categories, 85 signature rules, covering every attack family that can be realistically detected at the network layer.
 
 ### 🦠 1. Malware & Botnet Communication
 Detected via C2 traffic patterns, mining pool connections, and credential spray signatures.
@@ -354,8 +432,8 @@ Full OWASP Top 10 coverage mapped to MITRE ATT&CK techniques.
 |-----------|----------|
 | **MITRE ATT&CK** | 26+ techniques across all 14 tactics |
 | **OWASP Top 10 (2021)** | All 10 risk categories (A01–A10) |
-| **IDS Categories** | 75+ distinct detection categories |
-| **Signature Rules** | 68+ Snort-style rules with byte + text patterns |
+| **IDS Categories** | 71 distinct detection categories |
+| **Signature Rules** | 85 Snort-style rules with byte + text patterns |
 | **Behavioral Detectors** | 15+ statistical/rate-based behavioral engines |
 | **Total Attack Types** | **70+ realistically detectable attacks** |
 
@@ -395,8 +473,21 @@ rustup component add clippy rustfmt
 
 # Build release binary
 cargo build --release
-# Output: target\release\rudras.exe  (~4.9 MB)
+# Output: target\release\rudras.exe
+
+# Run (interactive mode selection)
+.\target\release\rudras.exe
+
+# Run with explicit mode (skip prompt)
+.\target\release\rudras.exe --mode client
+.\target\release\rudras.exe --mode server
+
+# SOC Dashboard (separate terminal)
+cd Frontend ; npm install ; npm run dev
+# Dashboard: http://localhost:3000
 ```
+
+> **Note — Timestamps:** All log output (console + rolling file) uses **IST (UTC+5:30)** format: `2026-03-08T21:34:50.045917+05:30`.
 
 ---
 
@@ -484,8 +575,9 @@ Rudras was built systematically in structured phases, each verifying a crucial p
 - **🧬 Phase 3 — CyberImmune System:** The ML architecture. Graduated responses scaling automatically based on statistical drift deviations, preventing false positives, and saving rules to disk.
 - **🌐 Phase 4 — Distributed Immunity:** Expanding the logic across a theoretical Swarm using peer-to-peer Gossip to sync Quorum rules.
 - **⚖️ Phase 5 — Ethics & Precision (v3.0):** Full ethical/legal audit. Country blocking replaced with 6-feed IOC precision blocking. DNS-layer malicious domain enforcement added. All legally-sensitive behaviours made explicit opt-in. Interactive deployment mode prompt added.
-- **🔍 Phase 6 — Complete IDS/IPS Taxonomy (v3.1):** Expanded IDS engine from 22 to **75+ detection categories**. Added 58 new Snort-style signature rules (rules 7001–17003). Implemented all 12 attack families from the industry-standard Firewall+IDS+IPS taxonomy. Added MITRE ATT&CK mapping for 26+ new techniques. Full OWASP A01–A10 coverage. New behavioral detectors for UDP flood, HTTP flood, password spraying, zero-day anomaly, Ping of Death, Smurf, Fraggle, and cryptojacking.
-
+- **🔍 Phase 6 — Complete IDS/IPS Taxonomy (v3.1):** Expanded IDS engine from 22 to 75+ detection categories. Added 58 new Snort-style signature rules (IDs 7001–17003). All 12 attack families. MITRE ATT&CK mapping for 26+ techniques. Full OWASP A01–A10 coverage.
+- **🧠 Phase 7 — Research-Grade Modules (v4.0):** Added **30+ research-grade modules** — Federated Learning, GNN threat engine, UEBA, SOAR, deception network, OT/ICS protocol guard, post-quantum cryptography, formal verification, TPM attestation, RL adaptive policy, Moving Target Defense, homomorphic IOC sharing, SBOM/supply chain, email security, RASP, secure channels, ETA engine, QUIC deep inspection, YARA/Sigma rules engine, eBPF/XDP offload, P4 hardware offload, compliance engine, LLM explainability, differential privacy, REST management API, immutable forensics chain, DNS security, threat hunt, network DPI-ML, policy verifier.
+- **🖥️ Phase 8 — SOC Dashboard & IST Logging (v4.0):** Real-time Next.js 14 SOC dashboard with glassmorphism UI, live attack feed, AI analysis panel. All timestamps converted to **IST (UTC+5:30)** using `tracing-subscriber ChronoLocal`. Prometheus-compatible metrics server on port 9091 with ephemeral auth token.
 ---
 
 ## 📚 Engineering Research & Secrets
@@ -511,21 +603,20 @@ To prevent reverse-engineering of the biological algorithms, absolute execution 
 
 ## 🔭 Future Vision & Platforms
 
-Rudras v3.0 establishes the strongest possible foundation for an autonomous firewall. The next frontier involves extending its native reach.
+Rudras v4.0 establishes the strongest possible foundation for an autonomous, research-grade security platform. The next frontier involves extending its native reach across all infrastructure.
 
 ### 🌍 Current Supported Base:
 - 🪟 **Windows 10 / Windows 11 Enterprise** via `Npcap` and `WinDivert` ring-layer interceptors.
+- 🌐 **SOC Dashboard** — any browser via `http://localhost:3000` (Next.js 14).
 
-### 📜 Coming Soon...
+### 📜 Roadmap
 
-To truly secure the world, Rudras must exist natively across all infrastructure backbones:
-
-| Platform | Technology | Target Throughput |
-|----------|-----------|-------------------|
-| 🐧 **Linux (Servers & Clouds)** | Direct `eBPF` + `XDP` integrations | Up to 100 Gbps |
-| 🍎 **macOS** | Apple Network Extensions | Endpoint-scale |
-| 📱 **iOS & Android** | Lightweight mobile packet-filter nodes | Mobile-scale |
-| 🔐 **Post-Quantum Cryptography** | Lattice-based NIST PQC standards | All platforms |
+| Platform | Technology | Status | Target Throughput |
+|----------|-----------|--------|-------------------|
+| 🐧 **Linux (Servers & Clouds)** | `eBPF` + `XDP` (module exists) | 🔄 In progress | Up to 100 Gbps |
+| 🍎 **macOS** | Apple Network Extensions | 📋 Planned | Endpoint-scale |
+| 📱 **iOS & Android** | Lightweight mobile packet-filter nodes | 📋 Planned | Mobile-scale |
+| 🔐 **Post-Quantum Cryptography** | NIST FIPS 203/204/205 (module active) | ✅ Implemented | All platforms |
 
 ---
 
@@ -533,28 +624,33 @@ To truly secure the world, Rudras must exist natively across all infrastructure 
 
 **Repository:** [github.com/DeepakKrishna-DK/Rudras](https://github.com/DeepakKrishna-DK/Rudras)  
 **Branch:** `main`  
-**Latest Commit:** `e8636e8` — v3.1 Alpha: Complete IDS/IPS attack taxonomy (70+ attack types)  
+**Latest Commit:** `main` — v4.0: 40+ modules, SOC dashboard, IST logging, Prometheus metrics  
 **License:** Proprietary — All Rights Reserved. See [LICENSE](LICENSE) for full terms.
 
 ## 📋 Changelog
 
+### v4.0 — March 8, 2026
+- ➕ **20+ new research-grade security modules** (Federated Learning, GNN, UEBA, SOAR, Deception, OT/ICS, Post-Quantum, Formal Verification, TPM, RL Policy, MTD, Homomorphic Sharing, Email Security, RASP, Secure Channel, ETA, SBOM, Supply Chain Verifier, Network DPI-ML, Threat Hunt, eBPF/XDP, P4 Offload, Compliance Engine, QUIC Inspector, Threat Rules Engine, Forensics Chain, Differential Privacy, LLM Explainability, Policy Verifier, Adaptive Honeypot)
+- ➕ **SOC Dashboard** — Next.js 14 + TypeScript + Tailwind CSS real-time web UI
+- ➕ **IST (UTC+5:30) logging** — all timestamps in console and rolling log files
+- ➕ **Prometheus metrics server** on `127.0.0.1:9091` with ephemeral SHA3-256 auth token
+- ➕ **REST Management API** (axum, RBAC, hot-reload) on port 9091
+- ➕ IDS engine: **85 rules | 71 categories** (up from 68/75)
+- ➕ Threat Intel: **24,358 malicious IPs | 1,250,000 blocked domains** loaded from persistent cache
+- 🔧 All modules report live stats to metrics and SIEM on 5-minute intervals
+- 🔧 `tracing-subscriber` upgraded with `chrono` feature for ChronoLocal IST formatting
+
 ### v3.1 Alpha — March 6, 2026
-- ➕ Expanded `IdsCategory` from 22 → **75+ detection categories**
-- ➕ Added **58 new signature rules** (IDs 7001–17003) covering all 12 attack families
-- ➕ Added **26 new MITRE ATT&CK technique constants** in `framework_alignment.rs`
-- ➕ Full **OWASP Top 10 (A01–A10)** coverage in `map_ids_category()`
-- ➕ New behavioral detectors: UDP flood, HTTP flood, password spraying, zero-day anomaly, Ping of Death, Smurf, Fraggle, cryptojacking, traffic volume anomaly
-- ➕ Extended `inspect_http()`: CSRF, HTTP smuggling, open redirect, RFI, LFI, insecure deserialization, API enumeration
-- ➕ Cloud/Kubernetes/container attack detection (IMDS, Docker socket, K8s API)
-- ➕ Wireless attack detection (evil twin, Wi-Fi deauth, WPA PMKID)
-- ➕ Cryptographic attack detection (TLS downgrade, padding oracle, BEAST)
-- ➕ Insider/supply chain network indicators
-- 🔧 `IdsEngine::new()` now dynamically reports rule count and category count at startup
+- ➕ Expanded `IdsCategory` from 22 → 75+ detection categories
+- ➕ Added 58 new signature rules (IDs 7001–17003) covering all 12 attack families
+- ➕ 26 new MITRE ATT&CK technique constants, full OWASP A01–A10 coverage
+- ➕ New behavioral detectors: UDP flood, HTTP flood, password spraying, zero-day anomaly, Ping of Death, Smurf, Fraggle, cryptojacking
+- ➕ Cloud/Kubernetes/container, wireless, cryptographic, and insider attack detection
 
 ### v3.0 Alpha — February 2026
 - Full ethical/legal audit + IOC-based precision blocking
 - DNS-layer malicious domain enforcement
-- Interactive deployment mode selector
+- Interactive deployment mode selector (Client / Server / Auto)
 - 6-feed threat intelligence integration
 
 ### v2.x — January 2026
