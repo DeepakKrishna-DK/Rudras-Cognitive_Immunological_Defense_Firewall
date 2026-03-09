@@ -45,6 +45,8 @@
 18. [📋 Changelog](#-changelog)
 19. [🗂️ Version Control & Repository Status](#️-version-control--repository-status)
 20. [📚 References & Bibliography](#-references--bibliography)
+21. [📢 Acknowledgments](#-acknowledgments)
+22. [🔒 License](#-license)
 
 ---
 
@@ -873,6 +875,23 @@ All crate licenses are confirmed compatible with proprietary distribution under 
 > **Attribution Notice:** All registered trademarks (MITRE ATT&CK®, Splunk®, Cobalt Strike®, Metasploit®, Elasticsearch®, IBM QRadar®) are the property of their respective owners. References are made solely for technical identification and interoperability purposes — no affiliation, endorsement, or sponsorship is implied.
 
 ---
+
+## Acknowledgments
+
+This project was made possible through the knowledge, research, and contributions of many individuals and communities.
+
+Special thanks to:
+
+- Security researchers whose research papers and documentation helped shape the foundational concepts behind this project.
+- Textbook authors and academic writers whose work contributed to the theoretical understanding of cybersecurity and network defense.
+- Developers and open-source contributors whose documentation and technical resources supported the development process.
+- Claude AI for assisting in debugging Rust programming errors, suggesting improvements, and introducing new methods and approaches that helped enhance the implementation of this project.
+- My team members and well-wishers for their encouragement, feedback, and continuous support throughout the development of this project.
+
+## License
+
+This project is licensed under the terms specified in the LICENSE file included in this repository.
+See [License]()
 
 ## 🤝 Philosophy & Ethics
 
