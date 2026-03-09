@@ -891,7 +891,7 @@ Special thanks to:
 ## License
 
 This project is licensed under the terms specified in the LICENSE file included in this repository.
-See [License]()
+See [License](LICENSE)
 
 ## 🤝 Philosophy & Ethics
 
