@@ -45,8 +45,8 @@
 18. [📋 Changelog](#-changelog)
 19. [🗂️ Version Control & Repository Status](#️-version-control--repository-status)
 20. [📚 References & Bibliography](#-references--bibliography)
-21. [📢 Acknowledgments](#-acknowledgments)
-22. [🔒 License](#-license)
+21. [📢 Acknowledgments](#acknowledgments)
+22. [🔒 License](#license)
 
 ---
 
