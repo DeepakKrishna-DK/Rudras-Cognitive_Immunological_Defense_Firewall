@@ -1,0 +1,183 @@
+===========================================
+ RUDRAS AI/ML ENGINE TEST RESULTS          
+===========================================
+
+[--- RAW AI ENGINE LOG DETECTIONS ---]
+[IDS Heuristics]  🔍 IDS HIGH     [SID:9013] 172.26.107.71 → 1.1.1.1: Cryptojacking - Connection to Mining Pool Port
+[Q-Learning Risk AI]  🔌 RST 172.26.107.71:61146 → 1.1.1.1:9999 inject failed: An invalid argument was supplied. (os error 10022)
+[Q-Learning Risk AI]  🔌 RST 1.1.1.1:9999 → 172.26.107.71:61146 inject failed: An invalid argument was supplied. (os error 10022)
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv4]: 172.26.107.71 → 8.8.8.8:12345 | Well-known Trojan/RAT port 12345
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2401:4900:4aa1:5c61::8c → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2401:4900:4aa1:5c61::8c → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:15002] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Wi-Fi Deauthentication Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[WAF/Defense]  🔥 COMP-BLOCK [IPv6]: 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5 → 2001:4860:4802:36::223:443 | WAF: SQL Injection Attack
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
+[IDS Heuristics]  🔍 IDS [IPv6] High [SID:9001] 2001:4860:4802:36::223 → 2401:4900:4aa1:5c61:7984:3c52:96cb:d6b5: Port Scan Detected
