@@ -549,6 +549,127 @@ impl OwaspCategory {
     }
 }
 
+// ── New Framework Tag Types ───────────────────────────────────────────────────
+
+/// NIST SP 800-53 Rev 5 Control Family + Control ID
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct NistSp80053Tag {
+    pub family: &'static str,  // e.g. "SC" (System & Communications)
+    pub control: &'static str, // e.g. "SC-7" (Boundary Protection)
+    pub title: &'static str,
+}
+
+/// CIS Controls v8 Safeguard
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CisControlsTag {
+    pub control: u8,           // 1–18
+    pub safeguard: &'static str, // e.g. "4.1"
+    pub title: &'static str,
+    pub ig: u8,                // Implementation Group 1/2/3
+}
+
+/// CIS Benchmark hardening check
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CisBenchmarkTag {
+    pub benchmark: &'static str, // e.g. "CIS Windows Server 2022"
+    pub section:   &'static str, // e.g. "9.3.1"
+    pub title:     &'static str,
+}
+
+/// COBIT 2019 Governance / Management Objective
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CobitTag {
+    pub domain:    &'static str, // EDM / APO / BAI / DSS / MEA
+    pub objective: &'static str, // e.g. "DSS05"
+    pub title:     &'static str,
+}
+
+/// NERC CIP Standard + Requirement
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct NercCipTag {
+    pub standard:     &'static str, // e.g. "CIP-007"
+    pub requirement:  &'static str, // e.g. "R4"
+    pub sub_part:     &'static str, // e.g. "4.1"
+    pub title:        &'static str,
+}
+
+/// PCI DSS v4.0 Requirement
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PciDssTag {
+    pub requirement: &'static str, // e.g. "10.2"
+    pub title:       &'static str,
+}
+
+// ── Pre-defined tags for common mappings ──────────────────────────────────────
+
+pub mod nist_800_53 {
+    use super::NistSp80053Tag;
+    pub const BOUNDARY_PROTECTION: NistSp80053Tag = NistSp80053Tag { family: "SC", control: "SC-7",  title: "Boundary Protection" };
+    pub const AUDIT_EVENTS:        NistSp80053Tag = NistSp80053Tag { family: "AU", control: "AU-2",  title: "Event Logging" };
+    pub const AUDIT_REVIEW:        NistSp80053Tag = NistSp80053Tag { family: "AU", control: "AU-6",  title: "Audit Record Review" };
+    pub const INCIDENT_RESPONSE:   NistSp80053Tag = NistSp80053Tag { family: "IR", control: "IR-4",  title: "Incident Handling" };
+    pub const ACCESS_ENFORCEMENT:  NistSp80053Tag = NistSp80053Tag { family: "AC", control: "AC-3",  title: "Access Enforcement" };
+    pub const LEAST_PRIVILEGE:     NistSp80053Tag = NistSp80053Tag { family: "AC", control: "AC-6",  title: "Least Privilege" };
+    pub const MALICIOUS_CODE:      NistSp80053Tag = NistSp80053Tag { family: "SI", control: "SI-3",  title: "Malicious Code Protection" };
+    pub const INTRUSION_DETECT:    NistSp80053Tag = NistSp80053Tag { family: "SI", control: "SI-4",  title: "System Monitoring / IDS" };
+    pub const VULN_SCAN:           NistSp80053Tag = NistSp80053Tag { family: "RA", control: "RA-5",  title: "Vulnerability Monitoring" };
+    pub const CRYPTO_PROTECTION:   NistSp80053Tag = NistSp80053Tag { family: "SC", control: "SC-28", title: "Protection of Information at Rest" };
+    pub const DENIAL_OF_SERVICE:   NistSp80053Tag = NistSp80053Tag { family: "SC", control: "SC-5",  title: "Denial of Service Protection" };
+    pub const SECURE_NAME_SVC:     NistSp80053Tag = NistSp80053Tag { family: "SC", control: "SC-20", title: "Secure Name/Address Resolution" };
+}
+
+pub mod cis_controls {
+    use super::CisControlsTag;
+    pub const INVENTORY_HW:      CisControlsTag = CisControlsTag { control: 1,  safeguard: "1.1",  title: "Establish and Maintain Detailed Enterprise Asset Inventory", ig: 1 };
+    pub const INVENTORY_SW:      CisControlsTag = CisControlsTag { control: 2,  safeguard: "2.1",  title: "Establish and Maintain Software Inventory", ig: 1 };
+    pub const DATA_PROTECTION:   CisControlsTag = CisControlsTag { control: 3,  safeguard: "3.3",  title: "Configure Data Access Control Lists", ig: 1 };
+    pub const SECURE_CONFIG:     CisControlsTag = CisControlsTag { control: 4,  safeguard: "4.1",  title: "Establish and Maintain Secure Configuration", ig: 1 };
+    pub const ACCOUNT_MGMT:      CisControlsTag = CisControlsTag { control: 5,  safeguard: "5.1",  title: "Establish and Maintain Inventory of Accounts", ig: 1 };
+    pub const ACCESS_CONTROL:    CisControlsTag = CisControlsTag { control: 6,  safeguard: "6.1",  title: "Establish Access Granting/Revoking Process", ig: 1 };
+    pub const VULN_MGMT:         CisControlsTag = CisControlsTag { control: 7,  safeguard: "7.1",  title: "Establish Vulnerability Management Process", ig: 1 };
+    pub const AUDIT_LOG_MGMT:    CisControlsTag = CisControlsTag { control: 8,  safeguard: "8.2",  title: "Collect Audit Logs", ig: 1 };
+    pub const EMAIL_WEB_PROTECT: CisControlsTag = CisControlsTag { control: 9,  safeguard: "9.1",  title: "Ensure Use of Only Fully Supported Browsers", ig: 1 };
+    pub const MALWARE_DEFENSE:   CisControlsTag = CisControlsTag { control: 10, safeguard: "10.1", title: "Deploy and Maintain Anti-Malware Software", ig: 1 };
+    pub const DATA_RECOVERY:     CisControlsTag = CisControlsTag { control: 11, safeguard: "11.1", title: "Establish and Maintain Data Recovery Practice", ig: 1 };
+    pub const NETWORK_INFRA:     CisControlsTag = CisControlsTag { control: 12, safeguard: "12.1", title: "Ensure Network Infrastructure is Up-to-Date", ig: 1 };
+    pub const NETWORK_MONITOR:   CisControlsTag = CisControlsTag { control: 13, safeguard: "13.1", title: "Centralize Security Event Alerting", ig: 2 };
+    pub const SECURITY_AWARENESS:CisControlsTag = CisControlsTag { control: 14, safeguard: "14.1", title: "Establish Security Awareness Program", ig: 1 };
+    pub const SERVICE_PROVIDERS: CisControlsTag = CisControlsTag { control: 15, safeguard: "15.1", title: "Establish Inventory of Service Providers", ig: 1 };
+    pub const APP_SW_SECURITY:   CisControlsTag = CisControlsTag { control: 16, safeguard: "16.1", title: "Establish Secure Application Dev Process", ig: 2 };
+    pub const INCIDENT_RESPONSE: CisControlsTag = CisControlsTag { control: 17, safeguard: "17.1", title: "Designate Personnel to Manage Incident Handling", ig: 1 };
+    pub const PEN_TESTING:       CisControlsTag = CisControlsTag { control: 18, safeguard: "18.1", title: "Establish Penetration Testing Program", ig: 2 };
+}
+
+pub mod nerc_cip_tags {
+    use super::NercCipTag;
+    pub const ESP:            NercCipTag = NercCipTag { standard: "CIP-005", requirement: "R1", sub_part: "1.1", title: "Electronic Security Perimeter Definition" };
+    pub const EAP:            NercCipTag = NercCipTag { standard: "CIP-005", requirement: "R1", sub_part: "1.2", title: "Electronic Access Point Restriction" };
+    pub const DENY_DEFAULT:   NercCipTag = NercCipTag { standard: "CIP-005", requirement: "R1", sub_part: "1.3", title: "Default Deny at Electronic Security Perimeter" };
+    pub const MFA_REMOTE:     NercCipTag = NercCipTag { standard: "CIP-005", requirement: "R2", sub_part: "2.2", title: "MFA for Interactive Remote Access" };
+    pub const PORT_SVC_MGMT:  NercCipTag = NercCipTag { standard: "CIP-007", requirement: "R1", sub_part: "1.1", title: "Ports and Services Management" };
+    pub const SEC_EVENT_MON:  NercCipTag = NercCipTag { standard: "CIP-007", requirement: "R4", sub_part: "4.1", title: "Security Event Monitoring" };
+    pub const LOG_RETENTION:  NercCipTag = NercCipTag { standard: "CIP-007", requirement: "R4", sub_part: "4.2", title: "35-Day Log Retention" };
+    pub const FAILED_LOGIN:   NercCipTag = NercCipTag { standard: "CIP-007", requirement: "R4", sub_part: "4.3", title: "Failed Login Alerting (3 in 15 min)" };
+    pub const IR_PLAN:        NercCipTag = NercCipTag { standard: "CIP-008", requirement: "R1", sub_part: "1.1", title: "Incident Response Plan" };
+    pub const EISAC_REPORT:   NercCipTag = NercCipTag { standard: "CIP-008", requirement: "R1", sub_part: "1.2", title: "E-ISAC 1-Hour Notification" };
+    pub const SUPPLY_CHAIN:   NercCipTag = NercCipTag { standard: "CIP-013", requirement: "R1", sub_part: "1.3", title: "Software Integrity Verification" };
+}
+
+pub mod pci_dss_tags {
+    use super::PciDssTag;
+    pub const NETWORK_CTL:   PciDssTag = PciDssTag { requirement: "1.3",  title: "Restrict Inbound/Outbound Network Access" };
+    pub const NO_DEFAULTS:   PciDssTag = PciDssTag { requirement: "2.2",  title: "Develop Configuration Standards" };
+    pub const ENCRYPTION:    PciDssTag = PciDssTag { requirement: "4.2",  title: "Strong Cryptography in Transit" };
+    pub const MALWARE:       PciDssTag = PciDssTag { requirement: "5.2",  title: "Protect Against Malware" };
+    pub const SECURE_SYTEMS: PciDssTag = PciDssTag { requirement: "6.3",  title: "Identify and Manage Security Vulnerabilities" };
+    pub const ACCESS_CTRL:   PciDssTag = PciDssTag { requirement: "7.2",  title: "Access Control System(s)" };
+    pub const AUTH_MFA:      PciDssTag = PciDssTag { requirement: "8.4",  title: "MFA for Non-Console Admin Access" };
+    pub const LOGGING:       PciDssTag = PciDssTag { requirement: "10.2", title: "Implement Audit Logs" };
+    pub const VULN_SCAN:     PciDssTag = PciDssTag { requirement: "11.3", title: "External/Internal Vulnerability Scanning" };
+    pub const IDS_IPS:       PciDssTag = PciDssTag { requirement: "11.5", title: "Deploy IDS/IPS" };
+    pub const IR_PLAN:       PciDssTag = PciDssTag { requirement: "12.10",title: "Implement Incident Response Plan" };
+}
+
 // ── Unified Framework Tag ─────────────────────────────────────────────────────
 
 /// A single framework classification tag attached to an IDS alert.
@@ -557,22 +678,60 @@ impl OwaspCategory {
 pub enum FrameworkTag {
     Mitre(MitreTechnique),
     Owasp(OwaspCategory),
+    /// NIST SP 800-53 Rev 5 control
+    Nist80053(NistSp80053Tag),
+    /// CIS Controls v8 safeguard
+    CisControl(CisControlsTag),
+    /// CIS Benchmark hardening check
+    CisBenchmark(CisBenchmarkTag),
+    /// COBIT 2019 governance objective
+    Cobit(CobitTag),
+    /// NERC CIP standard + requirement
+    NercCip(NercCipTag),
+    /// PCI DSS v4.0 requirement
+    PciDss(PciDssTag),
 }
 
 impl FrameworkTag {
     /// Short log-friendly string for tracing macros
     pub fn short_label(&self) -> String {
         match self {
-            Self::Mitre(t)  => format!("MITRE:{}", t.effective_id()),
-            Self::Owasp(c)  => format!("OWASP:{}", c.id()),
+            Self::Mitre(t)        => format!("MITRE:{}", t.effective_id()),
+            Self::Owasp(c)        => format!("OWASP:{}", c.id()),
+            Self::Nist80053(n)    => format!("NIST:{}",   n.control),
+            Self::CisControl(c)   => format!("CIS-C:{}.{}", c.control, c.safeguard),
+            Self::CisBenchmark(b) => format!("CIS-B:{}", b.section),
+            Self::Cobit(c)        => format!("COBIT:{}",  c.objective),
+            Self::NercCip(n)      => format!("NERC:{}-{}.{}", n.standard, n.requirement, n.sub_part),
+            Self::PciDss(p)       => format!("PCI:{}",   p.requirement),
         }
     }
 
     /// Full structured description suitable for SIEM event fields
     pub fn full_log(&self) -> String {
         match self {
-            Self::Mitre(t) => t.log_line(),
-            Self::Owasp(c) => c.log_line(),
+            Self::Mitre(t)        => t.log_line(),
+            Self::Owasp(c)        => c.log_line(),
+            Self::Nist80053(n)    => format!("NIST SP 800-53 | {} — {}", n.control, n.title),
+            Self::CisControl(c)   => format!("CIS Controls v8 | {}.{} (IG{}) — {}", c.control, c.safeguard, c.ig, c.title),
+            Self::CisBenchmark(b) => format!("CIS Benchmark | {} §{} — {}", b.benchmark, b.section, b.title),
+            Self::Cobit(c)        => format!("COBIT 2019 | {} {} — {}", c.domain, c.objective, c.title),
+            Self::NercCip(n)      => format!("NERC CIP | {}-{} Part {} — {}", n.standard, n.requirement, n.sub_part, n.title),
+            Self::PciDss(p)       => format!("PCI DSS v4.0 | Req {} — {}", p.requirement, p.title),
+        }
+    }
+
+    /// Framework name prefix for grouping
+    pub fn framework_name(&self) -> &'static str {
+        match self {
+            Self::Mitre(_)        => "MITRE ATT&CK",
+            Self::Owasp(_)        => "OWASP Top 10",
+            Self::Nist80053(_)    => "NIST SP 800-53",
+            Self::CisControl(_)   => "CIS Controls v8",
+            Self::CisBenchmark(_) => "CIS Benchmarks",
+            Self::Cobit(_)        => "COBIT 2019",
+            Self::NercCip(_)      => "NERC CIP",
+            Self::PciDss(_)       => "PCI DSS v4.0",
         }
     }
 }
@@ -1018,6 +1177,14 @@ pub fn build_detection_matrix() -> Vec<DetectionMatrixRow> {
                         technique_id: c.id().into(),
                         technique_name: c.label().into(),
                         tactic_or_risk: c.label().into(),
+                    },
+                    // All new framework tags use generic short_label/full_log rendering
+                    other => DetectionMatrixRow {
+                        ids_category: format!("{:?}", cat),
+                        framework: other.framework_name().into(),
+                        technique_id: other.short_label(),
+                        technique_name: other.full_log(),
+                        tactic_or_risk: other.framework_name().into(),
                     },
                 };
                 rows.push(row);

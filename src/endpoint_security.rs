@@ -307,7 +307,7 @@ impl EndpointAgent {
             }
 
             // ── Tier 2: Suspicious dual-use tools ────────────────────────────
-            if new_alerts.last().map_or(true, |a| a.pid != pid_u32) {
+            if new_alerts.last().is_none_or(|a| a.pid != pid_u32) {
                 for (fragment, sev, detail, mitre) in SUSPICIOUS_DUAL_USE {
                     if name_lower.contains(fragment) {
                         if !alerted.contains(&pid_u32) {

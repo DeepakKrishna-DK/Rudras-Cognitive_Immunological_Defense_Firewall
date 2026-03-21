@@ -923,8 +923,8 @@ impl DpiEngine {
             }
         }
         // SMB2/3 magic: \xFESMB
-        else if payload.starts_with(b"\xfeSMB") {
-            if payload.len() > 12 {
+        else if payload.starts_with(b"\xfeSMB")
+            && payload.len() > 12 {
                 let command = u16::from_le_bytes([payload[12], payload[13]]);
                 result.command = Some(match command {
                     0x0000 => "NEGOTIATE",
@@ -950,7 +950,6 @@ impl DpiEngine {
                     _ => "SMB2/3".to_string(),
                 });
             }
-        }
 
         // WannaCry specific SMB pattern (DoublePulsar backdoor)
         if payload.len() > 36 && &payload[4..8] == b"LSMD" {
@@ -1005,11 +1004,10 @@ impl DpiEngine {
         let text = std::str::from_utf8(payload).unwrap_or("").to_string();
         let mut threats = Vec::new();
         // RETR / STOR commands in unexpected patterns
-        if text.starts_with("STOR ") || text.starts_with("RETR ") {
-            if text.to_lowercase().contains(".exe") || text.to_lowercase().contains(".ps1") {
+        if (text.starts_with("STOR ") || text.starts_with("RETR "))
+            && (text.to_lowercase().contains(".exe") || text.to_lowercase().contains(".ps1")) {
                 threats.push("FTP executable transfer detected".to_string());
             }
-        }
         DpiResult {
             protocol: DetectedProtocol::Ftp,
             http: None, tls: None, dns: None, quic: None, smb: None, ssh: None,

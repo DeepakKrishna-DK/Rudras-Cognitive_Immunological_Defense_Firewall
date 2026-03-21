@@ -52,7 +52,7 @@ impl QuicVersion {
             0x00000001 => Self::V1,
             0x6b3343cf => Self::V2,
             0x00000000 => Self::VersionNegotiation,
-            0xff000000..=0xff00001d => Self::Draft((v & 0xFF) as u32),
+            0xff000000..=0xff00001d => Self::Draft(v & 0xFF),
             _ => Self::Unknown(v),
         }
     }
@@ -187,8 +187,8 @@ pub fn parse_quic_long_header(data: &[u8]) -> Option<QuicLongHeader> {
 
     // Token (Initial packets only)
     let mut token = vec![];
-    if packet_type == QuicPacketType::Initial {
-        if pos < data.len() {
+    if packet_type == QuicPacketType::Initial
+        && pos < data.len() {
             let token_len = data[pos] as usize & 0x3F; // variable-length encoding (simplified)
             pos += 1;
             if pos + token_len <= data.len() {
@@ -196,7 +196,6 @@ pub fn parse_quic_long_header(data: &[u8]) -> Option<QuicLongHeader> {
                 pos += token_len;
             }
         }
-    }
 
     let remaining = data.len().saturating_sub(pos);
 

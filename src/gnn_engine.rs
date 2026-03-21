@@ -288,7 +288,7 @@ impl GnnEngine {
         }
 
         let count = self.total_flow_updates.fetch_add(1, Ordering::Relaxed);
-        if count % self.inference_interval == 0 {
+        if count.is_multiple_of(self.inference_interval) {
             self.run_inference();
         }
     }
@@ -326,7 +326,7 @@ impl GnnEngine {
 
             // Layer 2: re-aggregate
             let h_neighbor2: Vec<[f32; NODE_FEAT_DIM]> = neighbor_feats.iter()
-                .map(|f| { let mut arr = [0.0f32; NODE_FEAT_DIM]; arr[..GNN_HIDDEN_DIM.min(NODE_FEAT_DIM)].copy_from_slice(&dense_layer(&{let c: Vec<f32> = f.iter().copied().collect(); c}, 0xABCDEF01, GNN_HIDDEN_DIM)[..GNN_HIDDEN_DIM.min(NODE_FEAT_DIM)]); arr })
+                .map(|f| { let mut arr = [0.0f32; NODE_FEAT_DIM]; arr[..GNN_HIDDEN_DIM.min(NODE_FEAT_DIM)].copy_from_slice(&dense_layer(&{let c: Vec<f32> = f.to_vec(); c}, 0xABCDEF01, GNN_HIDDEN_DIM)[..GNN_HIDDEN_DIM.min(NODE_FEAT_DIM)]); arr })
                 .collect();
             let agg2 = aggregate_neighborhood(&h_neighbor2, GNN_HIDDEN_DIM);
             let concat2: Vec<f32> = h1.iter().chain(agg2.iter()).copied().collect();
@@ -403,7 +403,7 @@ impl GnnEngine {
                 if i < GNN_HIDDEN_DIM { mean[i] += v / n; }
             }
         }
-        let mut variance = vec![0.0f32; GNN_HIDDEN_DIM];
+        let mut variance = [0.0f32; GNN_HIDDEN_DIM];
         for emb in embeddings.values() {
             for (i, v) in emb.iter().enumerate() {
                 if i < GNN_HIDDEN_DIM { variance[i] += (v - mean[i]).powi(2) / n; }

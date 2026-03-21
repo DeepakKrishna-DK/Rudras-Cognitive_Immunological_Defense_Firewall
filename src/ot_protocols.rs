@@ -118,6 +118,7 @@ impl Default for ModbusPolicy {
 }
 
 #[derive(Debug)]
+#[derive(Default)]
 struct ModbusSessionState {
     last_read_time: u64,
     last_write_time: u64,
@@ -126,17 +127,6 @@ struct ModbusSessionState {
     last_transaction_id: u16,
 }
 
-impl Default for ModbusSessionState {
-    fn default() -> Self {
-        Self {
-            last_read_time: 0,
-            last_write_time: 0,
-            read_addresses: vec![],
-            poll_times: VecDeque::new(),
-            last_transaction_id: 0,
-        }
-    }
-}
 
 pub struct ModbusEngine {
     policies: RwLock<HashMap<u8, ModbusPolicy>>,
@@ -196,8 +186,8 @@ impl ModbusEngine {
         }
 
         // Address range check for FC3/FC4/FC6/FC16
-        if fc == 3 || fc == 4 || fc == 6 || fc == 16 {
-            if payload.len() >= 12 {
+        if (fc == 3 || fc == 4 || fc == 6 || fc == 16)
+            && payload.len() >= 12 {
                 let start_addr = u16::from_be_bytes([payload[8], payload[9]]);
                 let count_or_val = u16::from_be_bytes([payload[10], payload[11]]);
                 let (min_addr, max_addr) = policy.allowed_register_range;
@@ -220,7 +210,6 @@ impl ModbusEngine {
                     ));
                 }
             }
-        }
 
         // Read-before-write enforcement (FC5=WriteSingleCoil, FC6=WriteReg, FC15/FC16)
         if policy.read_before_write && (fc == 5 || fc == 6 || fc == 15 || fc == 16) {

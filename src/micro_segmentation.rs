@@ -130,9 +130,9 @@ struct ConnectionTracker {
 impl ConnectionTracker {
     fn record(&mut self, src: IpAddr, dst: IpAddr, port: u16) {
         let now = unix_now();
-        let entry = self.recent_connections.entry(src).or_insert_with(VecDeque::new);
+        let entry = self.recent_connections.entry(src).or_default();
         // Evict connections older than 300 seconds
-        while entry.front().map_or(false, |(_, _, t)| now - t > 300) {
+        while entry.front().is_some_and(|(_, _, t)| now - t > 300) {
             entry.pop_front();
         }
         entry.push_back((dst, port, now));
@@ -419,9 +419,9 @@ impl LateralMovementDetector {
                 zone_hop,
             };
             let mut history = self.alert_history.write();
-            let entry = history.entry(src_ip).or_insert_with(VecDeque::new);
+            let entry = history.entry(src_ip).or_default();
             let now = unix_now();
-            while entry.front().map_or(false, |a| now - a.timestamp > 60) {
+            while entry.front().is_some_and(|a| now - a.timestamp > 60) {
                 entry.pop_front();
             }
             entry.push_back(alert.clone());

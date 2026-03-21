@@ -326,7 +326,7 @@ fn format_block_reason(f: &FlowFeatures) -> String {
     } else if f.pkt_rate > 1000.0 {
         format!("Volumetric attack ({:.0} pps)", f.pkt_rate)
     } else {
-        format!("High risk score")
+        "High risk score".to_string()
     }
 }
 

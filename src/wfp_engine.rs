@@ -104,7 +104,7 @@ mod wfp_real {
                 &mut handle,
             )
         };
-        if rc == ERROR_SUCCESS as u32 {
+        if rc == ERROR_SUCCESS {
             info!("✅ WFP: Engine session opened (handle={:?})", handle);
             Some(handle)
         } else {
@@ -132,7 +132,7 @@ mod wfp_real {
             weight: 0xFFFF, // Maximum sublayer weight — intercept before all others
         };
         let rc = unsafe { FwpmSubLayerAdd0(handle, &sublayer, std::ptr::null_mut()) };
-        let ok = rc == ERROR_SUCCESS as u32 || rc == 0x80090020_u32; // FWP_E_ALREADY_EXISTS is ok
+        let ok = rc == ERROR_SUCCESS || rc == 0x80090020_u32; // FWP_E_ALREADY_EXISTS is ok
         if ok {
             info!("✅ WFP: Sublayer registered at maximum priority (weight=0xFFFF)");
         } else {
@@ -190,7 +190,7 @@ mod wfp_real {
         };
 
         let rc = unsafe { FwpmFilterAdd0(handle, &filter, std::ptr::null_mut(), &mut filter_id) };
-        if rc == ERROR_SUCCESS as u32 {
+        if rc == ERROR_SUCCESS {
             debug!("✅ WFP: Block filter #{} added for IPv4 {:?} — {}", filter_id, ip_v4, reason);
             Some(filter_id)
         } else {
@@ -202,7 +202,7 @@ mod wfp_real {
     /// Delete a WFP filter by its ID (undo a block_ip rule).
     pub fn delete_filter(handle: HANDLE, filter_id: u64) {
         let rc = unsafe { FwpmFilterDeleteById0(handle, filter_id) };
-        if rc == ERROR_SUCCESS as u32 {
+        if rc == ERROR_SUCCESS {
             debug!("✅ WFP: Filter #{} deleted", filter_id);
         } else {
             warn!("⚠️  WFP: FwpmFilterDeleteById0(#{}) failed (rc=0x{:08X})", filter_id, rc);
@@ -212,7 +212,7 @@ mod wfp_real {
     /// Close the WFP engine session.
     pub fn close_engine(handle: HANDLE) {
         let rc = unsafe { FwpmEngineClose0(handle) };
-        if rc == ERROR_SUCCESS as u32 {
+        if rc == ERROR_SUCCESS {
             info!("✅ WFP: Engine session closed cleanly");
         } else {
             warn!("⚠️  WFP: FwpmEngineClose0 failed (rc=0x{:08X})", rc);
@@ -306,7 +306,7 @@ impl WfpEngine {
         {
             if let Some(handle) = wfp_real::open_engine() {
                 wfp_real::add_sublayer(handle);
-                *self.engine_handle.lock() = Some(handle as isize);
+                *self.engine_handle.lock() = Some(handle);
                 // kernel_mode would be set via interior mutability - using a bool is good enough
                 info!("🔷 WFP: KERNEL MODE ACTIVE — Real FwpmFilterAdd0 calls will intercept at ring0");
                 return Ok(());
@@ -334,7 +334,7 @@ impl WfpEngine {
                 if let IpAddr::V4(v4) = ip {
                     let octets = v4.octets();
                     let ip_u32 = u32::from_be_bytes(octets);
-                    kernel_filter_id = wfp_real::add_block_filter_v4(h as isize, ip_u32, reason);
+                    kernel_filter_id = wfp_real::add_block_filter_v4(h, ip_u32, reason);
                 } else {
                     debug!("🔷 WFP: IPv6 block not yet implemented in kernel mode for {}", ip);
                 }
@@ -372,7 +372,7 @@ impl WfpEngine {
             if let Some(fid) = rule.kernel_filter_id {
                 let handle_lock = self.engine_handle.lock();
                 if let Some(h) = *handle_lock {
-                    wfp_real::delete_filter(h as isize, fid);
+                    wfp_real::delete_filter(h, fid);
                 }
             }
         }
@@ -423,7 +423,7 @@ impl WfpEngine {
         {
             let ips = self.blocked_ips.read();
             for (ip, rule) in ips.iter() {
-                if rule.expires_at.map_or(false, |e| e <= now) {
+                if rule.expires_at.is_some_and(|e| e <= now) {
                     to_delete.push((*ip, rule.kernel_filter_id));
                 }
             }
@@ -435,7 +435,7 @@ impl WfpEngine {
             if let Some(fid) = kernel_fid {
                 let handle_lock = self.engine_handle.lock();
                 if let Some(h) = *handle_lock {
-                    wfp_real::delete_filter(h as isize, fid);
+                    wfp_real::delete_filter(h, fid);
                 }
             }
         }
@@ -448,7 +448,7 @@ impl Drop for WfpEngine {
         {
             let handle_lock = self.engine_handle.lock();
             if let Some(h) = *handle_lock {
-                wfp_real::close_engine(h as isize);
+                wfp_real::close_engine(h);
             }
         }
     }

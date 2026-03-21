@@ -259,7 +259,7 @@ impl WindowsPacketCapture {
                     self.packets_processed.fetch_add(1, Ordering::Relaxed);
 
                     // Process and handle errors without exiting the loop (Robust Mode)
-                    if let Err(e) = self.process_packet(&packet.data) {
+                    if let Err(e) = self.process_packet(packet.data) {
                         debug!("Packet skipped: {}", e);
                     }
 
@@ -701,7 +701,7 @@ impl WindowsPacketCapture {
         // external Threat Hub blocking.
         let is_sovereign_local = match source_ip.octets() {
             [10, ..] => true,
-            [172, b, ..] if b >= 16 && b <= 31 => true,
+            [172, b, ..] if (16..=31).contains(&b) => true,
             [192, 168, ..] => true,
             [127, ..] => true,
             _ => false,
@@ -1114,8 +1114,8 @@ impl WindowsPacketCapture {
         if is_outbound && !ipv4.payload().is_empty() {
             let payload = ipv4.payload();
             // HTTP CONNECT tunneling (proxy pivot / C2 via allowed proxy)
-            if dest_port == 443 || dest_port == 80 || dest_port == 8080 {
-                if payload.starts_with(b"CONNECT ") {
+            if (dest_port == 443 || dest_port == 80 || dest_port == 8080)
+                && payload.starts_with(b"CONNECT ") {
                     warn!(
                         "⚠️  OUTBOUND COVERT: HTTP CONNECT tunnel from {}:{} → {}:{} — possible C2 proxy pivot",
                         source_ip, src_port, dest_ip, dest_port
@@ -1123,17 +1123,15 @@ impl WindowsPacketCapture {
                     self.metrics.record_threat();
                     // Escalate: IDS for deeper analysis but don't hard-block (may be legit proxy)
                 }
-            }
             // Large outbound POST = potential data exfiltration
-            if dest_port == 443 || dest_port == 80 {
-                if payload.starts_with(b"POST ") && payload.len() > 51200 {
+            if (dest_port == 443 || dest_port == 80)
+                && payload.starts_with(b"POST ") && payload.len() > 51200 {
                     warn!(
                         "⚠️  OUTBOUND EXFIL: Large POST ({}B) from {} → {} — possible data exfiltration",
                         payload.len(), source_ip, dest_ip
                     );
                     self.metrics.record_threat();
                 }
-            }
             // Tor outbound (connections to Tor relay or browser SOCKS port).
             // Only blocked when block_anonymization_networks = true in config.
             // Tor is legal in most jurisdictions — do NOT block without explicit
@@ -1358,41 +1356,38 @@ impl WindowsPacketCapture {
             self.metrics.record_threat();
             let defense_result = self.cyber_immune.execute_defense(&threat_assessment);
 
-            match defense_result {
-                crate::cyber_immune::DefenseResult::Blocked => {
-                    self.packets_blocked.fetch_add(1, Ordering::Relaxed);
-                    self.metrics.record_blocked();
+            if defense_result == crate::cyber_immune::DefenseResult::Blocked {
+                self.packets_blocked.fetch_add(1, Ordering::Relaxed);
+                self.metrics.record_blocked();
 
-                    // 🔄 INFINITY LOOP (IPv6)
-                    let new_rule = HybridRule {
-                        action: ActionType::Block,
-                        confidence: threat_assessment.severity,
-                        origin: RuleOrigin::CyberImmuneSystem,
-                        created_at: chrono::Utc::now().timestamp() as u64,
-                        expires_at: Some(chrono::Utc::now().timestamp() as u64 + 3600),
+                // 🔄 INFINITY LOOP (IPv6)
+                let new_rule = HybridRule {
+                    action: ActionType::Block,
+                    confidence: threat_assessment.severity,
+                    origin: RuleOrigin::CyberImmuneSystem,
+                    created_at: chrono::Utc::now().timestamp() as u64,
+                    expires_at: Some(chrono::Utc::now().timestamp() as u64 + 3600),
+                };
+
+                self.policy_engine
+                    .add_policy(format!("src:{}", source_ip), new_rule.clone());
+
+                // 📡 Distributed Immunity: Broadcast to peers
+                if let Some(tx) = &self.immunity_tx {
+                    let payload = AntibodyPayload {
+                        key: format!("src:{}", source_ip),
+                        rule: new_rule,
+                        origin_node_id: "local".to_string(),
+                        auth_hmac: String::new(), // Populated by Control Plane
                     };
-
-                    self.policy_engine
-                        .add_policy(format!("src:{}", source_ip), new_rule.clone());
-
-                    // 📡 Distributed Immunity: Broadcast to peers
-                    if let Some(tx) = &self.immunity_tx {
-                        let payload = AntibodyPayload {
-                            key: format!("src:{}", source_ip),
-                            rule: new_rule,
-                            origin_node_id: "local".to_string(),
-                            auth_hmac: String::new(), // Populated by Control Plane
-                        };
-                        let _ = tx.try_send(payload);
-                    }
-
-                    warn!(
-                        "AHA! IPv6 Threat detected & evolved: {} -> {}",
-                        source_ip, dest_ip
-                    );
-                    return Ok(());
+                    let _ = tx.try_send(payload);
                 }
-                _ => {}
+
+                warn!(
+                    "AHA! IPv6 Threat detected & evolved: {} -> {}",
+                    source_ip, dest_ip
+                );
+                return Ok(());
             }
         }
 

@@ -106,7 +106,7 @@ impl TrafficClass {
             3478..=3481 => Self::RealTime,                 // STUN/TURN media
             5060 | 5061 => Self::RealTime,                 // SIP VoIP
             3389 | 5900 => Self::Interactive,              // RDP, VNC
-            20 | 21 | 22 => Self::BulkData,                // FTP data, SSH
+            20..=22 => Self::BulkData,                // FTP data, SSH
             _ if proto == "udp" => Self::RealTime,         // Assume UDP is real-time
             _ => Self::BestEffort,
         }

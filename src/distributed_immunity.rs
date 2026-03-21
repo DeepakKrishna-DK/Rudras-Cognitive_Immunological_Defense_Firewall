@@ -65,7 +65,7 @@ fn stream_encrypt(data: &[u8], key: &[u8]) -> Vec<u8> {
     for (block_idx, chunk) in data.chunks(32).enumerate() {
         let mut h = Sha256::new();
         h.update(key);
-        h.update(&(block_idx as u64).to_le_bytes());
+        h.update((block_idx as u64).to_le_bytes());
         let ks = h.finalize();
         for (byte, key_byte) in chunk.iter().zip(ks.iter()) {
             out.push(byte ^ key_byte);
@@ -285,7 +285,7 @@ impl DistributedImmunity {
                                         let mut votes = antibody_votes_clone.write();
                                         let node_set = votes
                                             .entry(payload.key.clone())
-                                            .or_insert_with(HashSet::new);
+                                            .or_default();
                                         node_set.insert(payload.origin_node_id.clone());
 
                                         // ── EXECUTION ENTROPY (Polymorphic Thresholds) ──

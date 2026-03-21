@@ -357,14 +357,13 @@ impl UebaEngine {
         }
 
         // 8. High failed auth rate
-        if activity.event_type == ActivityType::Authentication && !activity.success {
-            if baseline.failed_auth_rate > 0.3 {
+        if activity.event_type == ActivityType::Authentication && !activity.success
+            && baseline.failed_auth_rate > 0.3 {
                 anomalies.push(BehaviorAnomaly::AbnormalFailureRate {
                     rate: baseline.failed_auth_rate,
                     threshold: 0.3,
                 });
             }
-        }
 
         // 9. New process spawn
         if activity.event_type == ActivityType::ProcessSpawn {

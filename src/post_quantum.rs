@@ -250,7 +250,7 @@ impl PqcKeyStore {
     /// Generate a new signing key pair (simulated — production uses ml-dsa crate).
     pub fn generate_signing_key(&self, algorithm: SignatureAlgorithm, ttl_days: u64) -> KeyPair {
         let now = unix_secs();
-        let key_id = format!("rudras-key-{}", &hex::encode(&now.to_be_bytes())[..8]);
+        let key_id = format!("rudras-key-{}", &hex::encode(now.to_be_bytes())[..8]);
 
         // Key generation — production would use the ml-dsa crate or ring/RustCrypto
         // For now generate pseudo-random key bytes from OS entropy
@@ -259,7 +259,7 @@ impl PqcKeyStore {
         // Use SHA3 of current time + algorithm name as key material placeholder
         let mut gen = Sha3_512::new();
         gen.update(b"keypair-seed");
-        gen.update(&now.to_be_bytes());
+        gen.update(now.to_be_bytes());
         gen.update(format!("{:?}", algorithm).as_bytes());
         let seed = gen.finalize();
         private_key.copy_from_slice(&seed[..32]);

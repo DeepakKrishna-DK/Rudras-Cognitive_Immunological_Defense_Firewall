@@ -84,7 +84,7 @@ impl P4Rule {
                     "field": mf.field,
                     "match_type": format!("{:?}", mf.match_type).to_lowercase(),
                     "value": hex::encode(&mf.value),
-                    "mask": mf.mask.as_ref().map(|m| hex::encode(m))
+                    "mask": mf.mask.as_ref().map(hex::encode)
                 })
             }).collect::<Vec<_>>(),
             "action": match &self.action {

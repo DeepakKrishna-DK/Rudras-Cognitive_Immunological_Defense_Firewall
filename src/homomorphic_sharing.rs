@@ -47,11 +47,11 @@ fn unix_secs() -> u64 {
 fn is_prime_small(n: u64) -> bool {
     if n < 2 { return false; }
     if n == 2 || n == 3 { return true; }
-    if n % 2 == 0 { return false; }
+    if n.is_multiple_of(2) { return false; }
     // Trial division up to sqrt(n) for small n
     let mut i = 3u64;
     while i * i <= n {
-        if n % i == 0 { return false; }
+        if n.is_multiple_of(i) { return false; }
         i += 2;
     }
     true
@@ -159,7 +159,7 @@ impl PaillierKeyPair {
         let g_lam = g.modpow(&lambda, &n_sq);
         let l_val = l_function(&g_lam, &n);
         let mu = mod_inverse(&l_val, &n)
-            .unwrap_or_else(|| BigUint::one());
+            .unwrap_or_else(BigUint::one);
 
         PaillierKeyPair {
             public: PaillierPublicKey { n: n.clone(), n_sq: n_sq.clone(), g },

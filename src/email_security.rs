@@ -556,7 +556,7 @@ impl EmailSecurityEngine {
 
         // DMARC
         let from_domain = headers.get("From")
-            .and_then(|f| f.split('@').last())
+            .and_then(|f| f.split('@').next_back())
             .and_then(|s| s.split('>').next())
             .unwrap_or("");
         let spf_result = SpfResult::None_; // already inspected at EHLO phase above

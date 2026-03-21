@@ -179,7 +179,7 @@ impl HoneyToken {
     pub fn fake_aws_key() -> Self {
         // AKIA prefix is real AWS format — using AHNY (Honey) prefix instead.
         // This is NOT a real AWS key; it will not authenticate anywhere.
-        let key = format!("AHNY{}HONEYPOT", &hex::encode(&Sha3_256::digest(
+        let key = format!("AHNY{}HONEYPOT", &hex::encode(Sha3_256::digest(
             format!("honey_{}", unix_secs()).as_bytes()
         ))[..16].to_uppercase());
         Self::new(TokenType::AwsAccessKey, key, "config/aws.env (honeypot)")

@@ -130,7 +130,7 @@ fn find_hex_pattern(data: &[u8], pattern: &[Option<u8>]) -> bool {
     if pattern.is_empty() { return true; }
     if pattern.len() > data.len() { return false; }
     data.windows(pattern.len()).any(|w| {
-        pattern.iter().zip(w.iter()).all(|(p, &b)| p.map_or(true, |pv| pv == b))
+        pattern.iter().zip(w.iter()).all(|(p, &b)| p.is_none_or(|pv| pv == b))
     })
 }
 

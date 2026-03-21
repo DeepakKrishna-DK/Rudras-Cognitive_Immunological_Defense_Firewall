@@ -116,7 +116,7 @@ impl HoneypotPersona {
             uptime_secs,
             fake_users: vec!["root".into(), "ubuntu".into(), "admin".into(), "deploy".into()],
             services: vec![
-                HoneypotService { port: 22,   proto: "ssh".into(),    banner: format!("SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.6"), enabled: true },
+                HoneypotService { port: 22,   proto: "ssh".into(),    banner: "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.6".to_string(), enabled: true },
                 HoneypotService { port: 80,   proto: "http".into(),   banner: "HTTP/1.1 200 OK\r\nServer: nginx/1.24.0".into(),  enabled: true },
                 HoneypotService { port: 443,  proto: "https".into(),  banner: "HTTP/1.1 200 OK\r\nServer: nginx/1.24.0".into(),  enabled: false },
                 HoneypotService { port: 21,   proto: "ftp".into(),    banner: "220 FTP server ready".into(),                      enabled: false },
@@ -462,7 +462,7 @@ impl AdaptiveHoneypotEngine {
         h.update(src_ip.as_bytes());
         h.update(src_port.to_le_bytes());
         h.update(unix_secs().to_le_bytes());
-        format!("{}", hex::encode(&h.finalize()[..8]))
+        hex::encode(&h.finalize()[..8]).to_string()
     }
 
     fn hash_str(&self, s: &str) -> u64 {

@@ -339,7 +339,7 @@ impl LlmExplainabilityEngine {
                  because it contains no actual business data or services.".to_string()
             ),
             AlertCategory::InsiderThreat => (
-                format!("Insider threat behavioral anomaly detected for entity"),
+                "Insider threat behavioral anomaly detected for entity".to_string(),
                 format!(
                     "The user/entity associated with source {} is exhibiting behavioral \
                      deviations from their established profile (confidence: {}%). \
@@ -407,7 +407,7 @@ impl LlmExplainabilityEngine {
 
     fn build_recommendations(&self, category: &AlertCategory, confidence: f32) -> Vec<String> {
         let mut recs = vec![];
-        recs.push(format!("1. Verify the alert is not a false positive by reviewing raw packet captures from the affected host"));
+        recs.push("1. Verify the alert is not a false positive by reviewing raw packet captures from the affected host".to_string());
         match category {
             AlertCategory::BruteForce => {
                 recs.push("2. Immediately block source IP at the perimeter firewall and rate-limit further auth attempts".to_string());

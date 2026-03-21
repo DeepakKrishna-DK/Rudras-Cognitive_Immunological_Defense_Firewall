@@ -327,12 +327,9 @@ impl SecureChannelManager {
 
         // 3. Mutual TLS / certificate pin check
         if let Some(cert) = peer_cert_der {
-            match self.pins.verify(peer_id, cert) {
-                PinVerdict::Rejected { got, expected } => {
-                    self.pin_rejections.fetch_add(1, Ordering::Relaxed);
-                    return Err(format!("Certificate pin mismatch for peer '{}': got={}", peer_id, got));
-                }
-                _ => {}
+            if let PinVerdict::Rejected { got, expected } = self.pins.verify(peer_id, cert) {
+                self.pin_rejections.fetch_add(1, Ordering::Relaxed);
+                return Err(format!("Certificate pin mismatch for peer '{}': got={}", peer_id, got));
             }
 
             // 4. CT log presence check

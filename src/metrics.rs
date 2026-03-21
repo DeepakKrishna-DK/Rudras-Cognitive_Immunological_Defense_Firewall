@@ -178,9 +178,7 @@ pub async fn start_metrics_server(port: u16, metrics: Arc<Metrics>) -> Result<()
                 // Check for the auth header: "X-Rudras-Auth: <token>"
                 let authorized = req.lines().any(|line| {
                     line.to_lowercase().starts_with("x-rudras-auth:")
-                        && line
-                            .splitn(2, ':')
-                            .nth(1)
+                        && line.split_once(':').map(|x| x.1)
                             .map(|v| v.trim() == token.as_str())
                             .unwrap_or(false)
                 });

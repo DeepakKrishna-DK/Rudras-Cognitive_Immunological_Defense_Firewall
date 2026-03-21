@@ -2856,8 +2856,8 @@ impl IdsEngine {
         }
 
         // API key / JWT token enumeration
-        if uri.starts_with("/api/") && http.method == "GET" {
-            if uri.contains("/users") || uri.contains("/admin") || uri.contains("/secrets") {
+        if uri.starts_with("/api/") && http.method == "GET"
+            && (uri.contains("/users") || uri.contains("/admin") || uri.contains("/secrets")) {
                 return Some(self.make_alert(
                     src_ip, dst_ip, src_port, dst_port, 6,
                     IdsSeverity::Medium,
@@ -2870,7 +2870,6 @@ impl IdsEngine {
                     false,
                 ));
             }
-        }
 
         // Suspicious user agent (scanner, exploit tool)
         if let Some(ua) = &http.user_agent {
@@ -2986,7 +2985,7 @@ impl IdsEngine {
         // To prevent attackers from DoS'ing the firewall by forcing it to RSA-encrypt
         // millions of fake payloads, we rate-limit the asymmetric vault. If alert load
         // is high, we dynamically drop the RSA vault and ONLY compute the ultra-fast SHA256.
-        let payload_hex = if payload.len() > 0 {
+        let payload_hex = if !payload.is_empty() {
             use sha2::{Digest, Sha256};
             let chunk = &payload[..payload.len().min(128)];
 

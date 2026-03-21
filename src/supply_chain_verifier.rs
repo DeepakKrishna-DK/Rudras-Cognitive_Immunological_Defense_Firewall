@@ -314,7 +314,7 @@ impl SupplyChainVerifier {
     /// Typosquatting: check package name edit-distance to known-good names.
     fn check_typosquatting(&self, purl: &str) -> Option<ViolationType> {
         // Extract package name from PURL  (format: pkg:type/org/name@version)
-        let name = purl.split('/').last()
+        let name = purl.split('/').next_back()
             .and_then(|s| s.split('@').next())
             .unwrap_or("");
 

@@ -165,7 +165,7 @@ impl ProcessMonitor {
             loop {
                 sys.refresh_all();
 
-                for (_pid, process) in sys.processes() {
+                for process in sys.processes().values() {
                     let proc_name = process.name().to_string_lossy().to_lowercase();
 
                     // ── Check TIER 2 dual-use research tools (WARN only, never kill) ──
@@ -192,40 +192,38 @@ impl ProcessMonitor {
                                 let (sig_valid, payload) = verify_token_hmac(&contents);
                                 if !sig_valid {
                                     warn!("⚔️  ANTI-TAMPER: maintenance.token has INVALID HMAC — rejecting (possible tampering or wrong machine).");
-                                } else {
-                                    if let Ok(decoded_bytes) = B64STD.decode(&payload) {
-                                        if let Ok(decoded_str) = std::str::from_utf8(&decoded_bytes) {
-                                            let mut start_up: Option<u64> = None;
-                                            let mut start_ntp: Option<u64> = None;
-                                            let mut duration: Option<u64> = None;
-                                            for part in decoded_str.split(',') {
-                                                if let Some(v) = part.strip_prefix("UPTIME_START=") {
-                                                    start_up = v.parse().ok();
-                                                }
-                                                if let Some(v) = part.strip_prefix("NTP_START=") {
-                                                    start_ntp = v.parse().ok();
-                                                }
-                                                if let Some(v) = part.strip_prefix("DURATION=") {
-                                                    duration = v.parse().ok();
-                                                }
+                                } else if let Ok(decoded_bytes) = B64STD.decode(&payload) {
+                                    if let Ok(decoded_str) = std::str::from_utf8(&decoded_bytes) {
+                                        let mut start_up: Option<u64> = None;
+                                        let mut start_ntp: Option<u64> = None;
+                                        let mut duration: Option<u64> = None;
+                                        for part in decoded_str.split(',') {
+                                            if let Some(v) = part.strip_prefix("UPTIME_START=") {
+                                                start_up = v.parse().ok();
                                             }
-                                            if let (Some(up), Some(ntp), Some(dur)) = (start_up, start_ntp, duration) {
-                                                let current_uptime = sysinfo::System::uptime();
-                                                let current_ntp = std::time::SystemTime::now()
-                                                    .duration_since(std::time::UNIX_EPOCH)
-                                                    .unwrap_or_default()
-                                                    .as_secs();
-                                                let uptime_elapsed = current_uptime.saturating_sub(up);
-                                                let ntp_elapsed = current_ntp.saturating_sub(ntp);
-                                                let time_drift = ntp_elapsed.abs_diff(uptime_elapsed);
-                                                if time_drift > 60 {
-                                                    warn!("⚔️  FATAL: Time Drift {}s detected. VM suspension or NTP poisoning attack! Token revoked.", time_drift);
-                                                } else if uptime_elapsed <= dur {
-                                                    maintenance_active = true;
-                                                    debug!("🔧 ANTI-TAMPER: HMAC-valid maintenance window active ({}s remaining).", dur.saturating_sub(uptime_elapsed));
-                                                } else {
-                                                    warn!("⚠️  ANTI-TAMPER: Maintenance token EXPIRED — rejecting IT tool bypass.");
-                                                }
+                                            if let Some(v) = part.strip_prefix("NTP_START=") {
+                                                start_ntp = v.parse().ok();
+                                            }
+                                            if let Some(v) = part.strip_prefix("DURATION=") {
+                                                duration = v.parse().ok();
+                                            }
+                                        }
+                                        if let (Some(up), Some(ntp), Some(dur)) = (start_up, start_ntp, duration) {
+                                            let current_uptime = sysinfo::System::uptime();
+                                            let current_ntp = std::time::SystemTime::now()
+                                                .duration_since(std::time::UNIX_EPOCH)
+                                                .unwrap_or_default()
+                                                .as_secs();
+                                            let uptime_elapsed = current_uptime.saturating_sub(up);
+                                            let ntp_elapsed = current_ntp.saturating_sub(ntp);
+                                            let time_drift = ntp_elapsed.abs_diff(uptime_elapsed);
+                                            if time_drift > 60 {
+                                                warn!("⚔️  FATAL: Time Drift {}s detected. VM suspension or NTP poisoning attack! Token revoked.", time_drift);
+                                            } else if uptime_elapsed <= dur {
+                                                maintenance_active = true;
+                                                debug!("🔧 ANTI-TAMPER: HMAC-valid maintenance window active ({}s remaining).", dur.saturating_sub(uptime_elapsed));
+                                            } else {
+                                                warn!("⚠️  ANTI-TAMPER: Maintenance token EXPIRED — rejecting IT tool bypass.");
                                             }
                                         }
                                     }

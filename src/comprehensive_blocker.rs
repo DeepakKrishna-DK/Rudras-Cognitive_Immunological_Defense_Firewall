@@ -232,10 +232,10 @@ impl ComprehensiveBlocker {
         match a {
             0                        => true,                      // 0.0.0.0/8
             10                       => true,                      // 10.0.0.0/8  RFC 1918
-            100 if b >= 64 && b < 128 => true,                     // 100.64.0.0/10  CG-NAT
+            100 if (64..128).contains(&b) => true,                     // 100.64.0.0/10  CG-NAT
             127                      => true,                      // 127.0.0.0/8  loopback
             169 if b == 254          => true,                      // 169.254.0.0/16  link-local
-            172 if b >= 16 && b <= 31 => true,                     // 172.16.0.0/12  RFC 1918
+            172 if (16..=31).contains(&b) => true,                     // 172.16.0.0/12  RFC 1918
             192 if b == 0 && c == 0  => true,                      // 192.0.0.0/24  IETF
             192 if b == 168          => true,                      // 192.168.0.0/16  RFC 1918
             198 if b == 18 || b == 19 => true,                     // 198.18.0.0/15  benchmarking

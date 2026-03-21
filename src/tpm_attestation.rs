@@ -40,14 +40,12 @@ fn unix_secs() -> u64 {
 /// 24 Platform Configuration Registers, each 32 bytes (SHA-256).
 /// Initial state: PCR[0..23] = 0x00..00 (spec default).
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Default)]
 pub struct PcrBank {
     /// PCR values indexed 0–23
     pub registers: [[u8; 32]; 24],
 }
 
-impl Default for PcrBank {
-    fn default() -> Self { Self { registers: [[0u8; 32]; 24] } }
-}
 
 impl PcrBank {
     /// Extend PCR[index] with data: PCR[n] = SHA256(PCR[n] || data).
@@ -55,7 +53,7 @@ impl PcrBank {
         let idx = index as usize;
         if idx >= 24 { return; }
         let mut hasher = Sha256::new();
-        hasher.update(&self.registers[idx]);
+        hasher.update(self.registers[idx]);
         hasher.update(data);
         let result = hasher.finalize();
         self.registers[idx].copy_from_slice(&result);
@@ -112,7 +110,7 @@ impl SimEk {
     /// Sign data using HMAC-SHA256 (simulation of TPM2_Sign).
     fn sign(&self, data: &[u8]) -> Vec<u8> {
         let mut h = Sha256::new();
-        Digest::update(&mut h, &self.key);
+        Digest::update(&mut h, self.key);
         Digest::update(&mut h, b":");
         Digest::update(&mut h, data);
         Digest::finalize(h).to_vec()
@@ -369,8 +367,8 @@ impl TpmAttestationEngine {
 
         // XOR-encrypt data with SHA256(EK || digest) as symmetric key (simulation).
         let mut key_hasher = Sha256::new();
-        key_hasher.update(&self.ek.key);
-        key_hasher.update(&digest);
+        key_hasher.update(self.ek.key);
+        key_hasher.update(digest);
         let key: Vec<u8> = key_hasher.finalize().to_vec();
         let sealed: Vec<u8> = data.iter().enumerate()
             .map(|(i, &b)| b ^ key[i % 32])
@@ -402,8 +400,8 @@ impl TpmAttestationEngine {
         }
 
         let mut key_hasher = Sha256::new();
-        key_hasher.update(&self.ek.key);
-        key_hasher.update(&current_digest);
+        key_hasher.update(self.ek.key);
+        key_hasher.update(current_digest);
         let key: Vec<u8> = key_hasher.finalize().to_vec();
         let plain: Vec<u8> = sealed.sealed_data.iter().enumerate()
             .map(|(i, &b)| b ^ key[i % 32])

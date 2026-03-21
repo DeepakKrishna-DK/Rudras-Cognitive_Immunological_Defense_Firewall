@@ -140,7 +140,7 @@ impl MtdEngine {
     pub fn new() -> Self {
         let mut key_hasher = Sha3_256::new();
         key_hasher.update(b"RUDRAS-MTD-SIGNING-KEY-V1-");
-        key_hasher.update(&unix_secs().to_le_bytes());
+        key_hasher.update(unix_secs().to_le_bytes());
         let key: Vec<u8> = key_hasher.finalize().to_vec();
         let mut signing_key = [0u8; 32];
         signing_key.copy_from_slice(&key);
@@ -177,12 +177,12 @@ impl MtdEngine {
 
     fn sign_rotation(&self, before: &str, after: &str, ts: u64) -> String {
         let mut h = Sha3_256::new();
-        h.update(&self.signing_key);
+        h.update(self.signing_key);
         h.update(b":");
         h.update(before.as_bytes());
         h.update(b"->".as_slice());
         h.update(after.as_bytes());
-        h.update(&ts.to_le_bytes());
+        h.update(ts.to_le_bytes());
         hex::encode(h.finalize())
     }
 
@@ -371,7 +371,6 @@ impl MtdEngine {
                 let mut alerts = self.decoy_alerts.write();
                 if alerts.len() >= 256 { alerts.pop_front(); }
                 alerts.push_back(alert);
-                return;
             }
         }
     }

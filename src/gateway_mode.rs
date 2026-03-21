@@ -69,7 +69,7 @@ impl HeartbeatMsg {
         let id_bytes = self.sender_id.as_bytes();
         let copy_len = id_bytes.len().min(16);
         buf.extend_from_slice(&id_bytes[..copy_len]);
-        buf.extend(std::iter::repeat(0u8).take(16 - copy_len));
+        buf.extend(std::iter::repeat_n(0u8, 16 - copy_len));
         buf
     }
 

@@ -351,8 +351,8 @@ impl PolicyVerifier {
 
         // 4. Overly permissive: Allow Any→Any for a broad port range
         for rule in sorted.iter() {
-            if rule.action == RuleAction::Allow {
-                if matches!(rule.src_ip, IpMatcher::Any) &&
+            if rule.action == RuleAction::Allow
+                && matches!(rule.src_ip, IpMatcher::Any) &&
                    matches!(rule.dst_ip, IpMatcher::Any) &&
                    matches!(rule.dst_port, PortMatcher::Any) {
                     findings.push((FindingSeverity::Error, PolicyFinding::OverlyPermissive {
@@ -361,7 +361,6 @@ impl PolicyVerifier {
                     }));
                     errors += 1;
                 }
-            }
         }
 
         // 5. NIST SP 800-41 Rev1: Telnet (TCP/23) should always be denied
