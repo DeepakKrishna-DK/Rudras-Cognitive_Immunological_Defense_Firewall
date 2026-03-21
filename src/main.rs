@@ -481,7 +481,7 @@ async fn main() -> Result<()> {
 
     // ── [4b] Identity-Aware Policy Engine ───────────────────────────────────
     info!("🔐 [4b] Identity-Aware Policy Engine...");
-    let mut identity_policy_engine = identity_policy::IdentityAwarePolicyEngine::new();
+    let identity_policy_engine = identity_policy::IdentityAwarePolicyEngine::new();
     identity_policy_engine.load_policies(identity_policy::create_example_policies());
     let identity_policy_engine = Arc::new(identity_policy_engine);
     info!("✅ Identity-Aware Policies loaded — Zero Trust default-deny enforced");

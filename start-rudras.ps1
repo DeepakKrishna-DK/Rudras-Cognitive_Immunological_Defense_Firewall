@@ -12,11 +12,15 @@ param (
 # Requires: Administrator privileges
 # ============================================================
 
-# Ensure admin
+# ── Auto-elevate via UAC if not already running as Administrator ──────────────
 if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
-    Write-Host "ERROR: Must run as Administrator" -ForegroundColor Red
-    Write-Host "   Right-click PowerShell -> 'Run as Administrator', then re-run this script." -ForegroundColor Yellow
-    exit 1
+    Write-Host "⚡ Rudras requires Administrator privileges for WFP kernel enforcement." -ForegroundColor Yellow
+    Write-Host "   Re-launching as Administrator via UAC..." -ForegroundColor Cyan
+    # Re-launch this script elevated, passing the Mode argument through
+    $argList = "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`""
+    if ($Mode) { $argList += " `"$Mode`"" }
+    Start-Process powershell.exe -Verb RunAs -ArgumentList $argList
+    exit 0   # Exit the non-elevated instance — elevated one takes over
 }
 
 if ([string]::IsNullOrWhiteSpace($Mode)) {

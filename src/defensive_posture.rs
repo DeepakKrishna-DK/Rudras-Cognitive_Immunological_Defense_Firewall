@@ -63,7 +63,7 @@ impl ThreatLevel {
         }
     }
 
-    pub fn to_u8(&self) -> u8 { *self as u8 }
+    pub fn as_u8(&self) -> u8 { *self as u8 }
     
     pub fn from_u8(v: u8) -> Self {
         match v {
@@ -100,7 +100,7 @@ impl PostureEngine {
     pub fn new() -> Self {
         info!("🛡️ Defensive Posture Engine initialized — System starting at LEVEL 5: NORMAL");
         Self {
-            current_level: AtomicU8::new(ThreatLevel::Normal.to_u8()),
+            current_level: AtomicU8::new(ThreatLevel::Normal.as_u8()),
             last_escalation: RwLock::new(unix_secs()),
             escalation_logs: RwLock::new(Vec::new()),
             recent_critical_alerts: AtomicU8::new(0),
@@ -114,7 +114,7 @@ impl PostureEngine {
 
     /// Manually or Programmatically escalate or de-escalate the firewall threat level.
     pub fn set_level(&self, new_level: ThreatLevel, reason: &str) {
-        let old_val = self.current_level.swap(new_level.to_u8(), Ordering::SeqCst);
+        let old_val = self.current_level.swap(new_level.as_u8(), Ordering::SeqCst);
         let old_level = ThreatLevel::from_u8(old_val);
 
         if old_level == new_level { return; }
@@ -219,14 +219,13 @@ impl PostureEngine {
 
         // Decay from Level 4, 3, 2 back to 5.
         // We never automatically decay from Level 1 (Lockdown) — that requires human intervention!
-        if current != ThreatLevel::Normal && current != ThreatLevel::Lockdown {
-            if now.saturating_sub(last) > 3600 { // 1 hour
-                self.recent_critical_alerts.store(0, Ordering::Relaxed);
-                self.dos_spike_detected.store(false, Ordering::Relaxed);
-
-                let next_down = ThreatLevel::from_u8(current.to_u8() + 1);
-                self.set_level(next_down, "1 hour elapsed without severe events. Auto-decaying posture.");
-            }
+        if current != ThreatLevel::Normal && current != ThreatLevel::Lockdown
+            && now.saturating_sub(last) > 3600 // 1 hour without severe events
+        {
+            self.recent_critical_alerts.store(0, Ordering::Relaxed);
+            self.dos_spike_detected.store(false, Ordering::Relaxed);
+            let next_down = ThreatLevel::from_u8(current.as_u8() + 1);
+            self.set_level(next_down, "1 hour elapsed without severe events. Auto-decaying posture.");
         }
     }
 }
