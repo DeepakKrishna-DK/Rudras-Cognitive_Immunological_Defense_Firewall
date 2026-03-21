@@ -1,0 +1,119 @@
+/* True Dark Accents Theme */
+:root {
+  --bg: #0b0f16;         /* Deep Midnight Black */
+  --fg: #e2e8f0;         /* Crisp White Text */
+  
+  --sidebar-bg: #070a0f; 
+  --sidebar-fg: #8b949e; 
+  --sidebar-active: #0ff; /* Neon Cyan Active Link */
+  --sidebar-non-existant: #4a545e;
+  
+  --theme-popup-bg: #161b22;
+  --theme-popup-border: #30363d;
+  
+  --searchbar-bg: #161b22;
+  --searchbar-fg: #f8fafc;
+  
+  --inline-code-color: #ff7b72; /* Neon Coral constraints */
+  --quote-bg: #161b22;
+  --quote-border: #ff7b72;
+  
+  --links: #f97316;     /* Bright Orange for inline links */
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #e2e8f0; /* White/Silver Headers */
+  font-weight: 600; 
+  letter-spacing: -0.02em;
+}
+
+/* Neon Accent on H1 explicitly */
+h1 {
+  border-bottom: 1px solid #30363d;
+  padding-bottom: 0.3em;
+  font-size: 2.5em;
+  color: #0ff; /* Neon Cyan Primary Headers */
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+h2 {
+  color: #f97316; /* Bright Orange Secondary Headers */
+}
+
+a {
+  color: var(--links);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #fb923c;
+  text-shadow: 0 0 8px rgba(251, 146, 60, 0.4);
+}
+
+.content main {
+  max-width: 900px;
+}
+
+/* Stunning Glassmorphic Dark Tables */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  background: #121820; /* Deep card background */
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #30363d;
+}
+
+th {
+  color: #0ff;
+  background-color: #0d121a;
+  text-align: left;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.85em;
+}
+
+td {
+  color: #c9d1d9;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* Make codeblocks sleek */
+pre {
+  background-color: #070a0f !important;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* Stylish Blockquotes */
+blockquote {
+  border-left: 4px solid var(--quote-border);
+  background-color: var(--quote-bg);
+  color: #c9d1d9;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  margin: 1.5em 0;
+  padding: 1em 1.5em;
+}

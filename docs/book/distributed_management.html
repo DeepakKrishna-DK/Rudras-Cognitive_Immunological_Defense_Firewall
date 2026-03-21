@@ -1,0 +1,512 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>6. Control Plane and Distributed Management - Rudras: The Firewall in Practice</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom-4130de7f.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-3594adab.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rudras: The Firewall in Practice</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="6-control-plane-and-distributed-management"><a class="header" href="#6-control-plane-and-distributed-management">6. Control Plane and Distributed Management</a></h1>
+<hr>
+<h2 id="abstract"><a class="header" href="#abstract">Abstract</a></h2>
+<p>Rudras v4.0 includes a distributed control plane layer for managing multiple Rudras data-plane nodes from a single centralised service. This document covers the gRPC API definition, the multi-node topology, the policy synchronisation protocol, and the event streaming architecture. This layer targets enterprise deployments with 5+ nodes across multiple network segments or cloud regions.</p>
+<hr>
+<h2 id="1-architecture-overview"><a class="header" href="#1-architecture-overview">1. Architecture Overview</a></h2>
+<h3 id="11-two-plane-model"><a class="header" href="#11-two-plane-model">1.1 Two-Plane Model</a></h3>
+<p>Rudras separates concerns into two distinct planes, following the standard network engineering model:</p>
+<pre><code>┌─────────────────────────────────────────────┐
+│              CONTROL PLANE                  │
+│  (Go service, gRPC server)                  │
+│                                             │
+│  • Stores canonical policy set              │
+│  • Receives telemetry from all nodes        │
+│  • Distributes policy updates               │
+│  • Aggregates cross-node metrics            │
+│  • Runs SOAR playbooks at cluster level     │
+└──────────────┬──────────────────────────────┘
+               │ gRPC (TLS)
+    ┌──────────┼──────────┐
+    ▼          ▼          ▼
+┌────────┐ ┌────────┐ ┌────────┐
+│ Node 1 │ │ Node 2 │ │ Node 3 │  DATA PLANE
+│ Rudras │ │ Rudras │ │ Rudras │  (Rust, firewall)
+│ (Rust) │ │ (Rust) │ │ (Rust) │
+└────────┘ └────────┘ └────────┘
+</code></pre>
+<p><strong>Data plane</strong> (each Rudras instance): Inspects packets, enforces policy, streams events up.<br><strong>Control plane</strong> (Go gRPC service): Issues policy updates down, receives events and metrics up.</p>
+<p>This separation means the data plane can operate independently if connectivity to the control plane is lost — last-known-good policy is enforced until reconnection. This is a critical resilience property: a control plane outage does not stop enforcement.</p>
+<h3 id="12-repository-layout"><a class="header" href="#12-repository-layout">1.2 Repository Layout</a></h3>
+<pre><code>control-plane/
+└── pkg/
+    └── grpc/
+        └── proto/
+            └── controlplane.proto   ← gRPC service definition (this document)
+</code></pre>
+<p>The control plane server is implemented in Go (not in this repository). The <code>.proto</code> file is the contract between the Go server and the Rust data plane clients.</p>
+<hr>
+<h2 id="2-grpc-service-definition"><a class="header" href="#2-grpc-service-definition">2. gRPC Service Definition</a></h2>
+<p><strong>Protocol:</strong> gRPC over HTTP/2 with mutual TLS<br><strong>Proto file:</strong> <code>control-plane/pkg/grpc/proto/controlplane.proto</code><br><strong>Go package:</strong> <code>Rudras-controlplane/pkg/grpc/proto</code></p>
+<h3 id="21-service-controlplaneservice"><a class="header" href="#21-service-controlplaneservice">2.1 Service: <code>ControlPlaneService</code></a></h3>
+<pre><code class="language-protobuf">service ControlPlaneService {
+  rpc SyncPolicy(PolicySyncRequest) returns (PolicySyncResponse);
+  rpc StreamEvents(EventStreamRequest) returns (stream Event);
+  rpc ReportMetrics(MetricsReport) returns (MetricsAck);
+}
+</code></pre>
+<p>Three RPCs:</p>
+<ol>
+<li><strong><code>SyncPolicy</code></strong> — Unary RPC. Node asks: “I am at policy version X, give me updates.” Control plane responds with the full current policy set if version differs.</li>
+<li><strong><code>StreamEvents</code></strong> — Server-streaming RPC. Node subscribes to a live event stream from the control plane. Used for push-based policy updates, threat intel propagation, and operator commands.</li>
+<li><strong><code>ReportMetrics</code></strong> — Unary RPC. Node pushes a performance metrics snapshot to the control plane.</li>
+</ol>
+<h3 id="22-policy-synchronisation-syncpolicy"><a class="header" href="#22-policy-synchronisation-syncpolicy">2.2 Policy Synchronisation (<code>SyncPolicy</code>)</a></h3>
+<p><strong>Request:</strong></p>
+<pre><code class="language-protobuf">message PolicySyncRequest {
+  string node_id       = 1;  // Unique identifier for this Rudras node
+  uint64 current_version = 2;  // Policy version the node currently has
+  string region        = 3;  // Geographic region (e.g., "ap-south-1")
+  string cloud_provider = 4; // "aws", "azure", "gcp", "on-prem"
+}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-protobuf">message PolicySyncResponse {
+  bool success             = 1;
+  repeated Policy policies = 2;  // Full policy set (not a diff)
+  uint64 version           = 3;  // New version number
+  string error_message     = 4;
+}
+</code></pre>
+<p><strong>Protocol flow:</strong></p>
+<ol>
+<li>Node starts → calls <code>SyncPolicy</code> with <code>current_version=0</code></li>
+<li>Control plane returns all policies with current version (e.g., <code>version=42</code>)</li>
+<li>Node loads and enforces policies, stores version=42 locally</li>
+<li>Node polls <code>SyncPolicy</code> periodically (default: every 30 seconds) with <code>current_version=42</code></li>
+<li>If control plane version is still 42 → <code>success=true, policies=[]</code> (empty, no change)</li>
+<li>If control plane version is 45 → <code>success=true, policies=[...full set...]</code></li>
+<li>Node atomically replaces its policy set on receipt (old policy enforced until swap completes)</li>
+</ol>
+<p><strong>Versioning strategy:</strong> Monotonically incrementing integer. The control plane increments the version whenever any policy is added, modified, or removed. Nodes always receive the full policy set rather than a diff — this keeps the protocol stateless and resilient to missed updates.</p>
+<h3 id="23-policy-object-schema"><a class="header" href="#23-policy-object-schema">2.3 Policy Object Schema</a></h3>
+<pre><code class="language-protobuf">message Policy {
+  string id          = 1;  // UUID, e.g., "f3a4b5c6-..."
+  string name        = 2;  // Human-readable, e.g., "Block Tor Exit Nodes"
+  string description = 3;  // Free-text description
+  string source_ip   = 4;  // CIDR or exact IP, e.g., "10.0.0.0/8" or "any"
+  string dest_ip     = 5;  // CIDR or exact IP
+  string protocol    = 6;  // "tcp", "udp", "icmp", "any"
+  string action      = 7;  // "allow" | "block" | "rate_limit" | "inspect"
+  uint64 rate_limit_pps = 8;  // Packets/second limit (only for rate_limit action)
+  int64 created_at   = 9;  // Unix epoch seconds
+  int64 updated_at   = 10; // Unix epoch seconds
+}
+</code></pre>
+<p><strong>Action values:</strong></p>
+<ul>
+<li><code>allow</code> — Permit traffic matching this rule without further inspection</li>
+<li><code>block</code> — Drop and install WFP block rule for the source</li>
+<li><code>rate_limit</code> — Allow but throttle to <code>rate_limit_pps</code> packets/second using token bucket</li>
+<li><code>inspect</code> — Allow but force through full IDS/AI inspection pipeline (even if fast-path would have bypassed)</li>
+</ul>
+<p><strong>Special values for IP fields:</strong></p>
+<ul>
+<li><code>"any"</code> — Match any source/destination IP</li>
+<li><code>"10.0.0.0/8"</code> — CIDR range</li>
+<li><code>"192.168.1.100"</code> — Exact IP</li>
+</ul>
+<h3 id="24-event-streaming-streamevents"><a class="header" href="#24-event-streaming-streamevents">2.4 Event Streaming (<code>StreamEvents</code>)</a></h3>
+<p><strong>Request:</strong></p>
+<pre><code class="language-protobuf">message EventStreamRequest {
+  string node_id            = 1;
+  repeated string event_types = 2;  // Filter: subscribe only to these types
+}
+</code></pre>
+<p>Subscribable <code>event_types</code> values:</p>
+<ul>
+<li><code>"policy_update"</code> — Push-trigger a policy sync immediately</li>
+<li><code>"global_block"</code> — Control plane mandates blocking a specific IP across all nodes</li>
+<li><code>"threat_broadcast"</code> — New IOC pushed to all nodes without waiting for next sync</li>
+<li><code>"config_update"</code> — Control plane pushes a config change</li>
+<li><code>"operator_command"</code> — Operator-initiated action (e.g., emergency lockdown)</li>
+</ul>
+<p><strong>Event message:</strong></p>
+<pre><code class="language-protobuf">message Event {
+  int64  timestamp  = 1;  // Unix epoch nanoseconds
+  string node_id    = 2;  // Which node this event is for (can be "*" for broadcast)
+  string event_type = 3;  // One of the types above
+  bytes  data       = 4;  // JSON-encoded payload specific to event_type
+}
+</code></pre>
+<p><strong>Push-based threat broadcast example:</strong>
+When the control plane receives a critical IOC from an upstream threat feed, it immediately pushes a <code>threat_broadcast</code> event to all connected nodes:</p>
+<pre><code class="language-json">{
+  "event_type": "threat_broadcast",
+  "data": {
+    "ioc_type": "ip",
+    "value": "185.220.101.5",
+    "category": "TorExitNode",
+    "confidence": 0.99,
+    "source": "EmergingThreats",
+    "ttl_secs": 3600
+  }
+}
+</code></pre>
+<p>Each node receiving this event immediately adds the IP to its in-memory blocklist — no policy version increment needed, allowing sub-second propagation to all nodes.</p>
+<h3 id="25-metrics-reporting-reportmetrics"><a class="header" href="#25-metrics-reporting-reportmetrics">2.5 Metrics Reporting (<code>ReportMetrics</code>)</a></h3>
+<p><strong>Report:</strong></p>
+<pre><code class="language-protobuf">message MetricsReport {
+  string node_id             = 1;
+  int64  timestamp           = 2;  // Unix epoch seconds (IST on Rudras nodes)
+  uint64 packets_processed   = 3;  // Total since last report
+  uint64 packets_allowed     = 4;
+  uint64 packets_blocked     = 5;
+  double packet_rate_pps     = 6;  // Current packets/second
+  double cpu_usage_percent   = 7;  // Rudras process CPU
+  double memory_usage_mb     = 8;  // Rudras process RSS
+  double avg_latency_us      = 9;  // Avg end-to-end pipeline latency (microseconds)
+}
+</code></pre>
+<p>The control plane aggregates <code>MetricsReport</code> from all nodes to build a cluster-wide dashboard. The fields map directly to Prometheus metrics on each node — the control plane acts as a second-level aggregator.</p>
+<p><strong>Acknowledgement:</strong></p>
+<pre><code class="language-protobuf">message MetricsAck {
+  bool success   = 1;
+  string message = 2;  // Human-readable, e.g., "received" or error description
+}
+</code></pre>
+<hr>
+<h2 id="3-multi-node-deployment-topology"><a class="header" href="#3-multi-node-deployment-topology">3. Multi-Node Deployment Topology</a></h2>
+<h3 id="31-flat-topology-single-region"><a class="header" href="#31-flat-topology-single-region">3.1 Flat Topology (Single Region)</a></h3>
+<pre><code>Internet
+    │
+    ▼
+┌──────────┐      ┌──────────────────────┐
+│ Gateway  │────▶ │  Control Plane       │
+│ (Rudras) │      │  (port 50051, TLS)   │
+└──────────┘      └──────────────────────┘
+    │                      ▲
+    ▼                      │ gRPC
+┌──────────────────────────┴────────┐
+│         Internal Network          │
+│  ┌──────────┐    ┌──────────┐     │
+│  │ Segment  │    │ Segment  │     │
+│  │ (Rudras) │    │ (Rudras) │     │
+│  └──────────┘    └──────────┘     │
+└───────────────────────────────────┘
+</code></pre>
+<p>Used for a single LAN/campus with multiple zones. All Rudras nodes share one control plane. Policy changes propagate to all nodes within 30 seconds (polling) or immediately (push via <code>StreamEvents</code>).</p>
+<h3 id="32-multi-region-topology"><a class="header" href="#32-multi-region-topology">3.2 Multi-Region Topology</a></h3>
+<pre><code>Region A                      Region B
+┌─────────────────┐           ┌─────────────────┐
+│  CP Server A    │◀──────────│  CP Server B    │
+│  (primary)      │ replication│ (replica)       │
+└────────┬────────┘           └────────┬────────┘
+         │                             │
+    ┌────┴────┐                   ┌────┴────┐
+    │Rudras A1│                   │Rudras B1│
+    │Rudras A2│                   │Rudras B2│
+    └─────────┘                   └─────────┘
+</code></pre>
+<p>Each region has a primary control plane server. The primaries replicate policy state to each other (control plane-level replication, outside the scope of the <code>.proto</code> definition). Each Rudras node connects to its regional primary.</p>
+<h3 id="33-node-identification"><a class="header" href="#33-node-identification">3.3 Node Identification</a></h3>
+<p>Each Rudras node has a unique <code>node_id</code> configured in <code>rudras.toml</code>:</p>
+<pre><code class="language-toml">[control_plane]
+node_id = "ap-south-01-gateway"
+endpoint = "https://controlplane.corp.example:50051"
+region = "ap-south-1"
+cloud_provider = "on-prem"
+sync_interval_secs = 30
+</code></pre>
+<p>The <code>node_id</code> is used to:</p>
+<ul>
+<li>Identify the node in <code>MetricsReport</code> and <code>Event</code> records</li>
+<li>Route targeted <code>operator_command</code> events to specific nodes</li>
+<li>Disambiguate logs in the central aggregation system</li>
+</ul>
+<hr>
+<h2 id="4-security-of-the-control-plane-channel"><a class="header" href="#4-security-of-the-control-plane-channel">4. Security of the Control Plane Channel</a></h2>
+<h3 id="41-mutual-tls"><a class="header" href="#41-mutual-tls">4.1 Mutual TLS</a></h3>
+<p>All gRPC connections from data-plane nodes to the control plane use <strong>mutual TLS (mTLS)</strong>:</p>
+<ul>
+<li>The control plane presents a server certificate (issued by the internal PKI)</li>
+<li>Each Rudras node presents a client certificate (uniquely issued per node)</li>
+<li>The control plane rejects any node that cannot present a valid client certificate</li>
+<li>The node rejects any control plane that cannot present a valid server certificate signed by the trusted CA</li>
+</ul>
+<p>This prevents:</p>
+<ul>
+<li>Rogue nodes connecting to the control plane</li>
+<li>Man-in-the-middle attacks replacing policy updates with malicious rules</li>
+<li>Untrusted control planes issuing block commands to nodes</li>
+</ul>
+<h3 id="42-policy-signature-verification"><a class="header" href="#42-policy-signature-verification">4.2 Policy Signature Verification</a></h3>
+<p>Policies received via <code>SyncPolicy</code> are verified against a policy signature before being applied. The control plane signs the entire policy set with an RSA-4096 key; the data-plane verifies the signature against the embedded public key before loading the new policy.</p>
+<p>This ensures that even if the control plane is compromised, an attacker cannot push arbitrary rules unless they also have the private signing key (stored in an HSM).</p>
+<hr>
+<h2 id="5-failure-modes-and-resilience"><a class="header" href="#5-failure-modes-and-resilience">5. Failure Modes and Resilience</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Failure</th><th>Data Plane Behaviour</th></tr>
+</thead>
+<tbody>
+<tr><td>Control plane unreachable</td><td>Continue enforcing last-known-good policy; log <code>control_plane_disconnect</code> event; retry exponentially (max 5 min backoff)</td></tr>
+<tr><td><code>SyncPolicy</code> returns error</td><td>Keep current policy; log error; retry on next interval</td></tr>
+<tr><td>Policy signature invalid</td><td>Reject update; log <code>policy_tamper_detected</code>; alert via SIEM; continue on current policy</td></tr>
+<tr><td><code>StreamEvents</code> stream drops</td><td>Reconnect and re-subscribe; log event stream gap; full <code>SyncPolicy</code> call to catch up</td></tr>
+<tr><td>Control plane clock drift</td><td>Use local monotonic clock for enforcement; only NTP-sync for log timestamps</td></tr>
+</tbody>
+</table>
+</div>
+<p>The key resilience principle: <strong>the data plane is never left without a policy</strong>. It always has the last successfully verified policy set in memory.</p>
+<hr>
+<h2 id="6-future-development-v41-roadmap"><a class="header" href="#6-future-development-v41-roadmap">6. Future Development (v4.1 Roadmap)</a></h2>
+<ul>
+<li><strong>Policy diff API:</strong> Replace full-policy sync with incremental diffs to reduce bandwidth for large policy sets</li>
+<li><strong>gRPC health checking:</strong> Implement the standard gRPC Health Checking Protocol for load balancer integration</li>
+<li><strong>RBAC on control plane:</strong> Role-based access control for operator commands (read-only analyst vs. full admin)</li>
+<li><strong>WebUI for control plane:</strong> React-based admin panel for policy management, node health, and cross-node analytics</li>
+<li><strong>Kubernetes operator:</strong> A Kubernetes controller that automatically provisions Rudras nodes and registers them with the control plane</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="soc_dashboard.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="engineering_pipeline.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="soc_dashboard.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="engineering_pipeline.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

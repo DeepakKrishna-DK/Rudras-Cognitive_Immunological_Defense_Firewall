@@ -1,0 +1,600 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>4. Hardware and Architecture for Rudras - Rudras: The Firewall in Practice</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom-4130de7f.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-3594adab.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rudras: The Firewall in Practice</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="4-hardware-and-architecture-for-rudras"><a class="header" href="#4-hardware-and-architecture-for-rudras">4. Hardware and Architecture for Rudras</a></h1>
+<hr>
+<h2 id="1-architecture-overview"><a class="header" href="#1-architecture-overview">1. Architecture Overview</a></h2>
+<p>Rudras v4.0 is a multi-layer, multi-threaded network security platform written in Rust. At its core, it is a packet processing pipeline that intercepts traffic at the OS kernel interface, analyzes it through 40+ overlapping detection subsystems, and enforces policy decisions.</p>
+<pre><code>┌─NIC / Kernel─────────────────────────────────────┐
+│  Npcap (promiscuous capture)                     │
+│  WFP (Windows Filtering Platform — block)        │
+│  WinDivert (userspace interception)              │
+│  L2 Engine (ARP / 802.1Q / VLAN)                 │
+└──────┬───────────────────────────────────────────┘
+       │
+   ════╪════ FAST-PATH DROPS (O(1)) ══════════════
+   │ TI Blocklist lookup (IP hash set)                   │
+   │ WFP registered block filter (kernel bypass)         │
+   │ DNS response NXDomain injection (malicious domain)  │
+   ════╪════════════════════════════════════════════════
+       │
+   ┌─────┴──────────────────────────────────────────────┐
+   │              ANALYSIS PIPELINE                     │
+   │  Stateful Tracking (flow_engine, stateful)         │
+   │  DPI / Single-Pass Inspection                      │
+   │  IDS Signature Engine (85 rules / 71 categories)   │
+   │  AI Behavioral Engine (EMA + Anomaly scoring)      │
+   │  WAF (HTTP/SQL/XSS/RCE pattern matching)           │
+   │  GNN Topology Analysis                             │
+   │  UEBA User Behavior Deviation                      │
+   │  DNS Security Engine                               │
+   │  ETA (Encrypted Traffic Analysis)                  │
+   │  Attribution Scoring                               │
+   └─────┬──────────────────────────────────────────────┘
+       │
+   ┌─────┴──────────────────────────────────────────────┐
+   │              ENFORCEMENT LAYER                     │
+   │  IPS Active Response Engine                        │
+   │  Zero Trust Access Decision Engine                 │
+   │  Micro-Segmentation Zone Gate                      │
+   │  SOAR Automated Playbook Execution                 │
+   │  MTD (Moving Target Defense — IP shuffle)          │
+   └─────┬──────────────────────────────────────────────┘
+       │
+   ┌─────┴──────────────────────────────────────────────┐
+   │              OBSERVABILITY LAYER                   │
+   │  Metrics (Prometheus format, port 9091)            │
+   │  SIEM CEF Event Streaming                          │
+   │  Forensics Chain (SHA3-256 hash chain)             │
+   │  IST-timestamped JSON log (rolling file)           │
+   │  SOC Dashboard (Next.js, port 3000)                │
+   └────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="2-concurrency-model"><a class="header" href="#2-concurrency-model">2. Concurrency Model</a></h2>
+<p>Rudras is a multi-threaded application built on Tokio async runtime. The threading model is designed to maximize throughput while preventing data races through Rust’s type system.</p>
+<h3 id="thread-categories"><a class="header" href="#thread-categories">Thread Categories</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Thread</th><th>Purpose</th><th>Synchronization</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Capture Thread(s)</strong></td><td>Npcap packet reception</td><td>None (dedicated)</td></tr>
+<tr><td><strong>Packet Dispatch Thread</strong></td><td>Routes parsed packets to analysis subsystems</td><td>Lock-free channel</td></tr>
+<tr><td><strong>AI/EMA Update Thread</strong></td><td>Computes EMA baselines every 5s</td><td><code>RwLock&lt;HashMap&gt;</code></td></tr>
+<tr><td><strong>IDS Analysis Thread</strong></td><td>Pattern matches packet content</td><td>Shared <code>Arc&lt;RuleSet&gt;</code></td></tr>
+<tr><td><strong>IPS Response Thread</strong></td><td>Blocks/resets offending connections</td><td><code>Arc&lt;AtomicBool&gt;</code> gate</td></tr>
+<tr><td><strong>TI Feed Thread</strong></td><td>Refreshes blocklists from files/API</td><td><code>RwLock&lt;HashSet&gt;</code></td></tr>
+<tr><td><strong>Metrics Server Thread</strong></td><td>Serves Prometheus scrapes on :9091</td><td><code>Arc&lt;AtomicU64&gt;</code> counters</td></tr>
+<tr><td><strong>Process Monitor Thread</strong></td><td>Scans process table every 10s</td><td><code>Arc&lt;Mutex&lt;Config&gt;&gt;</code></td></tr>
+<tr><td><strong>Swarm Gossip Thread</strong></td><td>Sends/receives peer intelligence</td><td><code>UdpSocket</code></td></tr>
+<tr><td><strong>SOAR Playbook Thread</strong></td><td>Executes automated response plans</td><td><code>mpsc::channel&lt;Alert&gt;</code></td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="why-rwlock-is-preferred-over-mutex"><a class="header" href="#why-rwlock-is-preferred-over-mutex">Why RwLock Is Preferred Over Mutex</a></h3>
+<p>The <code>RwLock&lt;T&gt;</code> is used throughout Rudras for shared data structures that are read by many threads but written by one. Under normal operation, reads (allow/block decisions) vastly outnumber writes (learning new behavior). RwLock allows all read threads to proceed simultaneously, critical for throughput. A regular <code>Mutex</code> would serialize every read.</p>
+<hr>
+<h2 id="3-the-four-architectural-pillars-v40"><a class="header" href="#3-the-four-architectural-pillars-v40">3. The Four Architectural Pillars (v4.0)</a></h2>
+<h3 id="pillar-a--zero-trust-enforcement-layer-0-gate"><a class="header" href="#pillar-a--zero-trust-enforcement-layer-0-gate">Pillar A — Zero-Trust Enforcement (Layer 0 Gate)</a></h3>
+<p><strong>Module:</strong> <code>zero_trust.rs</code>, <code>identity_policy.rs</code>, <code>micro_segmentation.rs</code></p>
+<p>Before any packet reaches the analysis pipeline, the Zero Trust module performs a deterministic access check evaluating:</p>
+<ul>
+<li>Device trust score (0.0–1.0)</li>
+<li>Identity verification (certificate/token validity)</li>
+<li>Session context (expected behavior deviations)</li>
+<li>Network zone authorization (source zone → destination zone policy)</li>
+</ul>
+<p>If the check fails, the packet is dropped at the <strong>OS kernel level</strong> via WFP rule injection — no userspace cost.</p>
+<p><strong>Zone Enforcement:</strong> Rudras maintains 8 named security zones. Each zone has a label, allowed_ips CIDR range, and list of explicitly permitted destination zones. All other cross-zone traffic is implicitly denied:</p>
+<pre><code class="language-toml">[[zones]]
+name = "db"
+allowed_ips = ["10.10.30.0/24"]
+allowed_destinations = ["app"]
+# db zone can only be accessed from app zone. Never from guest, corporate, internet.
+</code></pre>
+<h3 id="pillar-b--ai-behavioral-baseline-engine"><a class="header" href="#pillar-b--ai-behavioral-baseline-engine">Pillar B — AI Behavioral Baseline Engine</a></h3>
+<p><strong>Module:</strong> <code>ai_engine.rs</code>, <code>cyber_immune.rs</code>, <code>advanced_ml.rs</code></p>
+<p>The AI engine builds an <strong>Immutable Behavioral Baseline</strong> for each IP on first packet. The baseline captures the first observed behavioral signature as a “fingerprint”. An Exponential Moving Average (EMA) tracks evolving behavior. The ratio of current EMA to the immutable baseline is the <strong>Deviation Score</strong>.</p>
+<p>Key threshold parameters:</p>
+<ul>
+<li><code>suspicious_threshold</code> (default 0.55): Flag for inspection</li>
+<li><code>quarantine_threshold</code> (default 0.70): Rate-limit and alert</li>
+<li><code>block_threshold</code> (default 0.80): WFP block + IPS RST inject</li>
+</ul>
+<p>The EMA uses a configurable alpha (<code>ema_alpha</code>, default 0.3) so recent behavior is weighted heavily but historical behavior is not forgotten.</p>
+<h3 id="pillar-c--distributed-swarm-immunity"><a class="header" href="#pillar-c--distributed-swarm-immunity">Pillar C — Distributed Swarm Immunity</a></h3>
+<p><strong>Module:</strong> <code>distributed_immunity.rs</code></p>
+<p>When any Rudras node confirms a malicious IP, it broadcasts a <strong>gossip message</strong> to all configured peer nodes using UDP. Peer nodes receive the message, add the IP to their local blocklist, and re-broadcast to their peers. Within milliseconds, a newly discovered malicious IP is blocked on all nodes in the swarm — even if the other nodes have never seen that IP.</p>
+<p>Gossip message format (JSON over UDP):</p>
+<pre><code class="language-json">{
+  "type": "ThreatIntel",
+  "src_node": "node-01",
+  "malicious_ip": "185.220.101.5",
+  "confidence": 0.97,
+  "timestamp": "2026-03-08T10:30:00+05:30"
+}
+</code></pre>
+<h3 id="pillar-d--adaptive-threat-response-dynamic-mode-profiles"><a class="header" href="#pillar-d--adaptive-threat-response-dynamic-mode-profiles">Pillar D — Adaptive Threat Response (Dynamic Mode Profiles)</a></h3>
+<p><strong>Module:</strong> <code>mode_profiles.rs</code>, <code>ips_engine.rs</code></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Threat Level</th><th>Trigger</th><th>Automatic Response</th></tr>
+</thead>
+<tbody>
+<tr><td>Normal</td><td>Block rate &lt; 5/min</td><td>All modules active, conservative thresholds</td></tr>
+<tr><td>Elevated</td><td>Block rate 5–50/min</td><td>Alert sensitivity increased, DPI prioritized</td></tr>
+<tr><td>Critical</td><td>Block rate &gt; 50/min</td><td>DPI suspended for low-priority flows, aggressive AI thresholds, anti-evasion mode</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="4-complete-module-catalog-67-source-files"><a class="header" href="#4-complete-module-catalog-67-source-files">4. Complete Module Catalog (67 Source Files)</a></h2>
+<h3 id="category-1-core-infrastructure"><a class="header" href="#category-1-core-infrastructure">Category 1: Core Infrastructure</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Module</th><th>File</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td>Main Entry</td><td><code>main.rs</code></td><td>Orchestrates all module initialization, tokio runtime setup, IST logging</td></tr>
+<tr><td>Configuration</td><td><code>config.rs</code></td><td>Deserializes <code>rudras.toml</code>, validates all fields, hot-reload support</td></tr>
+<tr><td>Policy Engine</td><td><code>policy.rs</code></td><td>Rule evaluation, access decision matrix</td></tr>
+<tr><td>Packet Capture</td><td><code>capture.rs</code></td><td>Npcap/PCAP packet capture loop</td></tr>
+<tr><td>Flow Tracking</td><td><code>flow_engine.rs</code></td><td>Stateful per-flow context (5-tuple), flow lifecycle management</td></tr>
+<tr><td>Stateful Analysis</td><td><code>stateful.rs</code></td><td>TCP state machine, SYN cookie tracking</td></tr>
+<tr><td>Metrics</td><td><code>metrics.rs</code></td><td>Prometheus counters/histograms + auth server on :9091</td></tr>
+<tr><td>Mode Profiles</td><td><code>mode_profiles.rs</code></td><td>Threat level transitions, module sensitivity tuning</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="category-2-network-enforcement-stack"><a class="header" href="#category-2-network-enforcement-stack">Category 2: Network Enforcement Stack</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Module</th><th>File</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td>WFP Engine</td><td><code>wfp_engine.rs</code></td><td>Windows Filtering Platform kernel-level block/allow rules</td></tr>
+<tr><td>WinDivert Engine</td><td><code>windivert_engine.rs</code></td><td>Userspace packet interception + modification</td></tr>
+<tr><td>Npcap Forensic</td><td><code>npcap_forensic.rs</code></td><td>Promiscuous mode capture for forensic evidence recording</td></tr>
+<tr><td>L2 Engine</td><td><code>l2_engine.rs</code></td><td>ARP spoofing detection, 802.1Q VLAN enforcement, MAC analysis</td></tr>
+<tr><td>DPI Engine</td><td><code>dpi.rs</code></td><td>Deep packet inspection, protocol dissection, payload analysis</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="category-3-detection-engines"><a class="header" href="#category-3-detection-engines">Category 3: Detection Engines</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Module</th><th>File</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td>IDS Engine</td><td><code>ids_engine.rs</code></td><td>Signature-based detection (85 rules, 71 categories, 70+ attack types)</td></tr>
+<tr><td>IPS Engine</td><td><code>ips_engine.rs</code></td><td>Active response: TCP RST injection, WFP blocking, quarantine</td></tr>
+<tr><td>Comprehensive Blocker</td><td><code>comprehensive_blocker.rs</code></td><td>Aggregated block decision across all detection signals</td></tr>
+<tr><td>Framework Alignment</td><td><code>framework_alignment.rs</code></td><td>Maps detections to MITRE ATT&amp;CK, NIST, ISO 27001</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="category-4-aiml-subsystem"><a class="header" href="#category-4-aiml-subsystem">Category 4: AI/ML Subsystem</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Module</th><th>File</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td>AI Engine</td><td><code>ai_engine.rs</code></td><td>EMA-based behavioral baseline, immutable anchor</td></tr>
+<tr><td>CyberImmune</td><td><code>cyber_immune.rs</code></td><td>Biological immune metaphor, antibody propagation</td></tr>
+<tr><td>Advanced ML</td><td><code>advanced_ml.rs</code></td><td>Multi-model ensemble: isolation forest, autoencoder, hybrid</td></tr>
+<tr><td>Advanced Security</td><td><code>advanced_security.rs</code></td><td>Multi-factor behavioral analysis, threat correlation</td></tr>
+<tr><td>Federated Learning</td><td><code>federated_learning.rs</code></td><td>Privacy-preserving model aggregation across swarm nodes</td></tr>
+<tr><td>GNN Engine</td><td><code>gnn_engine.rs</code></td><td>Graph Neural Network for topology-aware lateral movement detection</td></tr>
+<tr><td>ETA Engine</td><td><code>eta_engine.rs</code></td><td>Encrypted Traffic Analysis without decryption via TLS metadata</td></tr>
+<tr><td>Network DPI ML</td><td><code>network_dpi_ml.rs</code></td><td>ML-assisted protocol classification on raw DPI output</td></tr>
+<tr><td>RL Policy</td><td><code>rl_policy.rs</code></td><td>Reinforcement Learning for dynamic threshold optimization</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="category-5-threat-intelligence"><a class="header" href="#category-5-threat-intelligence">Category 5: Threat Intelligence</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Module</th><th>File</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td>Threat Intelligence</td><td><code>threat_intelligence.rs</code></td><td>IOC feed management: 24,358 IPs, 1.25M domains, 84,501 malware sigs</td></tr>
+<tr><td>DNS Security</td><td><code>dns_security.rs</code></td><td>DNS-layer blocking: C2 domains, DGA detection, DNS tunneling</td></tr>
+<tr><td>Threat Hunt</td><td><code>threat_hunt.rs</code></td><td>Proactive hypothesis-driven threat hunting across flow data</td></tr>
+<tr><td>Threat Rules Engine</td><td><code>threat_rules_engine.rs</code></td><td>Composite rule evaluation combining TI + behavioral + signature signals</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="category-6-enterprise-security"><a class="header" href="#category-6-enterprise-security">Category 6: Enterprise Security</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Module</th><th>File</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td>Zero Trust</td><td><code>zero_trust.rs</code></td><td>Device trust scoring, continuous verification, zone enforcement</td></tr>
+<tr><td>Identity Policy</td><td><code>identity_policy.rs</code></td><td>Identity-aware policy with certificate/token validation</td></tr>
+<tr><td>Micro-Segmentation</td><td><code>micro_segmentation.rs</code></td><td>8-zone network segmentation with explicit allow policy</td></tr>
+<tr><td>Endpoint Security</td><td><code>endpoint_security.rs</code></td><td>Host-based posture assessment, patch age, vulnerability scanning</td></tr>
+<tr><td>Attribution Scoring</td><td><code>attribution_scoring.rs</code></td><td>TTP/technique-based attacker attribution scoring</td></tr>
+<tr><td>SIEM Integration</td><td><code>siem_integration.rs</code></td><td>CEF log format, Syslog export, Splunk/Elastic webhook</td></tr>
+<tr><td>Distributed Immunity</td><td><code>distributed_immunity.rs</code></td><td>Swarm gossip protocol for peer intelligence sharing</td></tr>
+<tr><td>Gateway Mode</td><td><code>gateway_mode.rs</code></td><td>Edge gateway configuration and BGP-aware policy</td></tr>
+<tr><td>SD-WAN</td><td><code>sdwan.rs</code></td><td>SD-WAN traffic prioritization and QoS integration</td></tr>
+<tr><td>Cloud Native</td><td><code>cloud_native.rs</code></td><td>Kubernetes API server protection, container escape detection, cloud IMDS</td></tr>
+<tr><td>Single Pass</td><td><code>single_pass.rs</code></td><td>Unified L2–L7 inspection in one packet traversal</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="category-7-research-grade-modules-v40"><a class="header" href="#category-7-research-grade-modules-v40">Category 7: Research-Grade Modules (v4.0)</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Module</th><th>File</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td>UEBA Engine</td><td><code>ueba_engine.rs</code></td><td>User and Entity Behavior Analytics, insider threat detection</td></tr>
+<tr><td>SOAR Engine</td><td><code>soar_engine.rs</code></td><td>Security Orchestration, Automation and Response playbooks</td></tr>
+<tr><td>Deception</td><td><code>deception.rs</code></td><td>Honeypot/canary token infrastructure</td></tr>
+<tr><td>Adaptive Honeypot</td><td><code>adaptive_honeypot.rs</code></td><td>Dynamic honeypot that mimics real services</td></tr>
+<tr><td>OT Protocols</td><td><code>ot_protocols.rs</code></td><td>Modbus/DNP3/EtherNet-IP ICS protocol security</td></tr>
+<tr><td>Post-Quantum</td><td><code>post_quantum.rs</code></td><td>NIST FIPS 203/204/205 (ML-KEM, ML-DSA, SLH-DSA)</td></tr>
+<tr><td>Formal Verification</td><td><code>formal_verification.rs</code></td><td>TLA+-based policy consistency verification</td></tr>
+<tr><td>TPM Attestation</td><td><code>tpm_attestation.rs</code></td><td>Hardware root-of-trust, PCR measurement verification</td></tr>
+<tr><td>MTD Engine</td><td><code>mtd_engine.rs</code></td><td>Moving Target Defense — IP rotation, port shuffling</td></tr>
+<tr><td>Homomorphic Sharing</td><td><code>homomorphic_sharing.rs</code></td><td>Encrypted threat intel sharing without plaintext exposure</td></tr>
+<tr><td>Email Security</td><td><code>email_security.rs</code></td><td>SMTP/DKIM/SPF/DMARC verification, phishing detection</td></tr>
+<tr><td>RASP Engine</td><td><code>rasp_engine.rs</code></td><td>Runtime Application Self-Protection hooks</td></tr>
+<tr><td>Secure Channel</td><td><code>secure_channel.rs</code></td><td>mTLS channel management, certificate lifecycle</td></tr>
+<tr><td>SBOM Engine</td><td><code>sbom_engine.rs</code></td><td>Software Bill of Materials validation</td></tr>
+<tr><td>Supply Chain Verifier</td><td><code>supply_chain_verifier.rs</code></td><td>Cryptographic package signing verification</td></tr>
+<tr><td>eBPF/XDP</td><td><code>ebpf_xdp.rs</code></td><td>Linux eBPF/XDP kernel bypass (in-development)</td></tr>
+<tr><td>P4 Offload</td><td><code>p4_offload.rs</code></td><td>Programmable switch P4 dataplane offload</td></tr>
+<tr><td>Compliance Engine</td><td><code>compliance_engine.rs</code></td><td>GDPR/HIPAA/PCI-DSS automated compliance reporting</td></tr>
+<tr><td>QUIC Inspector</td><td><code>quic_inspector.rs</code></td><td>QUIC/HTTP3 deep inspection</td></tr>
+<tr><td>Forensics Chain</td><td><code>forensics_chain.rs</code></td><td>SHA3-256 immutable audit log chain</td></tr>
+<tr><td>Differential Privacy</td><td><code>differential_privacy.rs</code></td><td>Privacy-preserving telemetry aggregation</td></tr>
+<tr><td>Management API</td><td><code>management_api.rs</code></td><td>REST API for configuration, status, incident management</td></tr>
+<tr><td>LLM Explainability</td><td><code>llm_explainability.rs</code></td><td>LLM-generated natural language threat explanations</td></tr>
+<tr><td>Policy Verifier</td><td><code>policy_verifier.rs</code></td><td>Automated policy conflict detection and resolution</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="category-8-security-support"><a class="header" href="#category-8-security-support">Category 8: Security Support</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Module</th><th>File</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td>Process Monitor</td><td><code>process_monitor.rs</code></td><td>Windows process table scanning for tampering tools</td></tr>
+<tr><td>Memory Safe Pool</td><td><code>memory_safe_pool.rs</code></td><td>Pre-allocated packet buffers, zero GC overhead</td></tr>
+<tr><td>Hardware Acceleration</td><td><code>hardware_accel.rs</code></td><td>CPU feature detection, SIMD-accelerated hashing</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="5-data-flow-packet-lifecycle"><a class="header" href="#5-data-flow-packet-lifecycle">5. Data Flow: Packet Lifecycle</a></h2>
+<pre><code>1. CAPTURE: NIC receives raw Ethernet frame
+   └─ Npcap/pcap binds at data-link layer
+   └─ Packet copied to userspace buffer (zero-copy where possible)
+
+2. L2 SECURITY: l2_engine parses Ethernet header
+   └─ ARP spoofing check (gratuitous ARP vs. known MAC table)
+   └─ 802.1Q VLAN tag enforcement
+
+3. FAST-PATH DROPS (sub-microsecond):
+   └─ IP checked against TI blocklist (RwLock&lt;HashSet&lt;IpAddr&gt;&gt;)
+   └─ WFP kernel filter pre-checks matching IP/port rules
+   └─ If blocked: drop packet, increment metric, log to SIEM. STOP.
+
+4. STATEFUL FLOW TRACKING:
+   └─ flow_engine creates or updates FlowRecord keyed by 5-tuple
+   └─ stateful.rs maintains TCP state machine (SYN/SYN-ACK/ACK/FIN/RST)
+   └─ SYN flood detection: count half-open connections, rate-limit at threshold
+
+5. SINGLE-PASS INSPECTION (dpi.rs + single_pass.rs):
+   └─ Protocol identification: TCP/UDP/ICMP/QUIC/DNS/HTTP/TLS
+   └─ WAF patterns: SQL injection, XSS, RCE, path traversal, SSRF
+   └─ DLP patterns: credit card, API key, PII detection in outbound payloads
+
+6. AI BEHAVIORAL ANALYSIS:
+   └─ ai_engine: update EMA for src IP, compute deviation score
+   └─ cyber_immune: compare against immutable anchor
+   └─ advanced_ml: multi-model ensemble scoring (if enabled)
+   └─ ueba_engine: user pattern deviation (if identity known)
+
+7. IDS SIGNATURE MATCHING:
+   └─ ids_engine: match packet against 85 rules across 71 categories
+   └─ Generates alert events with severity, category, MITRE technique
+   └─ Feeds alert into SOAR playbook queue
+
+8. COMPREHENSIVE BLOCK DECISION:
+   └─ comprehensive_blocker aggregates all signals: TI + IDS + AI + DNS
+   └─ Weighted scoring produces final action: ALLOW / ALERT / QUARANTINE / BLOCK
+
+9. IPS ENFORCEMENT (if BLOCK/QUARANTINE):
+   └─ ips_engine injects TCP RST to both ends of connection
+   └─ WFP rule registered to block subsequent packets from src IP
+   └─ Swarm gossip broadcast to peers
+   └─ SOAR playbook triggered (if severity &gt;= HIGH)
+
+10. OBSERVABILITY:
+    └─ metrics: increment relevant counters (packets_total, blocks_total, alerts_total)
+    └─ siem_integration: emit CEF event to syslog endpoint
+    └─ forensics_chain: append event to SHA3-256 chained audit log
+    └─ tracing: emit structured JSON log with IST timestamp
+</code></pre>
+<hr>
+<h2 id="6-configuration-architecture"><a class="header" href="#6-configuration-architecture">6. Configuration Architecture</a></h2>
+<p>The primary configuration file is <code>config/rudras.toml</code>. It is divided into sections mapping directly to module configurations:</p>
+<pre><code class="language-toml">[ai]          # ai_engine.rs, advanced_ml.rs, cyber_immune.rs parameters
+[ids]         # ids_engine.rs rule categories, signatures
+[ips]         # ips_engine.rs response thresholds
+[threat_intel]# threat_intelligence.rs feed paths, refresh intervals
+[dns]         # dns_security.rs blocklist paths, DGA detection
+[zero_trust]  # zero_trust.rs trust score thresholds, posture requirements
+[[zones]]     # micro_segmentation.rs zone definitions
+[metrics]     # metrics.rs port, auth token validity duration
+[logging]     # log path, rotation policy, IST timezone display
+[capture]     # capture.rs interface, promiscuous mode, buffer sizes
+[swarm]       # distributed_immunity.rs peer node addresses
+[soar]        # soar_engine.rs playbook definitions
+[compliance]  # compliance_engine.rs regulated framework targets
+</code></pre>
+<p>All configuration is hot-reloadable. The <code>config.rs</code> module fires a reload event that each subscribed module receives via a tokio watch channel.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="research_grade_modules.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="usage_and_maintenance.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="research_grade_modules.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="usage_and_maintenance.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

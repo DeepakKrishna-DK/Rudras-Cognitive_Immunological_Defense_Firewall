@@ -1,0 +1,613 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>5.2 Observability and SOC Dashboard - Rudras: The Firewall in Practice</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom-4130de7f.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-3594adab.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rudras: The Firewall in Practice</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="52-observability-and-soc-dashboard"><a class="header" href="#52-observability-and-soc-dashboard">5.2 Observability and SOC Dashboard</a></h1>
+<hr>
+<p><img src="soc_dashboard.png" alt="Next.js SOC Dashboard">
+<em>Figure 1: The Rudras SOC Dashboard displaying live analytics and threat telemetry.</em></p>
+<h2 id="abstract"><a class="header" href="#abstract">Abstract</a></h2>
+<p>A security system that cannot be observed cannot be trusted. Rudras v4.0 implements four overlapping observability layers: structured IST-timestamped JSON logging, a Prometheus-format metrics server, a CEF-format SIEM event stream, and a real-time SOC (Security Operations Center) dashboard built in Next.js 14. This document covers the design and operation of each layer.</p>
+<hr>
+<h2 id="1-structured-logging-system"><a class="header" href="#1-structured-logging-system">1. Structured Logging System</a></h2>
+<p><strong>Technology:</strong> <code>tracing</code> + <code>tracing-subscriber</code> crates with ChronoLocal timer<br><strong>Format:</strong> JSON (file), pretty-print (console)<br><strong>Timezone:</strong> IST (UTC+5:30) — Indian Standard Time<br><strong>Rotation:</strong> Daily (one file per day)</p>
+<h3 id="11-why-structured-json-logs"><a class="header" href="#11-why-structured-json-logs">1.1 Why Structured JSON Logs?</a></h3>
+<p>Traditional log files are lines of human-readable text: <code>"[2026-03-08 10:45:23] WARN: Blocked IP 185.1.2.3"</code>. These are easy to read but hard to query.</p>
+<p>Structured JSON logs represent each event as a JSON object:</p>
+<pre><code class="language-json">{
+  "timestamp": "2026-03-08T10:45:23.124578+05:30",
+  "level": "WARN",
+  "target": "rudras::ips_engine",
+  "event": "ips_block",
+  "src_ip": "185.220.101.5",
+  "dst_ip": "10.10.20.50",
+  "src_port": 49152,
+  "dst_port": 443,
+  "trigger": "ids_alert",
+  "ids_rule_id": 47,
+  "ids_category": "c2_beacon",
+  "ids_severity": "critical",
+  "ai_deviation": 0.85,
+  "ti_confidence": 0.92,
+  "block_duration_secs": 3600,
+  "mitre_technique": "T1071.001"
+}
+</code></pre>
+<p>This format enables:</p>
+<ul>
+<li><strong>Machine parsing:</strong> Any log aggregation tool (Elasticsearch, Splunk, Loki) can index and query without custom parsers</li>
+<li><strong>Field-level searching:</strong> <code>grep '"level":"WARN"'</code> or Elasticsearch query <code>{ "term": { "level": "WARN" } }</code></li>
+<li><strong>Statistical analysis:</strong> Extract numeric fields for charting (deviation scores, block counts over time)</li>
+<li><strong>Correlation:</strong> Join log events by shared fields (src_ip, flow_id, session_id)</li>
+</ul>
+<h3 id="12-ist-timestamp-implementation"><a class="header" href="#12-ist-timestamp-implementation">1.2 IST Timestamp Implementation</a></h3>
+<p>All Rudras logs display timestamps in Indian Standard Time (IST, UTC+5:30). This was implemented in v4.0 by replacing the default <code>tracing-subscriber</code> UTC timer with a <code>ChronoLocal</code> timer.</p>
+<p>Implementation in <code>src/main.rs</code>:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use tracing_subscriber::fmt::time::ChronoLocal;
+
+let ist_timer = ChronoLocal::new("%Y-%m-%dT%H:%M:%S%.6f%:z".to_string());
+
+// Console layer (pretty-printed, IST)
+let console_layer = tracing_subscriber::fmt::layer()
+    .pretty()
+    .with_timer(ist_timer.clone());
+
+// File layer (JSON, IST)
+let file_layer = tracing_subscriber::fmt::layer()
+    .json()
+    .with_timer(ist_timer.clone())
+    .with_writer(file_appender);
+<span class="boring">}</span></code></pre>
+<p>The <code>%:z</code> format specifier in the time format produces the <code>+05:30</code> offset suffix, making the IST timezone explicit in every log entry.</p>
+<p><strong>Cargo.toml dependency:</strong></p>
+<pre><code class="language-toml">tracing-subscriber = { version = "0.3", features = ["env-filter", "json", "fmt", "chrono"] }
+chrono = { version = "0.4", features = ["clock"] }
+</code></pre>
+<h3 id="13-log-file-location-and-rotation"><a class="header" href="#13-log-file-location-and-rotation">1.3 Log File Location and Rotation</a></h3>
+<p>Logs are written to <code>logs/Rudras.log.YYYY-MM-DD</code>:</p>
+<pre><code>logs/
+├── Rudras.log.2026-03-06   # archived
+├── Rudras.log.2026-03-07   # archived
+└── Rudras.log.2026-03-08   # current
+</code></pre>
+<p>Rotation uses <code>tracing-appender::rolling::RollingFileAppender</code> with <code>Rotation::DAILY</code>. The file is rotated at midnight IST. Old files are preserved (no automatic deletion — implement your own archival policy).</p>
+<h3 id="14-log-level-configuration"><a class="header" href="#14-log-level-configuration">1.4 Log Level Configuration</a></h3>
+<pre><code class="language-toml">[logging]
+level = "info"  # trace | debug | info | warn | error
+
+# Module-specific level overrides:
+# RUST_LOG env var also works:
+# RUST_LOG="rudras=info,rudras::ai_engine=debug,rudras::capture=warn"
+</code></pre>
+<p>Recommended levels by deployment:</p>
+<ul>
+<li><strong>Production:</strong> <code>info</code> (captures all security events without flooding disk with trace data)</li>
+<li><strong>Troubleshooting:</strong> <code>debug</code> (shows packet parsing decisions, useful when investigating false positives)</li>
+<li><strong>Performance profiling:</strong> <code>trace</code> (extremely verbose, only for short-duration diagnostic sessions)</li>
+</ul>
+<h3 id="15-key-log-events-reference"><a class="header" href="#15-key-log-events-reference">1.5 Key Log Events Reference</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th><code>event</code> Value</th><th>Level</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>startup_complete</code></td><td>INFO</td><td>All modules initialized, capture loop active</td></tr>
+<tr><td><code>module_loaded</code></td><td>INFO</td><td>Individual module initialization with key stats</td></tr>
+<tr><td><code>ids_alert</code></td><td>WARN</td><td>IDS rule triggered</td></tr>
+<tr><td><code>ips_block</code></td><td>WARN</td><td>IP blocked by IPS</td></tr>
+<tr><td><code>ips_reset</code></td><td>INFO</td><td>TCP RST injected</td></tr>
+<tr><td><code>ai_anomaly</code></td><td>WARN</td><td>Behavioral deviation above threshold</td></tr>
+<tr><td><code>ti_hit</code></td><td>WARN</td><td>Threat intel blocklist match</td></tr>
+<tr><td><code>dns_blocked</code></td><td>INFO</td><td>DNS query blocked</td></tr>
+<tr><td><code>zone_violation</code></td><td>WARN</td><td>Micro-segmentation zone policy violation</td></tr>
+<tr><td><code>tamper_attempt</code></td><td>CRIT</td><td>Anti-tamper trigger</td></tr>
+<tr><td><code>swarm_received</code></td><td>INFO</td><td>Gossip intel received from peer node</td></tr>
+<tr><td><code>soar_playbook_triggered</code></td><td>WARN</td><td>SOAR playbook started</td></tr>
+<tr><td><code>config_reload</code></td><td>INFO</td><td>Hot configuration reload completed</td></tr>
+<tr><td><code>forensic_capture_started</code></td><td>INFO</td><td>Forensic PCAP capture initiated</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="2-prometheus-metrics-server"><a class="header" href="#2-prometheus-metrics-server">2. Prometheus Metrics Server</a></h2>
+<p><strong>Source File:</strong> <code>src/metrics.rs</code><br><strong>Protocol:</strong> Prometheus text format (OpenMetrics compatible)<br><strong>Endpoint:</strong> <code>http://127.0.0.1:9091/metrics</code><br><strong>Authentication:</strong> Ephemeral token via <code>X-Rudras-Auth</code> header</p>
+<h3 id="21-architecture"><a class="header" href="#21-architecture">2.1 Architecture</a></h3>
+<p>The metrics server is a lightweight HTTP server embedded in Rudras (not an external agent). It runs on a dedicated Tokio thread, listening on <code>127.0.0.1:9091</code> (loopback only — not accessible from the network by default).</p>
+<p>The metrics server exposes security counters in Prometheus text exposition format:</p>
+<pre><code># HELP rudras_packets_total Total packets processed
+# TYPE rudras_packets_total counter
+rudras_packets_total{direction="inbound"} 45231
+rudras_packets_total{direction="outbound"} 38847
+
+# HELP rudras_ips_blocks_total IPS block actions
+# TYPE rudras_ips_blocks_total counter
+rudras_ips_blocks_total{reason="ti_match"} 12
+rudras_ips_blocks_total{reason="ids_critical"} 8
+rudras_ips_blocks_total{reason="ai_deviation"} 3
+</code></pre>
+<h3 id="22-complete-metrics-catalog"><a class="header" href="#22-complete-metrics-catalog">2.2 Complete Metrics Catalog</a></h3>
+<h4 id="traffic-counters"><a class="header" href="#traffic-counters">Traffic Counters</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Metric</th><th>Labels</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>rudras_packets_total</code></td><td><code>direction</code></td><td>Total packets processed</td></tr>
+<tr><td><code>rudras_bytes_total</code></td><td><code>direction</code></td><td>Total bytes processed</td></tr>
+<tr><td><code>rudras_flows_created_total</code></td><td>—</td><td>New flow table entries created</td></tr>
+<tr><td><code>rudras_capture_drops_total</code></td><td>—</td><td>Ring buffer overflow drops</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="security-counters"><a class="header" href="#security-counters">Security Counters</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Metric</th><th>Labels</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>rudras_ids_alerts_total</code></td><td><code>severity</code>, <code>category</code></td><td>IDS rule trigger count</td></tr>
+<tr><td><code>rudras_ips_decisions_total</code></td><td><code>action</code></td><td>IPS decision count by action type</td></tr>
+<tr><td><code>rudras_ips_blocks_total</code></td><td><code>reason</code></td><td>IP block actions by trigger reason</td></tr>
+<tr><td><code>rudras_ips_resets_total</code></td><td>—</td><td>TCP RST injections</td></tr>
+<tr><td><code>rudras_ti_hits_total</code></td><td><code>list</code></td><td>TI blocklist hits by list name</td></tr>
+<tr><td><code>rudras_dns_blocks_total</code></td><td><code>category</code></td><td>DNS blocks by category</td></tr>
+<tr><td><code>rudras_zone_violations_total</code></td><td><code>src_zone</code>, <code>dst_zone</code></td><td>Zone policy violations</td></tr>
+<tr><td><code>rudras_tamper_alerts_total</code></td><td>—</td><td>Anti-tamper trigger count</td></tr>
+<tr><td><code>rudras_waf_blocks_total</code></td><td><code>attack_type</code></td><td>WAF blocks by attack category</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="gauge-metrics"><a class="header" href="#gauge-metrics">Gauge Metrics</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Metric</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>rudras_active_flows</code></td><td>Currently tracked flows (flow table size)</td></tr>
+<tr><td><code>rudras_blocked_ips</code></td><td>Currently WFP-blocked unique IPs</td></tr>
+<tr><td><code>rudras_ai_high_deviation_ips</code></td><td>IPs currently above <code>suspicious_threshold</code></td></tr>
+<tr><td><code>rudras_swarm_peers_connected</code></td><td>Active swarm peer connections</td></tr>
+<tr><td><code>rudras_ti_malicious_ips_loaded</code></td><td>Size of loaded malicious IP blocklist</td></tr>
+<tr><td><code>rudras_ti_blocked_domains_loaded</code></td><td>Size of loaded domain blocklist</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="histogram-metrics"><a class="header" href="#histogram-metrics">Histogram Metrics</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Metric</th><th>Labels</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>rudras_ai_deviation_score</code></td><td>—</td><td>Distribution of AI deviation scores</td></tr>
+<tr><td><code>rudras_packet_size_bytes</code></td><td><code>protocol</code></td><td>Packet size distribution</td></tr>
+<tr><td><code>rudras_ids_evaluation_duration_us</code></td><td>—</td><td>IDS processing time per packet (microseconds)</td></tr>
+<tr><td><code>rudras_packet_processing_duration_us</code></td><td>—</td><td>Total pipeline latency per packet</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="23-authentication"><a class="header" href="#23-authentication">2.3 Authentication</a></h3>
+<p>The metrics endpoint requires an <code>X-Rudras-Auth: &lt;token&gt;</code> header. Without a valid token, the server returns <code>401 Unauthorized</code>. This prevents unauthorized access to security telemetry.</p>
+<p><strong>Token lifecycle:</strong></p>
+<ol>
+<li>A new random token is generated at startup</li>
+<li>Token is logged in the structured log at INFO level: <code>event=metrics_token_rotated, token="MAINT-..."</code></li>
+<li>Token is valid for <code>auth_token_validity_mins</code> (default 60 minutes)</li>
+<li>After expiry, a new token is generated and logged</li>
+<li>The old token returns 401 until re-fetched from logs</li>
+</ol>
+<p><strong>Retrieving the current token:</strong></p>
+<pre><code class="language-powershell"># Current day log
+Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
+  Select-String "metrics_token|auth_token" |
+  Select-Object -Last 1  # Most recent token is last in file
+</code></pre>
+<h3 id="24-prometheus-scrape-configuration"><a class="header" href="#24-prometheus-scrape-configuration">2.4 Prometheus Scrape Configuration</a></h3>
+<p>To scrape Rudras from Prometheus:</p>
+<pre><code class="language-yaml">scrape_configs:
+  - job_name: rudras
+    static_configs:
+      - targets: ["127.0.0.1:9091"]
+    params:
+      # Bearer token is not standard in Prometheus for custom headers
+      # Use metrics_path to include token as query param instead
+    bearer_token_file: /etc/prometheus/rudras_token.txt
+    # Or: bearer_token: &lt;token&gt;
+</code></pre>
+<p>Since Rudras uses a custom <code>X-Rudras-Auth</code> header (not the standard <code>Authorization: Bearer</code> header), use a Prometheus <code>authorization</code> config block:</p>
+<pre><code class="language-yaml">authorization:
+  credentials_file: /etc/prometheus/rudras_token.txt
+</code></pre>
+<h3 id="25-grafana-dashboard"><a class="header" href="#25-grafana-dashboard">2.5 Grafana Dashboard</a></h3>
+<p>A pre-built Grafana dashboard JSON for Rudras metrics is planned for v4.1. Until then, key panels to build manually:</p>
+<ul>
+<li><strong>Packet rate over time:</strong> <code>rate(rudras_packets_total[5m])</code></li>
+<li><strong>Block rate over time:</strong> <code>rate(rudras_ips_blocks_total[5m])</code></li>
+<li><strong>Top blocked attack categories:</strong> <code>topk(10, rudras_ids_alerts_total by (category))</code></li>
+<li><strong>AI deviation heatmap:</strong> <code>rudras_ai_deviation_score</code> histogram panel</li>
+<li><strong>Active blocked IPs:</strong> <code>rudras_blocked_ips</code> single-stat</li>
+<li><strong>Flow table fullness:</strong> <code>rudras_active_flows / rudras_flow_table_max</code> gauge</li>
+</ul>
+<hr>
+<h2 id="3-soc-dashboard-nextjs"><a class="header" href="#3-soc-dashboard-nextjs">3. SOC Dashboard (Next.js)</a></h2>
+<p><strong>Location:</strong> <code>Frontend/</code> directory<br><strong>Technology:</strong> Next.js 14, TypeScript, Tailwind CSS, Framer Motion, Lucide React<br><strong>Port:</strong> 3000 (development), configurable for production<br><strong>Backend:</strong> Consumes Rudras metrics API and log files</p>
+<h3 id="31-architecture"><a class="header" href="#31-architecture">3.1 Architecture</a></h3>
+<p>The SOC Dashboard is a React/Next.js frontend that visualizes Rudras telemetry. It communicates with Rudras via:</p>
+<ol>
+<li><strong>Metrics API:</strong> Polls <code>http://127.0.0.1:9091/metrics</code> every 2 seconds for live counter data</li>
+<li><strong>Log file tail:</strong> Reads the current day’s log file for live event streaming</li>
+<li><strong>Management API:</strong> POSTs to <code>http://127.0.0.1:9091/admin/*</code> for control actions</li>
+</ol>
+<h3 id="32-dashboard-panels"><a class="header" href="#32-dashboard-panels">3.2 Dashboard Panels</a></h3>
+<h4 id="panel-1-threat-feed-attackfeed-component"><a class="header" href="#panel-1-threat-feed-attackfeed-component">Panel 1: Threat Feed (AttackFeed Component)</a></h4>
+<p>Live streaming list of security events:</p>
+<ul>
+<li>All <code>ids_alert</code>, <code>ips_block</code>, <code>ti_hit</code>, <code>zone_violation</code> events</li>
+<li>Sorted by timestamp (newest first)</li>
+<li>Color-coded by severity (red=critical, orange=high, yellow=medium, blue=low)</li>
+<li>Each event expandable for full JSON context</li>
+<li>Shows: timestamp (IST), source IP, destination, category, severity, MITRE technique</li>
+</ul>
+<h4 id="panel-2-packet-statistics-real-time-charts"><a class="header" href="#panel-2-packet-statistics-real-time-charts">Panel 2: Packet Statistics (Real-time Charts)</a></h4>
+<ul>
+<li><code>packets_per_second</code> — line chart, 5-minute rolling window</li>
+<li><code>blocks_per_second</code> — area chart</li>
+<li><code>ids_alerts_per_minute</code> by category — stacked bar chart</li>
+<li><code>active_flows</code> — gauge</li>
+</ul>
+<h4 id="panel-3-ai-anomaly-visualization-aipanel-component"><a class="header" href="#panel-3-ai-anomaly-visualization-aipanel-component">Panel 3: AI Anomaly Visualization (AIPanel Component)</a></h4>
+<ul>
+<li>Live ranked list of TOP 10 most suspicious IPs by AI deviation score</li>
+<li>Deviation score visualized as a horizontal bar (higher = more dangerous)</li>
+<li>Click to expand: shows full behavioral feature vector, baseline vs current comparison</li>
+<li>Historical anomaly score trend for each IP (sparkline)</li>
+</ul>
+<h4 id="panel-4-incident-timeline-incidenttimeline-component"><a class="header" href="#panel-4-incident-timeline-incidenttimeline-component">Panel 4: Incident Timeline (IncidentTimeline Component)</a></h4>
+<ul>
+<li>Chronological event log with IST timestamps</li>
+<li>Filterable by severity, category, source IP</li>
+<li>“Acknowledge” button to mark events as reviewed (logs analyst action to forensics chain)</li>
+<li>Clustered view: multiple events from same source IP grouped as an “incident”</li>
+</ul>
+<h4 id="panel-5-blocked-ip-intelligence"><a class="header" href="#panel-5-blocked-ip-intelligence">Panel 5: Blocked IP Intelligence</a></h4>
+<ul>
+<li>Currently blocked IP list with block reason, duration, and remaining TTL</li>
+<li>Geographic data enriched via GeoIP: country flag, ASN, organization name</li>
+<li>“Unblock” button for analyst-initiated false positive clearing (requirs confirmation)</li>
+</ul>
+<h4 id="panel-6-system-health-monitor"><a class="header" href="#panel-6-system-health-monitor">Panel 6: System Health Monitor</a></h4>
+<ul>
+<li>Module status: green/yellow/red for each of 17+ core modules</li>
+<li>CPU and memory usage of the Rudras process</li>
+<li>Capture ring buffer utilization (warn at 70%, critical at 90%)</li>
+<li>Flow table utilization</li>
+<li>Swarm peer connectivity status</li>
+</ul>
+<h3 id="33-glassmorphism-ui-design"><a class="header" href="#33-glassmorphism-ui-design">3.3 Glassmorphism UI Design</a></h3>
+<p>The SOC Dashboard uses a futuristic dark-theme glassmorphism aesthetic appropriate for a security operations context:</p>
+<ul>
+<li><strong>Background:</strong> <code>main.jpeg</code> (futuristic/dark) with <code>backdrop-filter: blur()</code> overlay</li>
+<li><strong>Panels:</strong> Translucent glass cards with <code>backdrop-filter: blur(12px)</code>, neon cyan border (<code>#0ff</code> / cyan)</li>
+<li><strong>Animations:</strong> Framer Motion for panel entry animations (fade + slide from bottom)</li>
+<li><strong>Scanline effect:</strong> CSS pseudo-element scanline for “live feed” monitor aesthetic</li>
+<li><strong>Color palette:</strong> Cyan neon (#0ff) for live data, red for critical alerts, amber for high, green for all-clear</li>
+</ul>
+<h3 id="34-hydration-safe-design"><a class="header" href="#34-hydration-safe-design">3.4 Hydration-Safe Design</a></h3>
+<p>React Server-Side Rendering (SSR) creates HTML on the server that must match the client-side hydration output exactly. Any element that differs between server and client (such as a timestamp that was rendered server-side at T=0 but differs when client hydrates at T=+500ms) causes a hydration error.</p>
+<p>Rudras’s SOC dashboard was carefully designed to avoid hydration errors:</p>
+<ul>
+<li>All real-time data (timestamps, live metrics) is initialized to <code>null</code> on the server and only populated client-side via <code>useEffect(() =&gt; { ... }, [])</code> hooks</li>
+<li>Components rendering live data are wrapped in a <code>ClientOnly</code> wrapper that returns <code>null</code> on the server</li>
+<li><code>suppressHydrationWarning={true}</code> is set on elements with intentional server/client differences</li>
+</ul>
+<hr>
+<h2 id="4-siem-integration-observability-output"><a class="header" href="#4-siem-integration-observability-output">4. SIEM Integration (Observability Output)</a></h2>
+<p><strong>Source File:</strong> <code>src/siem_integration.rs</code><br><strong>Purpose:</strong> Real-time security event streaming to external SIEM/SOAR platforms</p>
+<h3 id="41-cef-format-events"><a class="header" href="#41-cef-format-events">4.1 CEF Format Events</a></h3>
+<p>CEF (Common Event Format) is the industry standard for security event exchange:</p>
+<pre><code>CEF:0|Vendor|Product|Version|EventClassId|Name|Severity|Extensions
+</code></pre>
+<p>Rudras emits CEF events for all security events:</p>
+<pre><code>CEF:0|Rudras Security|Rudras Firewall|4.0|IDS:85|Ransomware SMB Pattern|10|
+  src=192.168.1.100 dst=10.10.20.50 spt=49152 dpt=445
+  proto=TCP
+  cs1=T1486 cs1Label=MitreTechnique
+  cs2=ransomware_smb cs2Label=AttackCategory
+  cn1=0.91 cn1Label=AIDeviationScore
+  cn2=0.95 cn2Label=TIConfidence
+  msg=SMB high-entropy write pattern consistent with ransomware encryption
+  rt=2026-03-08T10:45:23.000+05:30
+  dvchost=RUDRAS-NODE-01
+</code></pre>
+<h3 id="42-syslog-transport"><a class="header" href="#42-syslog-transport">4.2 Syslog Transport</a></h3>
+<p>By default, CEF events are sent via UDP syslog to the configured SIEM endpoint. For reliability, TCP syslog is supported (with exponential backoff retry on connection loss). TLS-encrypted syslog is also supported for environments with compliance requirements for encrypted log transport.</p>
+<hr>
+<h2 id="5-forensics-chain-audit-trail"><a class="header" href="#5-forensics-chain-audit-trail">5. Forensics Chain (Audit Trail)</a></h2>
+<p><strong>Source File:</strong> <code>src/forensics_chain.rs</code><br><strong>Purpose:</strong> Tamper-evident cryptographic audit trail for all security decisions</p>
+<h3 id="51-chain-structure"><a class="header" href="#51-chain-structure">5.1 Chain Structure</a></h3>
+<p>The forensics chain creates an append-only linked list of security events where each entry contains a hash of the previous entry:</p>
+<pre><code class="language-json">[
+  {
+    "seq": 1,
+    "timestamp": "2026-03-08T10:34:21.200000+05:30",
+    "event_type": "startup",
+    "data": { "version": "4.0", "modules_loaded": 17 },
+    "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "this_hash": "a3b5c7d9e1f3152739455b6d7f890a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7"
+  },
+  {
+    "seq": 2,
+    "timestamp": "2026-03-08T10:45:23.124578+05:30",
+    "event_type": "ips_block",
+    "data": {
+      "src_ip": "185.220.101.5",
+      "dst_ip": "10.10.20.50",
+      "reason": "ids_critical"
+    },
+    "prev_hash": "a3b5c7d9e1f3152739455b6d7f890a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7",
+    "this_hash": "7e6d5c4b3a2918f7e6d5c4b3a291807e6d5c4b3a29180706e5d4c3b2a1908"
+  }
+]
+</code></pre>
+<p>To verify the chain integrity: recompute <code>SHA3-256(seq + timestamp + event_type + data + prev_hash)</code> for each entry and verify it equals <code>this_hash</code>. If any entry in the middle is modified, all subsequent hashes become invalid — modification is immediately detectable.</p>
+<h3 id="52-legal-significance"><a class="header" href="#52-legal-significance">5.2 Legal Significance</a></h3>
+<p>The forensics chain provides:</p>
+<ul>
+<li><strong>Non-repudiation:</strong> Proof that a specific security action (block, alert) was taken at a specific time</li>
+<li><strong>Integrity:</strong> Cryptographic proof that the log was not tampered with after the fact</li>
+<li><strong>Completeness:</strong> Every security decision is recorded (no “silent drops”)</li>
+</ul>
+<p>This makes the forensics chain appropriate as evidence in legal proceedings and compliance audits.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="network_capture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="distributed_management.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="network_capture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="distributed_management.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

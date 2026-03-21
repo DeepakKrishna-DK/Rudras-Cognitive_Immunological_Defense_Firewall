@@ -1,0 +1,555 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>3.2 AI and Machine Learning Systems - Rudras: The Firewall in Practice</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom-4130de7f.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-3594adab.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rudras: The Firewall in Practice</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="32-ai-and-machine-learning-systems"><a class="header" href="#32-ai-and-machine-learning-systems">3.2 AI and Machine Learning Systems</a></h1>
+<hr>
+<h2 id="abstract"><a class="header" href="#abstract">Abstract</a></h2>
+<p>Rudras v4.0 implements a nine-module AI/ML stack covering four distinct learning paradigms: behavioral baseline modeling (EMA/statistical), ensemble anomaly detection (isolation forest, autoencoder), graph-theoretic topology analysis (GNN), and reinforcement learning for adaptive threshold optimization. No module requires pre-labeled training data — all are fully unsupervised, learning from the live traffic stream. This document provides a complete technical reference for each module.</p>
+<hr>
+<h2 id="1-ai-engine--ema-behavioral-baseline"><a class="header" href="#1-ai-engine--ema-behavioral-baseline">1. AI Engine — EMA Behavioral Baseline</a></h2>
+<p><strong>Source File:</strong> <code>src/ai_engine.rs</code><br><strong>Paradigm:</strong> Statistical / Time-series anomaly detection<br><strong>Learning Type:</strong> Unsupervised, online (learns from live traffic)</p>
+<h3 id="11-design-philosophy"><a class="header" href="#11-design-philosophy">1.1 Design Philosophy</a></h3>
+<p>The AI engine is inspired by the biological immune system’s concept of “self” vs. “non-self”. Every host on the network has a unique behavioral fingerprint — its normal operating pattern. The AI engine captures this fingerprint on first contact and tracks deviations from it. When a host’s behavior diverges significantly from its established fingerprint, a threat is presumed.</p>
+<h3 id="12-feature-vector"><a class="header" href="#12-feature-vector">1.2 Feature Vector</a></h3>
+<p>For each source IP, the AI engine tracks the following behavioral features:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Feature</th><th>Description</th><th>Normal Range</th></tr>
+</thead>
+<tbody>
+<tr><td><code>packets_per_sec</code></td><td>Packet transmission rate</td><td>1–1000</td></tr>
+<tr><td><code>bytes_per_sec</code></td><td>Byte transmission rate</td><td>100B/s–10MB/s</td></tr>
+<tr><td><code>new_connections_per_sec</code></td><td>TCP SYN rate</td><td>0–50</td></tr>
+<tr><td><code>unique_dst_ports</code> (1min window)</td><td>Distinct destination ports</td><td>1–20</td></tr>
+<tr><td><code>unique_dst_ips</code> (1min window)</td><td>Distinct destination IPs</td><td>1–50</td></tr>
+<tr><td><code>avg_packet_size</code></td><td>Mean packet payload size</td><td>40–1460 bytes</td></tr>
+<tr><td><code>syn_ack_ratio</code></td><td>Ratio of SYN to ACK packets</td><td>0.0–0.5</td></tr>
+<tr><td><code>icmp_rate</code></td><td>ICMP packet rate</td><td>0–10</td></tr>
+<tr><td><code>dns_query_rate</code></td><td>DNS query rate</td><td>0–100/min</td></tr>
+<tr><td><code>entropy</code></td><td>Shannon entropy of payload bytes</td><td>3.0–7.5</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="13-immutable-anchor"><a class="header" href="#13-immutable-anchor">1.3 Immutable Anchor</a></h3>
+<p>The first observation of a new IP creates the <strong>Immutable Anchor</strong> — a snapshot of that IP’s behavioral state. This anchor is immutable: it is set once and never changes. It represents “what this host looked like when it was first seen and presumably benign”.</p>
+<p>An attacker who gradually shifts behavior to avoid the EMA-tracking detector cannot escape the Immutable Anchor — no matter how slowly the behavior changes, it will eventually deviate far from the original anchor.</p>
+<h3 id="14-ema-calculation"><a class="header" href="#14-ema-calculation">1.4 EMA Calculation</a></h3>
+<p>The Exponential Moving Average smooths the feature vector over time:</p>
+<p>$$EMA_t = \alpha \cdot X_t + (1-\alpha) \cdot EMA_{t-1}$$</p>
+<p>Where:</p>
+<ul>
+<li>$\alpha$ = <code>ema_alpha</code> (default 0.3) — higher values mean more weight on recent observations</li>
+<li>$X_t$ = current measured feature values</li>
+<li>$EMA_{t-1}$ = previous EMA value</li>
+</ul>
+<h3 id="15-deviation-score-computation"><a class="header" href="#15-deviation-score-computation">1.5 Deviation Score Computation</a></h3>
+<p>The deviation score is the normalized distance between the current EMA and the immutable anchor:</p>
+<p>$$deviation = \frac{|EMA_{current} - anchor|}{anchor + \epsilon}$$</p>
+<p>Where $\epsilon = 10^{-9}$ prevents division by zero. The deviation is computed per-feature and the maximum across all features is taken as the summary score. A future enhancement (v4.1) will use Mahalanobis distance to account for feature correlation.</p>
+<h3 id="16-graduated-response"><a class="header" href="#16-graduated-response">1.6 Graduated Response</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Score Range</th><th>Action</th><th>Example Trigger</th></tr>
+</thead>
+<tbody>
+<tr><td>0.0–0.54</td><td>ALLOW</td><td>Normal traffic</td></tr>
+<tr><td>0.55–0.69</td><td>ALERT</td><td>Slightly elevated connection rate</td></tr>
+<tr><td>0.70–0.79</td><td>QUARANTINE</td><td>Port scanning behavior</td></tr>
+<tr><td>0.80+</td><td>BLOCK</td><td>Confirmed lateral movement, scan</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="2-cyberimmune-engine"><a class="header" href="#2-cyberimmune-engine">2. CyberImmune Engine</a></h2>
+<p><strong>Source File:</strong> <code>src/cyber_immune.rs</code><br><strong>Paradigm:</strong> Biological immune system metaphor<br><strong>Learning Type:</strong> Unsupervised, pattern reinforcement</p>
+<h3 id="21-the-biological-metaphor"><a class="header" href="#21-the-biological-metaphor">2.1 The Biological Metaphor</a></h3>
+<p>The CyberImmune module extends the AI engine’s behavioral model using a biological immunity metaphor:</p>
+<ul>
+<li><strong>Antigens:</strong> Behavioral signatures of detected malicious activity (packet rate spikes, port scan patterns)</li>
+<li><strong>Antibodies:</strong> Detection rules automatically generated from confirmed-malicious behavioral patterns</li>
+<li><strong>Memory Cells:</strong> Long-term records of previously seen attacker signatures (even after the attacker’s IP changes)</li>
+<li><strong>Vaccination:</strong> When a new threat is confirmed, an “antibody” (rule) is auto-generated and distributed via swarm gossip to all peer nodes</li>
+</ul>
+<h3 id="22-auto-generated-detection-rules"><a class="header" href="#22-auto-generated-detection-rules">2.2 Auto-Generated Detection Rules</a></h3>
+<p>When the AI engine confirms a block decision (score &gt; 0.80), the CyberImmune module extracts the behavioral pattern that triggered it and creates an “antibody”:</p>
+<pre><code>New antibody from event at 2026-03-08T10:45:23+05:30:
+  pattern: {
+    syn_rate_spike: &gt; 150/sec,
+    unique_dst_ports: &gt; 500 in 1 minute,
+    unique_dst_ips: &gt; 200 in 1 minute
+  }
+  class: "network_reconnaissance"
+  confidence: 0.92
+  propagate_to_swarm: true
+</code></pre>
+<p>This antibody is broadcast to all peer nodes in the swarm, which can then apply it to traffic matching the same pattern even if they haven’t seen the original attacker IP.</p>
+<h3 id="23-immune-memory"><a class="header" href="#23-immune-memory">2.3 Immune Memory</a></h3>
+<p>Confirmed-malicious behavioral fingerprints are stored in a <code>Vec&lt;ThreatSignature&gt;</code> in memory. When a new connection arrives with behavioral characteristics matching a historical threat signature — even from a different IP — the CyberImmune module flags it with an elevated suspicion score.</p>
+<p>This handles threat actors who:</p>
+<ul>
+<li>Rotate IP addresses (different IP, same malware behavior)</li>
+<li>Use botnets (many IPs, same traffic pattern)</li>
+<li>Resume attacks after IP block expiry</li>
+</ul>
+<hr>
+<h2 id="3-advanced-ml-engine"><a class="header" href="#3-advanced-ml-engine">3. Advanced ML Engine</a></h2>
+<p><strong>Source File:</strong> <code>src/advanced_ml.rs</code><br><strong>Paradigm:</strong> Multi-model ensemble anomaly detection<br><strong>Models:</strong> Isolation Forest + Autoencoder + Statistical baseline</p>
+<h3 id="31-ensemble-architecture"><a class="header" href="#31-ensemble-architecture">3.1 Ensemble Architecture</a></h3>
+<p>Rather than relying on a single ML model, <code>advanced_ml.rs</code> runs three complementary models and takes a weighted vote:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Model</th><th>Anomaly Type Detected</th><th>False Positive Rate</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Isolation Forest</strong></td><td>Point anomalies (single-packet oddities)</td><td>Low</td></tr>
+<tr><td><strong>Autoencoder</strong></td><td>Sequential pattern anomalies (multi-packet flows)</td><td>Medium</td></tr>
+<tr><td><strong>Statistical Baseline</strong></td><td>Volume/rate anomalies</td><td>Very Low</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="32-isolation-forest"><a class="header" href="#32-isolation-forest">3.2 Isolation Forest</a></h3>
+<p>The isolation forest algorithm partitions the feature space by randomly selecting a feature and a random split point. Anomalous points (which occupy sparse regions of feature space) are isolated in fewer partitions than normal points.</p>
+<p>The anomaly score for a sample is:</p>
+<p>$$score(x, n) = 2^{-\frac{E[h(x)]}{c(n)}}$$</p>
+<p>Where $E[h(x)]$ is the average path length across trees and $c(n)$ is the average path length of an unsuccessful search in a binary search tree of $n$ nodes.</p>
+<p>In Rudras, the Isolation Forest is retrained on a rolling window of 10,000 recent flow observations every 5 minutes.</p>
+<h3 id="33-autoencoder-based-anomaly-detection"><a class="header" href="#33-autoencoder-based-anomaly-detection">3.3 Autoencoder-Based Anomaly Detection</a></h3>
+<p>The autoencoder is a neural network trained to reconstruct its input. Normal traffic patterns can be reconstructed accurately; anomalous patterns cannot. The reconstruction error is the anomaly score.</p>
+<p>Architecture:</p>
+<pre><code>Input: 10-dimensional feature vector (the feature vector from Section 1.2)
+Encoder: 10 → 6 → 4 (ReLU activation)
+Bottleneck: 4-dimensional latent representation
+Decoder: 4 → 6 → 10 (ReLU activation)
+Loss: Mean Squared Error
+
+Anomaly score = MSE(input, reconstructed)
+Threshold: 99th percentile of reconstruction errors from training window
+</code></pre>
+<p>The autoencoder is implemented using a simple matrix multiplication stack (no external ML library dependency) to maintain the Rust no-external-runtime constraint.</p>
+<h3 id="34-ensemble-voting"><a class="header" href="#34-ensemble-voting">3.4 Ensemble Voting</a></h3>
+<pre><code>final_score = (isolation_forest_score × 0.40)
+            + (autoencoder_score × 0.35)
+            + (statistical_baseline_score × 0.25)
+
+If final_score &gt; 0.75 → escalate to comprehensive_blocker
+</code></pre>
+<p>The ensemble is more robust than any single model because:</p>
+<ul>
+<li>If a novel attack evades the isolation forest (fits within historical feature distribution), the autoencoder may catch it as an unusual sequential flow</li>
+<li>If both evade those, the statistical baseline catches volume/rate anomalies</li>
+</ul>
+<hr>
+<h2 id="4-advanced-security-engine"><a class="header" href="#4-advanced-security-engine">4. Advanced Security Engine</a></h2>
+<p><strong>Source File:</strong> <code>src/advanced_security.rs</code><br><strong>Paradigm:</strong> Multi-dimensional threat correlation<br><strong>Purpose:</strong> Correlates signals across time and across multiple detection dimensions</p>
+<h3 id="41-temporal-correlation"><a class="header" href="#41-temporal-correlation">4.1 Temporal Correlation</a></h3>
+<p>A single anomalous packet, in isolation, is low confidence. The advanced security engine tracks anomalous events across a sliding time window (configurable, default 5 minutes) for each source IP. If multiple independent anomaly signals arise from the same IP within the window, the correlation score escalates — this is a much higher-confidence threat indicator.</p>
+<pre><code>Correlation example:
+  T+0:00  - AI deviation spike (score 0.62)   → ALERT (low confidence)
+  T+1:30  - DNS query to suspicious domain     → ALERT (low confidence)
+  T+3:00  - Port scan pattern detected by IDS  → ALERT (low confidence)
+
+Correlation result at T+3:00:
+  All three signals from same src IP within 5-min window
+  correlation_score = 0.62 + 0.55 + 0.70 = 1.87 / 3 = 0.62  → normalized
+  Escalate to: HIGH confidence QUARANTINE
+</code></pre>
+<h3 id="42-cross-protocol-correlation"><a class="header" href="#42-cross-protocol-correlation">4.2 Cross-Protocol Correlation</a></h3>
+<p>The advanced security engine also correlates anomalies across protocols from the same source IP. An IP that causes both HTTP WAF alerts and DNS-layer C2 pattern alerts is treated as dramatically higher confidence than either signal alone — because the likelihood of a legitimate user accidentally triggering anomalous behavior on two independent protocol layers simultaneously is extremely low.</p>
+<hr>
+<h2 id="5-federated-learning-engine"><a class="header" href="#5-federated-learning-engine">5. Federated Learning Engine</a></h2>
+<p><strong>Source File:</strong> <code>src/federated_learning.rs</code><br><strong>Paradigm:</strong> Privacy-preserving distributed ML<br><strong>Status:</strong> Production-ready, requires swarm peer network</p>
+<h3 id="51-the-federated-learning-problem"><a class="header" href="#51-the-federated-learning-problem">5.1 The Federated Learning Problem</a></h3>
+<p>Different Rudras nodes see different network traffic. Node A (at HQ) sees executive email and finance traffic. Node B (at datacenter) sees API server and database traffic. Each builds behavioral baselines specific to its traffic. Federated learning allows sharing <em>what each node has learned</em> without sharing the raw network traffic that could expose private data.</p>
+<h3 id="52-how-it-works"><a class="header" href="#52-how-it-works">5.2 How It Works</a></h3>
+<ol>
+<li>Each node trains a local model update on its observed traffic</li>
+<li>The model update (gradient deltas, not raw traffic) is cryptographically aggregated with the Homomorphic Sharing module (<code>homomorphic_sharing.rs</code>) so no individual node’s data is exposed</li>
+<li>The aggregated model update is broadcast to all peer nodes</li>
+<li>Each node applies the aggregated update to improve its local model</li>
+</ol>
+<p>This is an implementation of the <strong>FedAvg algorithm</strong> (McMahan et al., 2017) with homomorphic encryption for update aggregation.</p>
+<h3 id="53-privacy-guarantees"><a class="header" href="#53-privacy-guarantees">5.3 Privacy Guarantees</a></h3>
+<ul>
+<li><strong>Differential Privacy:</strong> Model updates include calibrated Gaussian noise (<code>epsilon = 1.0</code> privacy budget) before aggregation, ensuring individual flow patterns are not inferable from the aggregated update</li>
+<li><strong>Homomorphic Aggregation:</strong> Updates are aggregated in encrypted form — no node sees the unencrypted updates of any other node</li>
+<li><strong>No Raw Traffic Sharing:</strong> Only model gradients (parameter deltas) are shared, never raw packet data</li>
+</ul>
+<hr>
+<h2 id="6-graph-neural-network-gnn-engine"><a class="header" href="#6-graph-neural-network-gnn-engine">6. Graph Neural Network (GNN) Engine</a></h2>
+<p><strong>Source File:</strong> <code>src/gnn_engine.rs</code><br><strong>Paradigm:</strong> Graph-theoretic anomaly detection<br><strong>Specialization:</strong> Lateral movement, topology attacks, infrastructure anomalies</p>
+<h3 id="61-why-graphs-for-network-security"><a class="header" href="#61-why-graphs-for-network-security">6.1 Why Graphs for Network Security?</a></h3>
+<p>A network is fundamentally a graph: nodes are IP addresses, edges are connections. Attackers performing lateral movement create unusual graph patterns:</p>
+<ul>
+<li>A host that suddenly connects to 50 hosts it never connected to before</li>
+<li>A path between zones that should never exist (guest zone → database zone)</li>
+<li>Hub formation around a compromised host acting as pivot</li>
+</ul>
+<p>These patterns are invisible to per-flow analysis but obvious in graph representation.</p>
+<h3 id="62-graph-construction"><a class="header" href="#62-graph-construction">6.2 Graph Construction</a></h3>
+<p>Rudras maintains a live directed graph <code>G = (V, E)</code> where:</p>
+<ul>
+<li><code>V</code> = set of observed IP addresses</li>
+<li><code>E</code> = set of connections (directed from source to destination)</li>
+<li>Edge weight = number of bytes exchanged</li>
+</ul>
+<p>Every new connection adds an edge to the graph. The graph is periodically pruned of edges older than <code>gnn_edge_ttl_minutes</code> (default 60 minutes) to focus on recent topology.</p>
+<h3 id="63-gnn-architecture"><a class="header" href="#63-gnn-architecture">6.3 GNN Architecture</a></h3>
+<p>The GNN used in Rudras is a simplified <strong>GraphSAGE</strong> architecture:</p>
+<ol>
+<li><strong>Node Feature Embedding:</strong> Each node has a feature vector: <code>[degree, weighted_degree, zone_id, trust_score, ai_deviation]</code></li>
+<li><strong>Neighborhood Aggregation:</strong> For each node, aggregate features of its 2-hop neighborhood via mean pooling</li>
+<li><strong>Anomaly Scoring:</strong> A node whose aggregated neighborhood representation deviates from its historical neighborhood representation is flagged</li>
+</ol>
+<p>Nodes with high GNN anomaly scores represent hosts acting as lateral movement pivots or unexpected network hubs.</p>
+<h3 id="64-lateral-movement-detection"><a class="header" href="#64-lateral-movement-detection">6.4 Lateral Movement Detection</a></h3>
+<p>The GNN is specifically tuned to detect lateral movement indicators:</p>
+<ul>
+<li><strong>Fan-out pattern:</strong> One node suddenly connecting to many new nodes (scanner/pivot)</li>
+<li><strong>Chain traversal:</strong> A → B → C path through zones (A is low-trust, C is high-value)</li>
+<li><strong>Beaconing hub:</strong> Many nodes connecting to the same unusual external IP (C2 botnet pattern)</li>
+</ul>
+<p>When GNN detects a high-anomaly-score node, it reports the central node IP to the comprehensive blocker with enrichment data about which connections are anomalous.</p>
+<hr>
+<h2 id="7-encrypted-traffic-analysis-eta-engine"><a class="header" href="#7-encrypted-traffic-analysis-eta-engine">7. Encrypted Traffic Analysis (ETA) Engine</a></h2>
+<p><strong>Source File:</strong> <code>src/eta_engine.rs</code><br><strong>Paradigm:</strong> Traffic fingerprinting without decryption<br><strong>Privacy:</strong> No payload decryption — operates solely on TLS metadata</p>
+<h3 id="71-the-tls-inspection-problem"><a class="header" href="#71-the-tls-inspection-problem">7.1 The TLS Inspection Problem</a></h3>
+<p>Modern enterprise traffic is 90%+ encrypted (TLS 1.3). Traditional deep packet inspection cannot inspect encrypted payloads without a TLS interception proxy (man-in-the-middle), which:</p>
+<ul>
+<li>Breaks certificate transparency</li>
+<li>Creates privacy and legal risk</li>
+<li>Is visible to sophisticated attackers</li>
+</ul>
+<p>The ETA engine detects threats in encrypted traffic <em>without</em> decrypting it.</p>
+<h3 id="72-tls-metadata-features"><a class="header" href="#72-tls-metadata-features">7.2 TLS Metadata Features</a></h3>
+<p>The ETA engine extracts features from the TLS handshake and session metadata (all visible in plaintext during handshake):</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Feature</th><th>Source</th><th>Example Value</th></tr>
+</thead>
+<tbody>
+<tr><td>TLS version</td><td>ClientHello</td><td>TLS 1.3 / 1.2 / 1.0 (1.0 = suspicious)</td></tr>
+<tr><td>Cipher suite list</td><td>ClientHello</td><td>List of supported ciphers</td></tr>
+<tr><td>TLS extension list</td><td>ClientHello</td><td>Extensions present/absent</td></tr>
+<tr><td>SNI hostname</td><td>ClientHello</td><td><code>api.example.com</code></td></tr>
+<tr><td>Server certificate details</td><td>Certificate message</td><td>Issuer, subject, validity period</td></tr>
+<tr><td>Self-signed indicator</td><td>Certificate</td><td>True/False</td></tr>
+<tr><td>Certificate age</td><td>Certificate validity</td><td>New cert on known-bad IP</td></tr>
+<tr><td>Session resumption</td><td>SessionTicket</td><td>Yes/No</td></tr>
+<tr><td>Record size distribution</td><td>TLS record layer</td><td>Byte histogram</td></tr>
+<tr><td>Inter-packet timing</td><td>Packet timestamps</td><td>Jitter variance</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="73-ja3ja4-fingerprinting"><a class="header" href="#73-ja3ja4-fingerprinting">7.3 JA3/JA4 Fingerprinting</a></h3>
+<p>The JA3 algorithm creates a fingerprint from the TLS ClientHello:</p>
+<pre><code>JA3 = MD5(TLSVersion + CipherSuites + Extensions + EllipticCurves + EllipticCurvePointFormats)
+</code></pre>
+<p>Malware families have characteristic JA3 fingerprints because their TLS library configurations are consistent. Rudras maintains a database of known-malicious JA3 fingerprints and matches incoming connections against it.</p>
+<p>JA4 (a newer, more collision-resistant algorithm) is also supported for future-proofing.</p>
+<hr>
+<h2 id="8-network-dpi-ml-engine"><a class="header" href="#8-network-dpi-ml-engine">8. Network DPI ML Engine</a></h2>
+<p><strong>Source File:</strong> <code>src/network_dpi_ml.rs</code><br><strong>Paradigm:</strong> ML-assisted protocol classification<br><strong>Purpose:</strong> Identifies protocols and applications from traffic patterns when headers are obfuscated</p>
+<h3 id="81-when-headers-lie"><a class="header" href="#81-when-headers-lie">8.1 When Headers Lie</a></h3>
+<p>Sophisticated attackers tunnel malicious traffic over legitimate-looking protocols:</p>
+<ul>
+<li>C2 traffic over HTTP on port 80 (looks like web browsing)</li>
+<li>Data exfiltration over DNS (looks like normal DNS)</li>
+<li>Malware over HTTPS (encrypted, no visibility)</li>
+</ul>
+<p>The network_dpi_ml engine uses ML to classify traffic based on statistical characteristics of the byte stream itself, independent of port numbers or declared protocol.</p>
+<h3 id="82-feature-engineering-for-flow-classification"><a class="header" href="#82-feature-engineering-for-flow-classification">8.2 Feature Engineering for Flow Classification</a></h3>
+<p>For each flow, the following statistical features are extracted from the raw byte sequence:</p>
+<ul>
+<li>Byte value histogram (256-dimensional)</li>
+<li>Entropy of payload bytes</li>
+<li>Run-length statistics</li>
+<li>First-N-bytes fingerprint</li>
+<li>Packet length distribution</li>
+<li>Inter-arrival time statistics</li>
+</ul>
+<p>These features are fed to a random forest classifier trained to distinguish:</p>
+<ul>
+<li>HTTP over non-standard ports</li>
+<li>DNS tunneling (high entropy DNS payloads)</li>
+<li>TLS/HTTPS over port 80</li>
+<li>Binary protocol misidentified as HTTP</li>
+<li>Tor traffic patterns</li>
+</ul>
+<hr>
+<h2 id="9-reinforcement-learning-policy-engine"><a class="header" href="#9-reinforcement-learning-policy-engine">9. Reinforcement Learning Policy Engine</a></h2>
+<p><strong>Source File:</strong> <code>src/rl_policy.rs</code><br><strong>Paradigm:</strong> Reinforcement Learning<br><strong>Purpose:</strong> Continuous optimization of detection thresholds based on operational feedback</p>
+<h3 id="91-the-threshold-optimization-problem"><a class="header" href="#91-the-threshold-optimization-problem">9.1 The Threshold Optimization Problem</a></h3>
+<p>IDS/IPS thresholds are not universal. A development network with engineers doing port scans of test servers should have different <code>syn_flood_threshold</code> values than a production trading system where any unusual connection is suspect. The RL policy engine learns the optimal thresholds for the specific deployment environment from feedback.</p>
+<h3 id="92-rl-problem-formulation"><a class="header" href="#92-rl-problem-formulation">9.2 RL Problem Formulation</a></h3>
+<ul>
+<li><strong>State:</strong> Current system state: <code>{false_positive_rate, false_negative_rate, throughput, alert_volume, block_rate}</code></li>
+<li><strong>Action:</strong> Adjustment of one threshold parameter by +/- delta: <code>{ema_alpha, block_threshold, syn_flood_threshold, ...}</code></li>
+<li><strong>Reward:</strong> <code>reward = (true_positive_rate × 2.0) - (false_positive_rate × 3.0) - (performance_overhead × 0.5)</code></li>
+</ul>
+<p>The reward function heavily penalizes false positives (which disrupt legitimate traffic) while rewarding true positive detections.</p>
+<h3 id="93-learning-algorithm"><a class="header" href="#93-learning-algorithm">9.3 Learning Algorithm</a></h3>
+<p>The RL engine uses a <strong>Q-Learning</strong> variant with experience replay:</p>
+<ul>
+<li>Q-table is updated after each “episode” (configurable: every 100 block decisions or every 1 hour, whichever comes first)</li>
+<li>Epsilon-greedy exploration: 90% exploitation (use best known thresholds), 10% exploration (try small adjustments to learn)</li>
+<li>Learning rate: 0.1 (conservative to prevent threshold oscillation)</li>
+</ul>
+<h3 id="94-safety-constraints"><a class="header" href="#94-safety-constraints">9.4 Safety Constraints</a></h3>
+<p>The RL engine operates within hard safety limits:</p>
+<ul>
+<li>Thresholds can never be moved below minimum safety values (prevents disabling detection entirely)</li>
+<li>Thresholds can never be moved above maximum values (prevents thresholds so high tracking becomes useless)</li>
+<li>If false negative rate exceeds 10%, RL resets to conservative defaults regardless of learned policy (safety override)</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="detection_engines.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="threat_intelligence.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="detection_engines.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="threat_intelligence.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

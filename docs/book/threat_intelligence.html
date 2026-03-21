@@ -1,0 +1,489 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>3.3 Threat Intelligence Capabilities - Rudras: The Firewall in Practice</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom-4130de7f.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-3594adab.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rudras: The Firewall in Practice</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="33-threat-intelligence-capabilities"><a class="header" href="#33-threat-intelligence-capabilities">3.3 Threat Intelligence Capabilities</a></h1>
+<hr>
+<h2 id="abstract"><a class="header" href="#abstract">Abstract</a></h2>
+<p>Threat Intelligence (TI) is the curated knowledge of known malicious infrastructure — IP addresses, domains, file hashes, and URLs associated with threat actors. Rudras v4.0 operates the largest embedded TI corpus of any open-architecture firewall: 24,358 malicious IPs, 1,250,617 blocked domains, 84,501 malware signatures, and 617 explicitly tracked threat-actor domains. This document describes the TI subsystem architecture, data sources, blocking mechanics, and DNS-layer enforcement.</p>
+<hr>
+<h2 id="1-threat-intelligence-engine"><a class="header" href="#1-threat-intelligence-engine">1. Threat Intelligence Engine</a></h2>
+<p><strong>Source File:</strong> <code>src/threat_intelligence.rs</code><br><strong>Dataset Sizes (v4.0):</strong></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Feed</th><th>Entries</th><th>Update Frequency</th></tr>
+</thead>
+<tbody>
+<tr><td>Malicious IP addresses</td><td>24,358</td><td>On-load + configurable refresh</td></tr>
+<tr><td>Known threat-actor domains</td><td>617</td><td>On-load + configurable refresh</td></tr>
+<tr><td>DNS blocklist (mass category)</td><td>1,250,000</td><td>On-load</td></tr>
+<tr><td>Malware file hashes (SHA256)</td><td>84,501</td><td>On-load</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="11-data-file-locations"><a class="header" href="#11-data-file-locations">1.1 Data File Locations</a></h3>
+<pre><code>data/intel/global_iocs.json          # Malicious IP and domain IOCs
+data/intel/malicious_domains.txt     # Known bad domain list
+data/immune/                         # DNS block category lists
+data/geoip/                          # GeoIP database for geographic enrichment
+</code></pre>
+<h3 id="12-ioc-data-schema"><a class="header" href="#12-ioc-data-schema">1.2 IOC Data Schema</a></h3>
+<p>The <code>global_iocs.json</code> file follows this schema per entry:</p>
+<pre><code class="language-json">{
+  "ip": "185.220.101.5",
+  "confidence": 0.95,
+  "category": "tor_exit_node",
+  "first_seen": "2025-06-15",
+  "last_seen": "2026-03-01",
+  "source": "OTX",
+  "tags": ["tor", "exit_node", "anonymization"],
+  "ttps": ["T1090.003"],
+  "threat_actor": null,
+  "asn": "AS204720",
+  "country": "DE"
+}
+</code></pre>
+<h3 id="13-in-memory-data-structures"><a class="header" href="#13-in-memory-data-structures">1.3 In-Memory Data Structures</a></h3>
+<p>After loading from files, TI data is stored in optimized in-memory structures:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// O(1) lookup for blocked IPs
+blocked_ips: RwLock&lt;HashSet&lt;IpAddr&gt;&gt;
+
+// O(1) lookup for blocked domains (exact match)
+blocked_domains_exact: RwLock&lt;HashSet&lt;String&gt;&gt;
+
+// Bloom filter for probable domain match (sub-1-microsecond pre-check)
+domain_bloom: BloomFilter
+
+// Full confidence and metadata (for enrichment only, not in hot path)
+ioc_details: RwLock&lt;HashMap&lt;IpAddr, IocRecord&gt;&gt;
+
+// Malware hash lookup (for DPI payload matching)
+malware_hashes: RwLock&lt;HashSet&lt;[u8; 32]&gt;&gt;
+<span class="boring">}</span></code></pre>
+<p>The Bloom filter enables a two-tier domain lookup: first check the Bloom filter (O(1), zero false negatives for non-matching domains), then check the HashSet only for probable matches. This reduces memory bandwidth on the 1.25M domain list.</p>
+<h3 id="14-confidence-score-system"><a class="header" href="#14-confidence-score-system">1.4 Confidence Score System</a></h3>
+<p>Each IOC has a confidence score (0.0–1.0):</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Score Range</th><th>Interpretation</th><th>Action</th></tr>
+</thead>
+<tbody>
+<tr><td>0.90–1.00</td><td>High confidence (multi-source confirmed)</td><td>BLOCK immediately</td></tr>
+<tr><td>0.70–0.89</td><td>Medium confidence (single reliable source)</td><td>ALERT + monitor</td></tr>
+<tr><td>0.50–0.69</td><td>Low confidence (automated feed, unverified)</td><td>LOG only</td></tr>
+<tr><td>&lt; 0.50</td><td>Unconfirmed</td><td>Ignore</td></tr>
+</tbody>
+</table>
+</div>
+<p>Confidence scores are combined when the same IOC appears in multiple feeds:</p>
+<pre><code>combined_confidence = 1 - (1 - source1_confidence) × (1 - source2_confidence)
+# e.g., 0.8 from OTX + 0.75 from VirusTotal = 1 - (0.2 × 0.25) = 0.95
+</code></pre>
+<h3 id="15-feed-refresh"><a class="header" href="#15-feed-refresh">1.5 Feed Refresh</a></h3>
+<p>When <code>restart</code> or a SIGHUP reload is received, the TI engine re-reads all files and updates the in-memory structures:</p>
+<ol>
+<li>New <code>HashSet</code> built from fresh file data</li>
+<li>Atomic swap: <code>blocked_ips.write()</code> replaced with new set in a single write lock acquisition</li>
+<li>Old set dropped — Rust ownership ensures safe deallocation</li>
+<li>Metrics updated with new counts</li>
+</ol>
+<hr>
+<h2 id="2-dns-security-engine"><a class="header" href="#2-dns-security-engine">2. DNS Security Engine</a></h2>
+<p><strong>Source File:</strong> <code>src/dns_security.rs</code><br><strong>Role:</strong> DNS-layer threat interception, the last line of defense before C2 connects</p>
+<h3 id="21-why-dns-is-critical"><a class="header" href="#21-why-dns-is-critical">2.1 Why DNS Is Critical</a></h3>
+<p>90%+ of malware uses DNS as part of its operation:</p>
+<ul>
+<li><strong>C2 Beaconing:</strong> Resolving the C2 server hostname before connecting</li>
+<li><strong>DNS Tunneling:</strong> Encoding data in DNS query subdomains to exfiltrate data</li>
+<li><strong>Domain Generation Algorithm (DGA):</strong> Generating thousands of random domains, one of which the attacker controls</li>
+<li><strong>Fast-flux DNS:</strong> Rapidly rotating DNS A records to hide malicious infrastructure</li>
+</ul>
+<p>Blocking at the DNS layer stops malware before it can establish its first connection. Even if the malware evades the IDS/WAF/AI — if it can’t resolve its C2 server, it can’t operate.</p>
+<h3 id="22-dns-blocking-mechanisms"><a class="header" href="#22-dns-blocking-mechanisms">2.2 DNS Blocking Mechanisms</a></h3>
+<p><strong>Mechanism 1: Domain Blocklist Match</strong>
+DNS queries for domains in the blocklist receive an <code>NXDOMAIN</code> response injected by Rudras’s DNS security engine. The malware receives “domain not found” and fails to connect.</p>
+<p><strong>Mechanism 2: IP Response Substitution</strong>
+DNS queries that resolve to a known-malicious IP can optionally have the response modified to return a sinkhole IP (a controlled IP that logs all connection attempts from infected hosts). This enables detection of infected hosts without their malware connecting to the real C2.</p>
+<p><strong>Mechanism 3: DGA Detection</strong>
+DGA domains follow patterns different from human-readable legitimate domains:</p>
+<ul>
+<li>Very high entropy (random character distributions)</li>
+<li>No meaningful substrings</li>
+<li>Short domain names with numbers + consonants only</li>
+<li>No history in domain registration databases</li>
+</ul>
+<p>The DNS security engine applies an entropy classifier to query domains. Domains with entropy &gt; 3.5 bits/character AND length &lt; 12 characters are flagged as probable DGA and blocked.</p>
+<p><strong>Mechanism 4: DNS Tunneling Detection</strong>
+DNS tunneling embeds data in subdomains:</p>
+<pre><code>YWxpY2U6cGFzc3dvcmQ=.evil-domain.com.   # base64-encoded data in subdomain
+</code></pre>
+<p>Detection indicators:</p>
+<ul>
+<li>Subdomain length &gt; 50 characters</li>
+<li>Non-standard characters (=, /, +) in subdomain</li>
+<li>High Shannon entropy of subdomain component</li>
+<li>Unusually high query rate (tunneling generates many queries per minute)</li>
+<li>TXT record queries at high volume (exfiltration via TXT responses)</li>
+</ul>
+<h3 id="23-dns-cache-poisoning-prevention"><a class="header" href="#23-dns-cache-poisoning-prevention">2.3 DNS Cache Poisoning Prevention</a></h3>
+<p>Rudras validates DNS responses against expected records:</p>
+<ul>
+<li><strong>DNSSEC validation:</strong> If the domain has DNSSEC records, validate the signature chain</li>
+<li><strong>Response anomaly detection:</strong> A DNS response claiming an unexpected IP for a well-known domain (e.g., <code>google.com</code> resolving to a private IP) generates a CRITICAL alert</li>
+<li><strong>Flood response filtering:</strong> DNS amplification attack responses (large DNS responses to spoofed source IPs) are detected by the IDS module and rate-limited</li>
+</ul>
+<h3 id="24-domain-category-blocklists"><a class="header" href="#24-domain-category-blocklists">2.4 Domain Category Blocklists</a></h3>
+<p>The 1,250,000-domain blocklist is organized into categories stored in <code>data/immune/</code>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Category</th><th>Examples</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td>Malware C2</td><td>Known C2 infrastructure</td><td>Block active malware</td></tr>
+<tr><td>Phishing</td><td>Lookalike domains</td><td>Block credential theft</td></tr>
+<tr><td>Tracking/Analytics</td><td>Third-party trackers</td><td>Privacy protection</td></tr>
+<tr><td>P2P / Botnets</td><td>Known P2P botnet domains</td><td>Block distributed malware</td></tr>
+<tr><td>Ads / Adware</td><td>Ad network domains</td><td>Optional (disabled by default)</td></tr>
+<tr><td>Adult Content</td><td>Optional category</td><td>Optional (disabled by default)</td></tr>
+<tr><td>Cryptomining</td><td>Mining pool domains</td><td>Block resource theft</td></tr>
+<tr><td>Tor</td><td>Tor onion services in DNS</td><td>Detect/block Tor usage</td></tr>
+</tbody>
+</table>
+</div>
+<p>Categories can be individually enabled/disabled in <code>config/rudras.toml</code>.</p>
+<hr>
+<h2 id="3-threat-hunt-engine"><a class="header" href="#3-threat-hunt-engine">3. Threat Hunt Engine</a></h2>
+<p><strong>Source File:</strong> <code>src/threat_hunt.rs</code><br><strong>Role:</strong> Proactive, hypothesis-driven threat hunting<br><strong>Paradigm:</strong> Distinct from reactive detection — analyst-guided proactive search</p>
+<h3 id="31-what-is-threat-hunting"><a class="header" href="#31-what-is-threat-hunting">3.1 What Is Threat Hunting?</a></h3>
+<p>Traditional IDS/IPS is <strong>reactive</strong>: it triggers when known attack patterns are present. Threat hunting is <strong>proactive</strong>: a security analyst forms a hypothesis (“I believe there may be an infected host performing slow, low-volume data exfiltration that evades rate-based detection”) and then runs targeted queries against historical flow data to test the hypothesis.</p>
+<p>The <code>threat_hunt.rs</code> module provides the data layer and query primitives for threat hunting operations.</p>
+<h3 id="32-threat-hunting-queries"><a class="header" href="#32-threat-hunting-queries">3.2 Threat Hunting Queries</a></h3>
+<p>Available built-in hunt queries:</p>
+<p><strong>Hunt 1: Beaconing Detection</strong>
+Identifies connections with mathematically regular intervals (classic C2 beacon signature):</p>
+<pre><code>HUNT: Find connections from src IP with median inter-connection time variance &lt; 5s
+      over a 30-minute observation window
+→ Suspects: hosts with regular automated outbound connections
+</code></pre>
+<p><strong>Hunt 2: Low-and-Slow Port Scan</strong>
+Traditional IDS catches fast port scans. This hunt catches slow ones evading rate thresholds:</p>
+<pre><code>HUNT: Find IPs that connected to &gt; 100 unique destination ports over the last 24h
+      with &lt; 5 connections/minute average rate
+→ Suspects: patient attackers, automated reconnaissance avoiding threshold
+</code></pre>
+<p><strong>Hunt 3: Unusual Outbound Volume</strong></p>
+<pre><code>HUNT: Find hosts with outbound bytes &gt; 10× their 7-day baseline
+      for a sustained period &gt; 10 minutes
+→ Suspects: data exfiltration, backup exfil, compromised data store
+</code></pre>
+<p><strong>Hunt 4: Rare Process-Port Binding</strong></p>
+<pre><code>HUNT: Find network connections from processes that have never used
+      that destination port in their historical baseline
+→ Suspects: LOLBin abuse (certutil.exe making HTTPS connection), malware
+</code></pre>
+<p><strong>Hunt 5: Lateral Movement Over Time</strong></p>
+<pre><code>HUNT: Find IPs that connected to &gt; 20 unique internal IPs over 6h
+      where each connection touched at least one sensitive port (22,3389,445,1433)
+→ Suspects: post-breach lateral movement, insider threat
+</code></pre>
+<h3 id="33-custom-hunt-queries"><a class="header" href="#33-custom-hunt-queries">3.3 Custom Hunt Queries</a></h3>
+<p>Analysts can define custom hunt queries in TOML format:</p>
+<pre><code class="language-toml">[[threat_hunt.custom_queries]]
+name = "suspicious_rdp_outside_business_hours"
+description = "RDP connections outside 9AM-7PM IST"
+protocol = "tcp"
+dst_port = 3389
+time_window_hours = 24
+condition = "hour_utc_offset &lt; 3 OR hour_utc_offset &gt; 14"  # 9AM-7PM IST = UTC 3:30-13:30
+severity = "medium"
+</code></pre>
+<hr>
+<h2 id="4-threat-rules-engine"><a class="header" href="#4-threat-rules-engine">4. Threat Rules Engine</a></h2>
+<p><strong>Source File:</strong> <code>src/threat_rules_engine.rs</code><br><strong>Role:</strong> Composite rule evaluation combining multiple detection signals</p>
+<h3 id="41-composite-rules-vs-simple-rules"><a class="header" href="#41-composite-rules-vs-simple-rules">4.1 Composite Rules vs. Simple Rules</a></h3>
+<p>A simple IDS rule matches a single condition: <code>if SYN_rate &gt; 100 then alert</code>.</p>
+<p>A composite threat rule combines multiple conditions from multiple modules:</p>
+<pre><code>RULE: confirmed_c2_callback
+  WHEN:
+    - TI score &gt; 0.7 for destination IP                    [from threat_intelligence.rs]
+    - DNS query matched C2 domain pattern in last 60s      [from dns_security.rs]
+    - AI deviation &gt; 0.6 for source IP                     [from ai_engine.rs]
+    - Connection is outbound on port 443 or 80             [from flow_engine.rs]
+  THEN:
+    - Severity: CRITICAL
+    - Action: BLOCK + SOAR playbook "C2_ISOLATION"
+    - MITRE technique: T1071.001
+    - Alert: "High confidence C2 callback detected"
+</code></pre>
+<p>Composite rules dramatically reduce false positives because they require multiple independent signals to align simultaneously — the probability of all conditions being satisfied by benign traffic is extremely low.</p>
+<h3 id="42-rule-priority-and-ordering"><a class="header" href="#42-rule-priority-and-ordering">4.2 Rule Priority and Ordering</a></h3>
+<p>Rules are evaluated in priority order (highest priority first). Once a CRITICAL or HIGH rule matches, evaluation stops for that packet (no need to compute lower-priority matches). ALLOW rules (whitelist rules) are evaluated first in the priority order to prevent expensive evaluation for known-good traffic.</p>
+<h3 id="43-built-in-composite-rules"><a class="header" href="#43-built-in-composite-rules">4.3 Built-in Composite Rules</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Rule Name</th><th>Conditions</th><th>Severity</th></tr>
+</thead>
+<tbody>
+<tr><td><code>confirmed_c2_callback</code></td><td>TI match + DNS hit + AI deviation + outbound port 443/80</td><td>CRITICAL</td></tr>
+<tr><td><code>ransomware_smb_lateral</code></td><td>SMB session + high file rename rate + high entropy writes + internal src</td><td>CRITICAL</td></tr>
+<tr><td><code>credential_spray</code></td><td>Auth failure rate &gt; N/min + multiple destination hosts</td><td>HIGH</td></tr>
+<tr><td><code>dns_exfiltration_confirmed</code></td><td>Long subdomain + high entropy + high DNS query rate from same host</td><td>HIGH</td></tr>
+<tr><td><code>supply_chain_compromise</code></td><td>SBOM mismatch + unexpected outbound connection + process anomaly</td><td>HIGH</td></tr>
+<tr><td><code>insider_data_theft</code></td><td>UEBA deviation &gt; 0.8 + large outbound upload + unusual hours</td><td>HIGH</td></tr>
+<tr><td><code>apt_multi_stage</code></td><td>Port scan + exploit attempt + lateral movement within 30 min window</td><td>CRITICAL</td></tr>
+</tbody>
+</table>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ai_ml_systems.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="enterprise_security.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ai_ml_systems.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="enterprise_security.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
