@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>8. Modules in an example scenario - Rudras: The Firewall in Practice</title>
+        <title>3.4 Operational Runbooks - Rudras: The Firewall in Practice</title>
 
 
         <!-- Custom HTML head -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-4130de7f.css">
+        <link rel="stylesheet" href="custom-3f90df81.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "ayu";
-            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+            window.path_to_searchindex_js = "searchindex-08390e6f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-3594adab.js"></script>
+        <script src="toc-4ff6b2b6.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,7 +175,7 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="8-modules-in-an-example-scenario"><a class="header" href="#8-modules-in-an-example-scenario">8. Modules in an example scenario</a></h1>
+                        <h1 id="34-operational-runbooks"><a class="header" href="#34-operational-runbooks">3.4 Operational Runbooks</a></h1>
 <hr>
 <h2 id="abstract"><a class="header" href="#abstract">Abstract</a></h2>
 <p>This document covers the operational tooling for running and maintaining Rudras v4.0: the three PowerShell scripts in <code>scripts/</code>, the data directory layout and management lifecycle, and operational runbooks for common maintenance scenarios. Anyone responsible for day-to-day operation (not just development) should read this document.</p>
@@ -255,7 +255,7 @@ apnic|CN|ipv4|1.0.1.0|256|20110414|allocated|...
 </ul>
 <p>This only works correctly for power-of-2 block sizes (all legitimate RIR allocations). Non-power-of-2 counts indicate suballocations and may produce incorrect CIDR notation — these are rare and acceptable for this use case.</p>
 <h3 id="26-how-rudras-loads-geoip-data"><a class="header" href="#26-how-rudras-loads-geoip-data">2.6 How Rudras Loads GeoIP Data</a></h3>
-<p>At startup, <code>threat_intelligence.rs</code> reads <code>data/geoip/*.cidr</code> and builds an in-memory prefix trie. For each packet, source IP is looked up in the trie in O(32) time (worst-case 32 trie levels for IPv4). If the source IP falls in a blocked country’s CIDR range, it is treated as a threat signal (contributes to the comprehensive block score).</p>
+<p>At startup, <code>Threat Intelligence Module</code> reads <code>data/geoip/*.cidr</code> and builds an in-memory prefix trie. For each packet, source IP is looked up in the trie in O(32) time (worst-case 32 trie levels for IPv4). If the source IP falls in a blocked country’s CIDR range, it is treated as a threat signal (contributes to the comprehensive block score).</p>
 <p>Note: GeoIP blocking is <strong>not</strong> a hard block by default — it contributes to the weighted scoring system. To configure hard blocking of specific countries, set in <code>rudras.toml</code>:</p>
 <pre><code class="language-toml">[geoip]
 hard_block_countries = ["KP", "SY"]  # Always block these
@@ -321,7 +321,7 @@ score_countries = ["CN", "RU", "IR"] # These add to block score but don't hard-b
 PAYLOAD:VVBUSU1FX1NUQVJUPTM2MDAsT...
 SIGNATURE:a3b5c7d9e1f31...
 </code></pre>
-<p><strong>Rust-side validation</strong> (in <code>advanced_security.rs</code> anti-tamper module):</p>
+<p><strong>Rust-side validation</strong> (in <code>Advanced Security Module</code> anti-tamper module):</p>
 <ol>
 <li>Read <code>maintenance.token</code> from working directory</li>
 <li>Re-derive the same HMAC key using current hostname + boot epoch + username</li>
@@ -411,8 +411,8 @@ Get-Content config\rudras.toml.sig
 <h3 id="51-dataintelglobal_iocsjson--ioc-database-schema"><a class="header" href="#51-dataintelglobal_iocsjson--ioc-database-schema">5.1 <code>data/intel/global_iocs.json</code> — IOC Database Schema</a></h3>
 <p>This file contains a JSON object where each key is an IP address and each value is an IOC record:</p>
 <pre><code class="language-json">{
-  "185.220.101.5": {
-    "ip": "185.220.101.5",
+  "[MALICIOUS_IP_CLASSIFIED]": {
+    "ip": "[MALICIOUS_IP_CLASSIFIED]",
     "source": "Emerging Threats (compromised)",
     "category": "Botnet",
     "confidence": 0.88,
@@ -482,7 +482,7 @@ $token = (Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
 # Extract token value and POST to reload endpoint
 </code></pre>
 <h3 id="53-dataimmune--cyberimmune-memory"><a class="header" href="#53-dataimmune--cyberimmune-memory">5.3 <code>data/immune/</code> — CyberImmune Memory</a></h3>
-<p>Managed entirely by Rudras — do not edit these files manually. They contain serialised state from <code>cyber_immune.rs</code>:</p>
+<p>Managed entirely by Rudras — do not edit these files manually. They contain serialised state from <code>Cyber Immune Module</code>:</p>
 <ul>
 <li><code>antigens.immune</code> — Known threat signatures (analogous to antibodies)</li>
 <li><code>memory_cells.immune</code> — Long-term pattern memory for recurring threats</li>
@@ -554,7 +554,7 @@ foreach ($f in $logFiles) {
 }
 
 # Find all events from a specific suspect IP
-$suspectIp = "185.220.101.5"
+$suspectIp = "[MALICIOUS_IP_CLASSIFIED]"
 Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
   Select-String $suspectIp |
   ForEach-Object { $_ | ConvertFrom-Json -ErrorAction SilentlyContinue } |
@@ -596,11 +596,11 @@ if ($configHash -eq $storedSig) {
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="engineering_pipeline.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="soc_dashboard.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="module_index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="deployment_scenarios.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -610,11 +610,11 @@ if ($configHash -eq $storedSig) {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="engineering_pipeline.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="soc_dashboard.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="module_index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="deployment_scenarios.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

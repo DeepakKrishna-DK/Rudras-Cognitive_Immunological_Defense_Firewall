@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>3. A closer look at Rudras - Rudras: The Firewall in Practice</title>
+        <title>2. A Closer Look at Rudras Architecture - Rudras: The Firewall in Practice</title>
 
 
         <!-- Custom HTML head -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-4130de7f.css">
+        <link rel="stylesheet" href="custom-3f90df81.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "ayu";
-            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+            window.path_to_searchindex_js = "searchindex-08390e6f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-3594adab.js"></script>
+        <script src="toc-4ff6b2b6.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,7 +175,7 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="3-a-closer-look-at-rudras"><a class="header" href="#3-a-closer-look-at-rudras">3. A closer look at Rudras</a></h1>
+                        <h1 id="2-a-closer-look-at-rudras-architecture"><a class="header" href="#2-a-closer-look-at-rudras-architecture">2. A Closer Look at Rudras Architecture</a></h1>
 <blockquote>
 <p><strong>Version 4.0.0 — 34 Active Defense Engines</strong><br>Build status: ✅ Passing | Language: Rust 2021 edition | Runtime: Tokio async</p>
 </blockquote>
@@ -199,13 +199,13 @@
 </thead>
 <tbody>
 <tr><td>Palo Alto NGFW</td><td>L3-7 firewall</td><td>$200K–$2M/yr</td><td>All gaps unified here</td></tr>
-<tr><td>CrowdStrike Falcon</td><td>EDR/RASP</td><td>$100K–$500K/yr</td><td><code>rasp_engine.rs</code></td></tr>
-<tr><td>Darktrace</td><td>Unsupervised ML</td><td>$150K–$800K/yr</td><td><code>network_dpi_ml.rs</code></td></tr>
-<tr><td>Zscaler ZIA</td><td>Zero Trust proxy</td><td>$200K+/yr</td><td><code>zero_trust.rs</code></td></tr>
-<tr><td>Recorded Future</td><td>Threat intelligence</td><td>$100K/yr</td><td><code>threat_intelligence.rs</code> + <code>threat_hunt.rs</code></td></tr>
-<tr><td>Thinkst Canary</td><td>Honeypots</td><td>$8K–$50K/yr</td><td><code>adaptive_honeypot.rs</code></td></tr>
-<tr><td>Snyk/Veracode</td><td>Supply chain</td><td>$50K+/yr</td><td><code>supply_chain_verifier.rs</code></td></tr>
-<tr><td>Secureworks</td><td>SIEM/SOAR</td><td>$300K+/yr</td><td><code>siem_integration.rs</code></td></tr>
+<tr><td>CrowdStrike Falcon</td><td>EDR/RASP</td><td>$100K–$500K/yr</td><td><code>Rasp Engine Module</code></td></tr>
+<tr><td>Darktrace</td><td>Unsupervised ML</td><td>$150K–$800K/yr</td><td><code>Network Dpi Ml Module</code></td></tr>
+<tr><td>Zscaler ZIA</td><td>Zero Trust proxy</td><td>$200K+/yr</td><td><code>Zero Trust Module</code></td></tr>
+<tr><td>Recorded Future</td><td>Threat intelligence</td><td>$100K/yr</td><td><code>Threat Intelligence Module</code> + <code>Threat Hunt Module</code></td></tr>
+<tr><td>Thinkst Canary</td><td>Honeypots</td><td>$8K–$50K/yr</td><td><code>Adaptive Honeypot Module</code></td></tr>
+<tr><td>Snyk/Veracode</td><td>Supply chain</td><td>$50K+/yr</td><td><code>Supply Chain Verifier Module</code></td></tr>
+<tr><td>Secureworks</td><td>SIEM/SOAR</td><td>$300K+/yr</td><td><code>Siem Integration Module</code></td></tr>
 </tbody>
 </table>
 </div>
@@ -213,12 +213,12 @@
 <p>Rudras implements architectural equivalents of all of the above in a single codebase.</p>
 <h3 id="22-research-gaps-no-commercial-product-fully-closes"><a class="header" href="#22-research-gaps-no-commercial-product-fully-closes">2.2 Research Gaps No Commercial Product Fully Closes</a></h3>
 <ol>
-<li><strong>Post-quantum cryptography integration</strong> — Most NGFWs still use X25519/RSA. Rudras has hybrid PQ key exchange ready (<code>advanced_security.rs</code>).</li>
-<li><strong>Moving Target Defense</strong> — No commercial firewall randomly rotates its own IP/port surface. Rudras does (<code>mtd_engine.rs</code>).</li>
-<li><strong>Homomorphic threat sharing</strong> — IOCs shared between organizations without exposing raw intelligence. Rudras has a Paillier-based PSI (<code>homomorphic_sharing.rs</code>).</li>
-<li><strong>Federated anomaly learning</strong> — Distributed ML training without centralizing traffic data (<code>advanced_ml.rs</code>).</li>
-<li><strong>Formal policy verification</strong> — Mathematical proof that firewall rules don’t contain shadows, conflicts, or redundancies (<code>formal_verification.rs</code>).</li>
-<li><strong>Memory-safe secret management</strong> — Keys zeroized on drop, W^X enforced, stack canaries monitored (<code>memory_safe_pool.rs</code>).</li>
+<li><strong>Post-quantum cryptography integration</strong> — Most NGFWs still use X25519/RSA. Rudras has hybrid PQ key exchange ready (<code>Advanced Security Module</code>).</li>
+<li><strong>Moving Target Defense</strong> — No commercial firewall randomly rotates its own IP/port surface. Rudras does (<code>Mtd Engine Module</code>).</li>
+<li><strong>Homomorphic threat sharing</strong> — IOCs shared between organizations without exposing raw intelligence. Rudras has a Paillier-based PSI (<code>Homomorphic Sharing Module</code>).</li>
+<li><strong>Federated anomaly learning</strong> — Distributed ML training without centralizing traffic data (<code>Advanced Ml Module</code>).</li>
+<li><strong>Formal policy verification</strong> — Mathematical proof that firewall rules don’t contain shadows, conflicts, or redundancies (<code>Formal Verification Module</code>).</li>
+<li><strong>Memory-safe secret management</strong> — Keys zeroized on drop, W^X enforced, stack canaries monitored (<code>Memory Safe Pool Module</code>).</li>
 </ol>
 <hr>
 <h2 id="3-complete-module-map-34-engines"><a class="header" href="#3-complete-module-map-34-engines">3. Complete Module Map (34 Engines)</a></h2>
@@ -229,11 +229,11 @@
 <tr><th>Module</th><th>Purpose</th><th>Research Basis</th></tr>
 </thead>
 <tbody>
-<tr><td><code>capture.rs</code></td><td>Raw packet interception (WinPcap/Npcap)</td><td>libpcap API</td></tr>
-<tr><td><code>wfp_engine.rs</code></td><td>Windows kernel enforcement (WFP callout driver)</td><td>MS WFP SDK</td></tr>
-<tr><td><code>windivert_engine.rs</code></td><td>Userspace packet divert (WinDivert)</td><td>WinDivert 2.x</td></tr>
-<tr><td><code>hardware_accel.rs</code></td><td>DPDK/RSS offload simulation</td><td>DPDK programmers guide</td></tr>
-<tr><td><code>npcap_forensic.rs</code></td><td>Passive forensic capture + AI training data</td><td>PCAP-NG RFC 8126</td></tr>
+<tr><td><code>Capture Module</code></td><td>Raw packet interception (WinPcap/Npcap)</td><td>libpcap API</td></tr>
+<tr><td><code>Wfp Engine Module</code></td><td>Windows kernel enforcement (WFP callout driver)</td><td>MS WFP SDK</td></tr>
+<tr><td><code>Windivert Engine Module</code></td><td>Userspace packet divert (WinDivert)</td><td>WinDivert 2.x</td></tr>
+<tr><td><code>Hardware Accel Module</code></td><td>DPDK/RSS offload simulation</td><td>DPDK programmers guide</td></tr>
+<tr><td><code>Npcap Forensic Module</code></td><td>Passive forensic capture + AI training data</td><td>PCAP-NG RFC 8126</td></tr>
 </tbody>
 </table>
 </div>
@@ -244,11 +244,11 @@
 <tr><th>Module</th><th>Purpose</th><th>Research Basis</th></tr>
 </thead>
 <tbody>
-<tr><td><code>stateful.rs</code></td><td>Full connection state machine (TCP)</td><td>RFC 793</td></tr>
-<tr><td><code>flow_engine.rs</code></td><td>Lightweight stateful flow risk scorer</td><td>NetFlow v9/IPFIX</td></tr>
-<tr><td><code>l2_engine.rs</code></td><td>L2 ARP spoofing, VLAN abuse detection</td><td>IEEE 802.1Q</td></tr>
-<tr><td><code>dpi.rs</code></td><td>Multi-protocol deep packet inspection</td><td>Snort/Suricata engine</td></tr>
-<tr><td><code>single_pass.rs</code></td><td>Single-pass DPI for performance</td><td>Cisco ASA ASIC design</td></tr>
+<tr><td><code>Stateful Module</code></td><td>Full connection state machine (TCP)</td><td>RFC 793</td></tr>
+<tr><td><code>Flow Engine Module</code></td><td>Lightweight stateful flow risk scorer</td><td>NetFlow v9/IPFIX</td></tr>
+<tr><td><code>L2 Engine Module</code></td><td>L2 ARP spoofing, VLAN abuse detection</td><td>IEEE 802.1Q</td></tr>
+<tr><td><code>Dpi Module</code></td><td>Multi-protocol deep packet inspection</td><td>Snort/Suricata engine</td></tr>
+<tr><td><code>Single Pass Module</code></td><td>Single-pass DPI for performance</td><td>Cisco ASA ASIC design</td></tr>
 </tbody>
 </table>
 </div>
@@ -259,12 +259,12 @@
 <tr><th>Module</th><th>Purpose</th><th>Research Basis</th></tr>
 </thead>
 <tbody>
-<tr><td><code>ids_engine.rs</code></td><td>200+ signature IDS (MITRE ATT&amp;CK mapped)</td><td>Snort 3.x rule format</td></tr>
-<tr><td><code>ips_engine.rs</code></td><td>Inline prevention + rate-limit response</td><td>Suricata inline mode</td></tr>
-<tr><td><code>network_dpi_ml.rs</code></td><td>Online ML + K-Means anomaly IDS augmentation</td><td>CICFlowMeter, NDSS 2020 FlowPrint</td></tr>
-<tr><td><code>threat_intelligence.rs</code></td><td>IOC feeds: IP/domain/hash reputation</td><td>STIX 2.1, TAXII 2.1</td></tr>
-<tr><td><code>threat_hunt.rs</code></td><td>MITRE hypothesis hunting + IOC pivot</td><td>TaHiTI, Sqrrl framework</td></tr>
-<tr><td><code>threat_rules_engine.rs</code></td><td>YARA + Sigma style rule engine</td><td>YARA 4.x, Sigma project</td></tr>
+<tr><td><code>Ids Engine Module</code></td><td>200+ signature IDS (MITRE ATT&amp;CK mapped)</td><td>Snort 3.x rule format</td></tr>
+<tr><td><code>Ips Engine Module</code></td><td>Inline prevention + rate-limit response</td><td>Suricata inline mode</td></tr>
+<tr><td><code>Network Dpi Ml Module</code></td><td>Online ML + K-Means anomaly IDS augmentation</td><td>CICFlowMeter, NDSS 2020 FlowPrint</td></tr>
+<tr><td><code>Threat Intelligence Module</code></td><td>IOC feeds: IP/domain/hash reputation</td><td>STIX 2.1, TAXII 2.1</td></tr>
+<tr><td><code>Threat Hunt Module</code></td><td>MITRE hypothesis hunting + IOC pivot</td><td>TaHiTI, Sqrrl framework</td></tr>
+<tr><td><code>Threat Rules Engine Module</code></td><td>YARA + Sigma style rule engine</td><td>YARA 4.x, Sigma project</td></tr>
 </tbody>
 </table>
 </div>
@@ -275,10 +275,10 @@
 <tr><th>Module</th><th>Purpose</th><th>Research Basis</th></tr>
 </thead>
 <tbody>
-<tr><td><code>dns_security.rs</code></td><td>RPZ, DNS tunneling, rebinding, DoH detection</td><td>RFC 8484, SANS ISC</td></tr>
-<tr><td><code>quic_inspector.rs</code></td><td>QUIC long-header 0-RTT migration detection</td><td>RFC 9000</td></tr>
-<tr><td><code>email_security.rs</code></td><td>SPF/DKIM/DMARC/BEC/attachment analysis</td><td>RFC 7208/6376/7489</td></tr>
-<tr><td><code>comprehensive_blocker.rs</code></td><td>Port/IP/country/ASN blocklist enforcement</td><td>MaxMind GeoIP2</td></tr>
+<tr><td><code>Dns Security Module</code></td><td>RPZ, DNS tunneling, rebinding, DoH detection</td><td>RFC 8484, SANS ISC</td></tr>
+<tr><td><code>Quic Inspector Module</code></td><td>QUIC long-header 0-RTT migration detection</td><td>RFC 9000</td></tr>
+<tr><td><code>Email Security Module</code></td><td>SPF/DKIM/DMARC/BEC/attachment analysis</td><td>RFC 7208/6376/7489</td></tr>
+<tr><td><code>Comprehensive Blocker Module</code></td><td>Port/IP/country/ASN blocklist enforcement</td><td>MaxMind GeoIP2</td></tr>
 </tbody>
 </table>
 </div>
@@ -289,10 +289,10 @@
 <tr><th>Module</th><th>Purpose</th><th>Research Basis</th></tr>
 </thead>
 <tbody>
-<tr><td><code>gateway_mode.rs</code></td><td>WAF: SQLi, XSS, RCE, SSRF, path traversal</td><td>OWASP CRS v4</td></tr>
-<tr><td><code>rasp_engine.rs</code></td><td>Runtime self-protection: hollowing, injection</td><td>OWASP RASP, eBPF</td></tr>
-<tr><td><code>endpoint_security.rs</code></td><td>Process/file monitoring, suspicious execution</td><td>UEBA, Sysmon rules</td></tr>
-<tr><td><code>process_monitor.rs</code></td><td>Live process reputation + parent chain validation</td><td>MITRE D3FEND</td></tr>
+<tr><td><code>Gateway Mode Module</code></td><td>WAF: SQLi, XSS, RCE, SSRF, path traversal</td><td>OWASP CRS v4</td></tr>
+<tr><td><code>Rasp Engine Module</code></td><td>Runtime self-protection: hollowing, injection</td><td>OWASP RASP, eBPF</td></tr>
+<tr><td><code>Endpoint Security Module</code></td><td>Process/file monitoring, suspicious execution</td><td>UEBA, Sysmon rules</td></tr>
+<tr><td><code>Process Monitor Module</code></td><td>Live process reputation + parent chain validation</td><td>MITRE D3FEND</td></tr>
 </tbody>
 </table>
 </div>
@@ -303,10 +303,10 @@
 <tr><th>Module</th><th>Purpose</th><th>Research Basis</th></tr>
 </thead>
 <tbody>
-<tr><td><code>ai_engine.rs</code></td><td>Ensemble ML: GBT + RNN + autoencoder</td><td>scikit-learn equivalent</td></tr>
-<tr><td><code>advanced_ml.rs</code></td><td>Federated learning + Byzantine robustness</td><td>Google FL (McMahan 2017)</td></tr>
-<tr><td><code>attribution_scoring.rs</code></td><td>TTPs → threat actor attribution scoring</td><td>Diamond Model</td></tr>
-<tr><td><code>cyber_immune.rs</code></td><td>Antibody-inspired self-healing rules</td><td>AIS (Forrest 1994)</td></tr>
+<tr><td><code>Ai Engine Module</code></td><td>Ensemble ML: GBT + RNN + autoencoder</td><td>scikit-learn equivalent</td></tr>
+<tr><td><code>Advanced Ml Module</code></td><td>Federated learning + Byzantine robustness</td><td>Google FL (McMahan 2017)</td></tr>
+<tr><td><code>Attribution Scoring Module</code></td><td>TTPs → threat actor attribution scoring</td><td>Diamond Model</td></tr>
+<tr><td><code>Cyber Immune Module</code></td><td>Antibody-inspired self-healing rules</td><td>AIS (Forrest 1994)</td></tr>
 </tbody>
 </table>
 </div>
@@ -317,11 +317,11 @@
 <tr><th>Module</th><th>Purpose</th><th>Research Basis</th></tr>
 </thead>
 <tbody>
-<tr><td><code>zero_trust.rs</code></td><td>BeyondCorp-style continuous re-verification</td><td>NIST SP 800-207</td></tr>
-<tr><td><code>identity_policy.rs</code></td><td>RBAC + ABAC + JWT/SAML verification</td><td>NIST SP 800-162</td></tr>
-<tr><td><code>micro_segmentation.rs</code></td><td>East-west network micro-perimeters</td><td>VMware NSX design</td></tr>
-<tr><td><code>policy.rs</code></td><td>Policy engine: rule priority, conflict checking</td><td>Cisco APIC model</td></tr>
-<tr><td><code>formal_verification.rs</code></td><td>Shadow/conflict/redundancy mathematical proof</td><td>Fireman/Margrave papers</td></tr>
+<tr><td><code>Zero Trust Module</code></td><td>BeyondCorp-style continuous re-verification</td><td>NIST SP 800-207</td></tr>
+<tr><td><code>Identity Policy Module</code></td><td>RBAC + ABAC + JWT/SAML verification</td><td>NIST SP 800-162</td></tr>
+<tr><td><code>Micro Segmentation Module</code></td><td>East-west network micro-perimeters</td><td>VMware NSX design</td></tr>
+<tr><td><code>Policy Module</code></td><td>Policy engine: rule priority, conflict checking</td><td>Cisco APIC model</td></tr>
+<tr><td><code>Formal Verification Module</code></td><td>Shadow/conflict/redundancy mathematical proof</td><td>Fireman/Margrave papers</td></tr>
 </tbody>
 </table>
 </div>
@@ -332,12 +332,12 @@
 <tr><th>Module</th><th>Purpose</th><th>Research Basis</th></tr>
 </thead>
 <tbody>
-<tr><td><code>secure_channel.rs</code></td><td>TLS 1.3 mTLS, cert pinning, CT, replay guard</td><td>RFC 8446, RFC 6962</td></tr>
-<tr><td><code>memory_safe_pool.rs</code></td><td>Zeroizing vault, W^X, canaries, ASLR entropy</td><td>NIST SP 800-57 §6.4.1</td></tr>
-<tr><td><code>supply_chain_verifier.rs</code></td><td>SLSA, typosquat, dep-confusion, transitive taint</td><td>NIST SP 800-161r1</td></tr>
-<tr><td><code>adaptive_honeypot.rs</code></td><td>Interactive deception, canary tokens, TTP tracking</td><td>MITRE ENGAGE</td></tr>
-<tr><td><code>mtd_engine.rs</code></td><td>IP/port rotation, decoys, surface randomization</td><td>DARPA MTD research</td></tr>
-<tr><td><code>homomorphic_sharing.rs</code></td><td>Privacy-preserving IOC sharing (Paillier + PSI)</td><td>Boneh homomorphism</td></tr>
+<tr><td><code>Secure Channel Module</code></td><td>TLS 1.3 mTLS, cert pinning, CT, replay guard</td><td>RFC 8446, RFC 6962</td></tr>
+<tr><td><code>Memory Safe Pool Module</code></td><td>Zeroizing vault, W^X, canaries, ASLR entropy</td><td>NIST SP 800-57 §6.4.1</td></tr>
+<tr><td><code>Supply Chain Verifier Module</code></td><td>SLSA, typosquat, dep-confusion, transitive taint</td><td>NIST SP 800-161r1</td></tr>
+<tr><td><code>Adaptive Honeypot Module</code></td><td>Interactive deception, canary tokens, TTP tracking</td><td>MITRE ENGAGE</td></tr>
+<tr><td><code>Mtd Engine Module</code></td><td>IP/port rotation, decoys, surface randomization</td><td>DARPA MTD research</td></tr>
+<tr><td><code>Homomorphic Sharing Module</code></td><td>Privacy-preserving IOC sharing (Paillier + PSI)</td><td>Boneh homomorphism</td></tr>
 </tbody>
 </table>
 </div>
@@ -348,17 +348,17 @@
 <tr><th>Module</th><th>Purpose</th><th>Research Basis</th></tr>
 </thead>
 <tbody>
-<tr><td><code>siem_integration.rs</code></td><td>CEF/JSON export + SIEM webhook</td><td>Elastic SIEM, Splunk CIM</td></tr>
-<tr><td><code>compliance_engine.rs</code></td><td>GDPR/PCI-DSS v4/HIPAA/NIST CSF 2.0/ISO 27001</td><td>NIST SP 800-53r5</td></tr>
-<tr><td><code>metrics.rs</code></td><td>Prometheus-compatible telemetry export</td><td>OpenTelemetry</td></tr>
-<tr><td><code>management_api.rs</code></td><td>REST API with SHA3-256 auth + RBAC</td><td>OWASP API Security Top 10</td></tr>
-<tr><td><code>sdwan.rs</code></td><td>SD-WAN overlay routing with security policy</td><td>MEF 70.1</td></tr>
-<tr><td><code>cloud_native.rs</code></td><td>Container/K8s eBPF + service mesh awareness</td><td>CNCF eBPF foundation</td></tr>
-<tr><td><code>ebpf_xdp.rs</code></td><td>XDP/eBPF cross-platform offload</td><td>Linux XDP in-kernel</td></tr>
-<tr><td><code>tpm_attestation.rs</code></td><td>TPM 2.0 platform integrity attestation</td><td>TCG TPM 2.0 Library</td></tr>
-<tr><td><code>rl_policy.rs</code></td><td>Q-learning adaptive blocking policy</td><td>DQN (DeepMind 2013)</td></tr>
-<tr><td><code>distributed_immunity.rs</code></td><td>Multi-node consensus threat spreading</td><td>Raft consensus</td></tr>
-<tr><td><code>forensics_chain.rs</code></td><td>Tamper-evident GDPR-compliant forensic chain</td><td>RFC 3227, ISO 27037</td></tr>
+<tr><td><code>Siem Integration Module</code></td><td>CEF/JSON export + SIEM webhook</td><td>Elastic SIEM, Splunk CIM</td></tr>
+<tr><td><code>Compliance Engine Module</code></td><td>GDPR/PCI-DSS v4/HIPAA/NIST CSF 2.0/ISO 27001</td><td>NIST SP 800-53r5</td></tr>
+<tr><td><code>Metrics Module</code></td><td>Prometheus-compatible telemetry export</td><td>OpenTelemetry</td></tr>
+<tr><td><code>Management Api Module</code></td><td>REST API with SHA3-256 auth + RBAC</td><td>OWASP API Security Top 10</td></tr>
+<tr><td><code>Sdwan Module</code></td><td>SD-WAN overlay routing with security policy</td><td>MEF 70.1</td></tr>
+<tr><td><code>Cloud Native Module</code></td><td>Container/K8s eBPF + service mesh awareness</td><td>CNCF eBPF foundation</td></tr>
+<tr><td><code>Ebpf Xdp Module</code></td><td>XDP/eBPF cross-platform offload</td><td>Linux XDP in-kernel</td></tr>
+<tr><td><code>Tpm Attestation Module</code></td><td>TPM 2.0 platform integrity attestation</td><td>TCG TPM 2.0 Library</td></tr>
+<tr><td><code>Rl Policy Module</code></td><td>Q-learning adaptive blocking policy</td><td>DQN (DeepMind 2013)</td></tr>
+<tr><td><code>Distributed Immunity Module</code></td><td>Multi-node consensus threat spreading</td><td>Raft consensus</td></tr>
+<tr><td><code>Forensics Chain Module</code></td><td>Tamper-evident GDPR-compliant forensic chain</td><td>RFC 3227, ISO 27037</td></tr>
 </tbody>
 </table>
 </div>
@@ -371,11 +371,11 @@
 <tr><th>Novel Contribution</th><th>Target Venue</th><th>Why Novel</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>Online K-Means + LR fusion for zero-day flow anomaly</strong> (<code>network_dpi_ml.rs</code>)</td><td>IEEE S&amp;P / NDSS</td><td>Real-time concept drift detection + score fusion not published at flow level</td></tr>
-<tr><td><strong>MTD + honeypot dual-layer deception surface</strong> (<code>mtd_engine.rs</code> + <code>adaptive_honeypot.rs</code>)</td><td>ACM CCS</td><td>Coordinated IP rotation + persona adaptation as single deception framework</td></tr>
-<tr><td><strong>Homomorphic PSI IOC sharing with Byzantine-robust fed-learning</strong> (<code>homomorphic_sharing.rs</code> + <code>advanced_ml.rs</code>)</td><td>USENIX Security</td><td>End-to-end privacy-preserving collaborative defense</td></tr>
-<tr><td><strong>Formal policy verification + ML anomaly convergence</strong> (<code>formal_verification.rs</code> + <code>ai_engine.rs</code>)</td><td>RAID / ESORICS</td><td>Proving rule-set correctness while ML simultaneously adapts rules</td></tr>
-<tr><td><strong>SLSA + transitive taint propagation at runtime</strong> (<code>supply_chain_verifier.rs</code>)</td><td>IEEE Euro S&amp;P</td><td>Dynamic transitive dependency taint in a running firewall</td></tr>
+<tr><td><strong>Online K-Means + LR fusion for zero-day flow anomaly</strong> (<code>Network Dpi Ml Module</code>)</td><td>IEEE S&amp;P / NDSS</td><td>Real-time concept drift detection + score fusion not published at flow level</td></tr>
+<tr><td><strong>MTD + honeypot dual-layer deception surface</strong> (<code>Mtd Engine Module</code> + <code>Adaptive Honeypot Module</code>)</td><td>ACM CCS</td><td>Coordinated IP rotation + persona adaptation as single deception framework</td></tr>
+<tr><td><strong>Homomorphic PSI IOC sharing with Byzantine-robust fed-learning</strong> (<code>Homomorphic Sharing Module</code> + <code>Advanced Ml Module</code>)</td><td>USENIX Security</td><td>End-to-end privacy-preserving collaborative defense</td></tr>
+<tr><td><strong>Formal policy verification + ML anomaly convergence</strong> (<code>Formal Verification Module</code> + <code>Ai Engine Module</code>)</td><td>RAID / ESORICS</td><td>Proving rule-set correctness while ML simultaneously adapts rules</td></tr>
+<tr><td><strong>SLSA + transitive taint propagation at runtime</strong> (<code>Supply Chain Verifier Module</code>)</td><td>IEEE Euro S&amp;P</td><td>Dynamic transitive dependency taint in a running firewall</td></tr>
 </tbody>
 </table>
 </div>
@@ -398,7 +398,7 @@
 <h3 id="53-for-a-research-institution--iitnitiiscmitstanford-lab"><a class="header" href="#53-for-a-research-institution--iitnitiiscmitstanford-lab">5.3 For a Research Institution / IIT/NIT/IISC/MIT/Stanford Lab</a></h3>
 <ul>
 <li><strong>Open research platform</strong>: All algorithms cite and extend published work</li>
-<li><strong>Dataset generation</strong>: <code>npcap_forensic.rs</code> collects labeled traffic for ML training</li>
+<li><strong>Dataset generation</strong>: <code>Npcap Forensic Module</code> collects labeled traffic for ML training</li>
 <li><strong>Reproducible experiments</strong>: Deterministic Rust builds for experiment reproducibility</li>
 <li><strong>Student onboarding</strong>: Each module is self-contained with inline academic citations</li>
 </ul>
@@ -472,7 +472,7 @@ Config:     TOML-based per-module configuration
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="detection_engines.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="core_architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -486,7 +486,7 @@ Config:     TOML-based per-module configuration
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="detection_engines.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="core_architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

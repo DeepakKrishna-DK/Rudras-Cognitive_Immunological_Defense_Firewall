@@ -1,4 +1,4 @@
-# 4. Hardware and Architecture for Rudras
+# 2.1 Hardware and Architecture for Rudras
 
 ---
 
@@ -6,51 +6,58 @@
 
 Rudras v4.0 is a multi-layer, multi-threaded network security platform written in Rust. At its core, it is a packet processing pipeline that intercepts traffic at the OS kernel interface, analyzes it through 40+ overlapping detection subsystems, and enforces policy decisions.
 
-```
-┌─NIC / Kernel─────────────────────────────────────┐
-│  Npcap (promiscuous capture)                     │
-│  WFP (Windows Filtering Platform — block)        │
-│  WinDivert (userspace interception)              │
-│  L2 Engine (ARP / 802.1Q / VLAN)                 │
-└──────┬───────────────────────────────────────────┘
-       │
-   ════╪════ FAST-PATH DROPS (O(1)) ══════════════
-   │ TI Blocklist lookup (IP hash set)                   │
-   │ WFP registered block filter (kernel bypass)         │
-   │ DNS response NXDomain injection (malicious domain)  │
-   ════╪════════════════════════════════════════════════
-       │
-   ┌─────┴──────────────────────────────────────────────┐
-   │              ANALYSIS PIPELINE                     │
-   │  Stateful Tracking (flow_engine, stateful)         │
-   │  DPI / Single-Pass Inspection                      │
-   │  IDS Signature Engine (85 rules / 71 categories)   │
-   │  AI Behavioral Engine (EMA + Anomaly scoring)      │
-   │  WAF (HTTP/SQL/XSS/RCE pattern matching)           │
-   │  GNN Topology Analysis                             │
-   │  UEBA User Behavior Deviation                      │
-   │  DNS Security Engine                               │
-   │  ETA (Encrypted Traffic Analysis)                  │
-   │  Attribution Scoring                               │
-   └─────┬──────────────────────────────────────────────┘
-       │
-   ┌─────┴──────────────────────────────────────────────┐
-   │              ENFORCEMENT LAYER                     │
-   │  IPS Active Response Engine                        │
-   │  Zero Trust Access Decision Engine                 │
-   │  Micro-Segmentation Zone Gate                      │
-   │  SOAR Automated Playbook Execution                 │
-   │  MTD (Moving Target Defense — IP shuffle)          │
-   └─────┬──────────────────────────────────────────────┘
-       │
-   ┌─────┴──────────────────────────────────────────────┐
-   │              OBSERVABILITY LAYER                   │
-   │  Metrics (Prometheus format, port 9091)            │
-   │  SIEM CEF Event Streaming                          │
-   │  Forensics Chain (SHA3-256 hash chain)             │
-   │  IST-timestamped JSON log (rolling file)           │
-   │  SOC Dashboard (Next.js, port 3000)                │
-   └────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph L0 [Layer 0: OS & Hardware Intercept]
+        NIC[NIC / Raw Packet] --> Pcap[Npcap / WinDivert]
+        Pcap --> L2[L2 Engine: ARP/802.1Q]
+    end
+
+    subgraph L1 [Fast-Path Drops - O 1]
+        L2 --> TI[TI Blocklist Lookup]
+        TI --> WFP[WFP Kernel Block Filter]
+        WFP --> DNS_NX[DNS NXDomain Injection]
+    end
+
+    subgraph L2 [Analysis Pipeline]
+        DNS_NX --> ST[Stateful Tracking]
+        ST --> DPI[Single-Pass DPI]
+        DPI --> IDS[IDS Signature Engine]
+        DPI --> AI[AI Behavioral Engine]
+        DPI --> WAF[WAF Pattern Match]
+        DPI --> GNN[GNN Topology Analysis]
+        DPI --> UEBA[UEBA Deviation]
+    end
+
+    subgraph L3 [Enforcement Layer]
+        IDS --> IPS[IPS Active Response]
+        AI --> IPS
+        WAF --> IPS
+        IPS --> ZT[Zero Trust Gate]
+        ZT --> MZ[Micro-Segmentation Zone]
+        MZ --> SOAR[SOAR Playbook Execution]
+        MZ --> MTD[Moving Target Defense]
+    end
+
+    subgraph L4 [Observability Layer]
+        SOAR --> METRICS[Prometheus Metrics :9091]
+        SOAR --> SIEM[SIEM CEF Export]
+        SOAR --> FORENSICS[SHA3-256 Forensics Chain]
+        SOAR --> LOG[JSON Append Log]
+        SOAR --> SOC[SOC Dashboard :3000]
+    end
+
+    classDef l0 fill:#1a202c,stroke:#4a5568,stroke-width:2px,color:#e2e8f0;
+    classDef l1 fill:#742a2a,stroke:#fc8181,stroke-width:2px,color:#fed7d7;
+    classDef l2 fill:#234e52,stroke:#4fd1c5,stroke-width:2px,color:#e6fffa;
+    classDef l3 fill:#744210,stroke:#f6e05e,stroke-width:2px,color:#fffff0;
+    classDef l4 fill:#2a4365,stroke:#63b3ed,stroke-width:2px,color:#ebf8ff;
+
+    class L0,NIC,Pcap,L2 l0;
+    class L1,TI,WFP,DNS_NX l1;
+    class L2,ST,DPI,IDS,AI,WAF,GNN,UEBA l2;
+    class L3,IPS,ZT,MZ,SOAR,MTD l3;
+    class L4,METRICS,SIEM,FORENSICS,LOG,SOC l4;
 ```
 
 ---
@@ -84,7 +91,7 @@ The `RwLock<T>` is used throughout Rudras for shared data structures that are re
 
 ### Pillar A — Zero-Trust Enforcement (Layer 0 Gate)
 
-**Module:** `zero_trust.rs`, `identity_policy.rs`, `micro_segmentation.rs`
+**Module:** `Zero Trust Module`, `Identity Policy Module`, `Micro Segmentation Module`
 
 Before any packet reaches the analysis pipeline, the Zero Trust module performs a deterministic access check evaluating:
 
@@ -100,28 +107,28 @@ If the check fails, the packet is dropped at the **OS kernel level** via WFP rul
 ```toml
 [[zones]]
 name = "db"
-allowed_ips = ["10.10.30.0/24"]
+allowed_ips = ["[SECURE_ZONE_CIDR_REDACTED]"]
 allowed_destinations = ["app"]
 # db zone can only be accessed from app zone. Never from guest, corporate, internet.
 ```
 
 ### Pillar B — AI Behavioral Baseline Engine
 
-**Module:** `ai_engine.rs`, `cyber_immune.rs`, `advanced_ml.rs`
+**Module:** `Ai Engine Module`, `Cyber Immune Module`, `Advanced Ml Module`
 
 The AI engine builds an **Immutable Behavioral Baseline** for each IP on first packet. The baseline captures the first observed behavioral signature as a "fingerprint". An Exponential Moving Average (EMA) tracks evolving behavior. The ratio of current EMA to the immutable baseline is the **Deviation Score**.
 
 Key threshold parameters:
 
-- `suspicious_threshold` (default 0.55): Flag for inspection
-- `quarantine_threshold` (default 0.70): Rate-limit and alert
-- `block_threshold` (default 0.80): WFP block + IPS RST inject
+- `suspicious_threshold` ([RESTRICTED_THRESHOLD]): Flag for inspection
+- `quarantine_threshold` ([RESTRICTED_THRESHOLD]): Rate-limit and alert
+- `block_threshold` ([RESTRICTED_THRESHOLD]): WFP block + IPS RST inject
 
-The EMA uses a configurable alpha (`ema_alpha`, default 0.3) so recent behavior is weighted heavily but historical behavior is not forgotten.
+The EMA uses a configurable alpha (`ema_alpha`, [RESTRICTED_ALPHA]) so recent behavior is weighted heavily but historical behavior is not forgotten.
 
 ### Pillar C — Distributed Swarm Immunity
 
-**Module:** `distributed_immunity.rs`
+**Module:** `Distributed Immunity Module`
 
 When any Rudras node confirms a malicious IP, it broadcasts a **gossip message** to all configured peer nodes using UDP. Peer nodes receive the message, add the IP to their local blocklist, and re-broadcast to their peers. Within milliseconds, a newly discovered malicious IP is blocked on all nodes in the swarm — even if the other nodes have never seen that IP.
 
@@ -131,7 +138,7 @@ Gossip message format (JSON over UDP):
 {
   "type": "ThreatIntel",
   "src_node": "node-01",
-  "malicious_ip": "185.220.101.5",
+  "malicious_ip": "[MALICIOUS_IP_CLASSIFIED]",
   "confidence": 0.97,
   "timestamp": "2026-03-08T10:30:00+05:30"
 }
@@ -139,7 +146,7 @@ Gossip message format (JSON over UDP):
 
 ### Pillar D — Adaptive Threat Response (Dynamic Mode Profiles)
 
-**Module:** `mode_profiles.rs`, `ips_engine.rs`
+**Module:** `Mode Profiles Module`, `Ips Engine Module`
 
 | Threat Level | Trigger             | Automatic Response                                                                |
 | ------------ | ------------------- | --------------------------------------------------------------------------------- |
@@ -155,109 +162,109 @@ Gossip message format (JSON over UDP):
 
 | Module            | File               | Purpose                                                                  |
 | ----------------- | ------------------ | ------------------------------------------------------------------------ |
-| Main Entry        | `main.rs`          | Orchestrates all module initialization, tokio runtime setup, IST logging |
-| Configuration     | `config.rs`        | Deserializes `rudras.toml`, validates all fields, hot-reload support     |
-| Policy Engine     | `policy.rs`        | Rule evaluation, access decision matrix                                  |
-| Packet Capture    | `capture.rs`       | Npcap/PCAP packet capture loop                                           |
-| Flow Tracking     | `flow_engine.rs`   | Stateful per-flow context (5-tuple), flow lifecycle management           |
-| Stateful Analysis | `stateful.rs`      | TCP state machine, SYN cookie tracking                                   |
-| Metrics           | `metrics.rs`       | Prometheus counters/histograms + auth server on :9091                    |
-| Mode Profiles     | `mode_profiles.rs` | Threat level transitions, module sensitivity tuning                      |
+| Main Entry        | `Main Module`          | Orchestrates all module initialization, tokio runtime setup, IST logging |
+| Configuration     | `Config Module`        | Deserializes `rudras.toml`, validates all fields, hot-reload support     |
+| Policy Engine     | `Policy Module`        | Rule evaluation, access decision matrix                                  |
+| Packet Capture    | `Capture Module`       | Npcap/PCAP packet capture loop                                           |
+| Flow Tracking     | `Flow Engine Module`   | Stateful per-flow context (5-tuple), flow lifecycle management           |
+| Stateful Analysis | `Stateful Module`      | TCP state machine, SYN cookie tracking                                   |
+| Metrics           | `Metrics Module`       | Prometheus counters/histograms + auth server on :9091                    |
+| Mode Profiles     | `Mode Profiles Module` | Threat level transitions, module sensitivity tuning                      |
 
 ### Category 2: Network Enforcement Stack
 
 | Module           | File                  | Purpose                                                       |
 | ---------------- | --------------------- | ------------------------------------------------------------- |
-| WFP Engine       | `wfp_engine.rs`       | Windows Filtering Platform kernel-level block/allow rules     |
-| WinDivert Engine | `windivert_engine.rs` | Userspace packet interception + modification                  |
-| Npcap Forensic   | `npcap_forensic.rs`   | Promiscuous mode capture for forensic evidence recording      |
-| L2 Engine        | `l2_engine.rs`        | ARP spoofing detection, 802.1Q VLAN enforcement, MAC analysis |
-| DPI Engine       | `dpi.rs`              | Deep packet inspection, protocol dissection, payload analysis |
+| WFP Engine       | `Wfp Engine Module`       | Windows Filtering Platform kernel-level block/allow rules     |
+| WinDivert Engine | `Windivert Engine Module` | Userspace packet interception + modification                  |
+| Npcap Forensic   | `Npcap Forensic Module`   | Promiscuous mode capture for forensic evidence recording      |
+| L2 Engine        | `L2 Engine Module`        | ARP spoofing detection, 802.1Q VLAN enforcement, MAC analysis |
+| DPI Engine       | `Dpi Module`              | Deep packet inspection, protocol dissection, payload analysis |
 
 ### Category 3: Detection Engines
 
 | Module                | File                       | Purpose                                                               |
 | --------------------- | -------------------------- | --------------------------------------------------------------------- |
-| IDS Engine            | `ids_engine.rs`            | Signature-based detection (85 rules, 71 categories, 70+ attack types) |
-| IPS Engine            | `ips_engine.rs`            | Active response: TCP RST injection, WFP blocking, quarantine          |
-| Comprehensive Blocker | `comprehensive_blocker.rs` | Aggregated block decision across all detection signals                |
-| Framework Alignment   | `framework_alignment.rs`   | Maps detections to MITRE ATT&CK, NIST, ISO 27001                      |
+| IDS Engine            | `Ids Engine Module`            | Signature-based detection (85 rules, 71 categories, 70+ attack types) |
+| IPS Engine            | `Ips Engine Module`            | Active response: TCP RST injection, WFP blocking, quarantine          |
+| Comprehensive Blocker | `Comprehensive Blocker Module` | Aggregated block decision across all detection signals                |
+| Framework Alignment   | `Framework Alignment Module`   | Maps detections to MITRE ATT&CK, NIST, ISO 27001                      |
 
 ### Category 4: AI/ML Subsystem
 
 | Module             | File                    | Purpose                                                            |
 | ------------------ | ----------------------- | ------------------------------------------------------------------ |
-| AI Engine          | `ai_engine.rs`          | EMA-based behavioral baseline, immutable anchor                    |
-| CyberImmune        | `cyber_immune.rs`       | Biological immune metaphor, antibody propagation                   |
-| Advanced ML        | `advanced_ml.rs`        | Multi-model ensemble: isolation forest, autoencoder, hybrid        |
-| Advanced Security  | `advanced_security.rs`  | Multi-factor behavioral analysis, threat correlation               |
-| Federated Learning | `federated_learning.rs` | Privacy-preserving model aggregation across swarm nodes            |
-| GNN Engine         | `gnn_engine.rs`         | Graph Neural Network for topology-aware lateral movement detection |
-| ETA Engine         | `eta_engine.rs`         | Encrypted Traffic Analysis without decryption via TLS metadata     |
-| Network DPI ML     | `network_dpi_ml.rs`     | ML-assisted protocol classification on raw DPI output              |
-| RL Policy          | `rl_policy.rs`          | Reinforcement Learning for dynamic threshold optimization          |
+| AI Engine          | `Ai Engine Module`          | EMA-based behavioral baseline, immutable anchor                    |
+| CyberImmune        | `Cyber Immune Module`       | Biological immune metaphor, antibody propagation                   |
+| Advanced ML        | `Advanced Ml Module`        | Multi-model ensemble: isolation forest, autoencoder, hybrid        |
+| Advanced Security  | `Advanced Security Module`  | Multi-factor behavioral analysis, threat correlation               |
+| Federated Learning | `Federated Learning Module` | Privacy-preserving model aggregation across swarm nodes            |
+| GNN Engine         | `Gnn Engine Module`         | Graph Neural Network for topology-aware lateral movement detection |
+| ETA Engine         | `Eta Engine Module`         | Encrypted Traffic Analysis without decryption via TLS metadata     |
+| Network DPI ML     | `Network Dpi Ml Module`     | ML-assisted protocol classification on raw DPI output              |
+| RL Policy          | `Rl Policy Module`          | Reinforcement Learning for dynamic threshold optimization          |
 
 ### Category 5: Threat Intelligence
 
 | Module              | File                     | Purpose                                                                 |
 | ------------------- | ------------------------ | ----------------------------------------------------------------------- |
-| Threat Intelligence | `threat_intelligence.rs` | IOC feed management: 24,358 IPs, 1.25M domains, 84,501 malware sigs     |
-| DNS Security        | `dns_security.rs`        | DNS-layer blocking: C2 domains, DGA detection, DNS tunneling            |
-| Threat Hunt         | `threat_hunt.rs`         | Proactive hypothesis-driven threat hunting across flow data             |
-| Threat Rules Engine | `threat_rules_engine.rs` | Composite rule evaluation combining TI + behavioral + signature signals |
+| Threat Intelligence | `Threat Intelligence Module` | IOC feed management: 24,358 IPs, 1.25M domains, 84,501 malware sigs     |
+| DNS Security        | `Dns Security Module`        | DNS-layer blocking: C2 domains, DGA detection, DNS tunneling            |
+| Threat Hunt         | `Threat Hunt Module`         | Proactive hypothesis-driven threat hunting across flow data             |
+| Threat Rules Engine | `Threat Rules Engine Module` | Composite rule evaluation combining TI + behavioral + signature signals |
 
 ### Category 6: Enterprise Security
 
 | Module               | File                      | Purpose                                                                  |
 | -------------------- | ------------------------- | ------------------------------------------------------------------------ |
-| Zero Trust           | `zero_trust.rs`           | Device trust scoring, continuous verification, zone enforcement          |
-| Identity Policy      | `identity_policy.rs`      | Identity-aware policy with certificate/token validation                  |
-| Micro-Segmentation   | `micro_segmentation.rs`   | 8-zone network segmentation with explicit allow policy                   |
-| Endpoint Security    | `endpoint_security.rs`    | Host-based posture assessment, patch age, vulnerability scanning         |
-| Attribution Scoring  | `attribution_scoring.rs`  | TTP/technique-based attacker attribution scoring                         |
-| SIEM Integration     | `siem_integration.rs`     | CEF log format, Syslog export, Splunk/Elastic webhook                    |
-| Distributed Immunity | `distributed_immunity.rs` | Swarm gossip protocol for peer intelligence sharing                      |
-| Gateway Mode         | `gateway_mode.rs`         | Edge gateway configuration and BGP-aware policy                          |
-| SD-WAN               | `sdwan.rs`                | SD-WAN traffic prioritization and QoS integration                        |
-| Cloud Native         | `cloud_native.rs`         | Kubernetes API server protection, container escape detection, cloud IMDS |
-| Single Pass          | `single_pass.rs`          | Unified L2–L7 inspection in one packet traversal                         |
+| Zero Trust           | `Zero Trust Module`           | Device trust scoring, continuous verification, zone enforcement          |
+| Identity Policy      | `Identity Policy Module`      | Identity-aware policy with certificate/token validation                  |
+| Micro-Segmentation   | `Micro Segmentation Module`   | 8-zone network segmentation with explicit allow policy                   |
+| Endpoint Security    | `Endpoint Security Module`    | Host-based posture assessment, patch age, vulnerability scanning         |
+| Attribution Scoring  | `Attribution Scoring Module`  | TTP/technique-based attacker attribution scoring                         |
+| SIEM Integration     | `Siem Integration Module`     | CEF log format, Syslog export, Splunk/Elastic webhook                    |
+| Distributed Immunity | `Distributed Immunity Module` | Swarm gossip protocol for peer intelligence sharing                      |
+| Gateway Mode         | `Gateway Mode Module`         | Edge gateway configuration and BGP-aware policy                          |
+| SD-WAN               | `Sdwan Module`                | SD-WAN traffic prioritization and QoS integration                        |
+| Cloud Native         | `Cloud Native Module`         | Kubernetes API server protection, container escape detection, cloud IMDS |
+| Single Pass          | `Single Pass Module`          | Unified L2–L7 inspection in one packet traversal                         |
 
 ### Category 7: Research-Grade Modules (v4.0)
 
 | Module                | File                       | Purpose                                                      |
 | --------------------- | -------------------------- | ------------------------------------------------------------ |
-| UEBA Engine           | `ueba_engine.rs`           | User and Entity Behavior Analytics, insider threat detection |
-| SOAR Engine           | `soar_engine.rs`           | Security Orchestration, Automation and Response playbooks    |
-| Deception             | `deception.rs`             | Honeypot/canary token infrastructure                         |
-| Adaptive Honeypot     | `adaptive_honeypot.rs`     | Dynamic honeypot that mimics real services                   |
-| OT Protocols          | `ot_protocols.rs`          | Modbus/DNP3/EtherNet-IP ICS protocol security                |
-| Post-Quantum          | `post_quantum.rs`          | NIST FIPS 203/204/205 (ML-KEM, ML-DSA, SLH-DSA)              |
-| Formal Verification   | `formal_verification.rs`   | TLA+-based policy consistency verification                   |
-| TPM Attestation       | `tpm_attestation.rs`       | Hardware root-of-trust, PCR measurement verification         |
-| MTD Engine            | `mtd_engine.rs`            | Moving Target Defense — IP rotation, port shuffling          |
-| Homomorphic Sharing   | `homomorphic_sharing.rs`   | Encrypted threat intel sharing without plaintext exposure    |
-| Email Security        | `email_security.rs`        | SMTP/DKIM/SPF/DMARC verification, phishing detection         |
-| RASP Engine           | `rasp_engine.rs`           | Runtime Application Self-Protection hooks                    |
-| Secure Channel        | `secure_channel.rs`        | mTLS channel management, certificate lifecycle               |
-| SBOM Engine           | `sbom_engine.rs`           | Software Bill of Materials validation                        |
-| Supply Chain Verifier | `supply_chain_verifier.rs` | Cryptographic package signing verification                   |
-| eBPF/XDP              | `ebpf_xdp.rs`              | Linux eBPF/XDP kernel bypass (in-development)                |
-| P4 Offload            | `p4_offload.rs`            | Programmable switch P4 dataplane offload                     |
-| Compliance Engine     | `compliance_engine.rs`     | GDPR/HIPAA/PCI-DSS automated compliance reporting            |
-| QUIC Inspector        | `quic_inspector.rs`        | QUIC/HTTP3 deep inspection                                   |
-| Forensics Chain       | `forensics_chain.rs`       | SHA3-256 immutable audit log chain                           |
-| Differential Privacy  | `differential_privacy.rs`  | Privacy-preserving telemetry aggregation                     |
-| Management API        | `management_api.rs`        | REST API for configuration, status, incident management      |
-| LLM Explainability    | `llm_explainability.rs`    | LLM-generated natural language threat explanations           |
-| Policy Verifier       | `policy_verifier.rs`       | Automated policy conflict detection and resolution           |
+| UEBA Engine           | `Ueba Engine Module`           | User and Entity Behavior Analytics, insider threat detection |
+| SOAR Engine           | `Soar Engine Module`           | Security Orchestration, Automation and Response playbooks    |
+| Deception             | `Deception Module`             | Honeypot/canary token infrastructure                         |
+| Adaptive Honeypot     | `Adaptive Honeypot Module`     | Dynamic honeypot that mimics real services                   |
+| OT Protocols          | `Ot Protocols Module`          | Modbus/DNP3/EtherNet-IP ICS protocol security                |
+| Post-Quantum          | `Post Quantum Module`          | NIST FIPS 203/204/205 (ML-KEM, ML-DSA, SLH-DSA)              |
+| Formal Verification   | `Formal Verification Module`   | TLA+-based policy consistency verification                   |
+| TPM Attestation       | `Tpm Attestation Module`       | Hardware root-of-trust, PCR measurement verification         |
+| MTD Engine            | `Mtd Engine Module`            | Moving Target Defense — IP rotation, port shuffling          |
+| Homomorphic Sharing   | `Homomorphic Sharing Module`   | Encrypted threat intel sharing without plaintext exposure    |
+| Email Security        | `Email Security Module`        | SMTP/DKIM/SPF/DMARC verification, phishing detection         |
+| RASP Engine           | `Rasp Engine Module`           | Runtime Application Self-Protection hooks                    |
+| Secure Channel        | `Secure Channel Module`        | mTLS channel management, certificate lifecycle               |
+| SBOM Engine           | `Sbom Engine Module`           | Software Bill of Materials validation                        |
+| Supply Chain Verifier | `Supply Chain Verifier Module` | Cryptographic package signing verification                   |
+| eBPF/XDP (Roadmap)    | `Ebpf Xdp Module`              | Linux eBPF/XDP kernel bypass (in-development)                |
+| P4 Offload (Roadmap)  | `P4 Offload Module`            | Programmable switch P4 dataplane offload (in-development)    |
+| Compliance Engine     | `Compliance Engine Module`     | GDPR/HIPAA/PCI-DSS automated compliance reporting            |
+| QUIC Inspector        | `Quic Inspector Module`        | QUIC/HTTP3 deep inspection                                   |
+| Forensics Chain       | `Forensics Chain Module`       | SHA3-256 immutable audit log chain                           |
+| Differential Privacy  | `Differential Privacy Module`  | Privacy-preserving telemetry aggregation                     |
+| Management API        | `Management Api Module`        | REST API for configuration, status, incident management      |
+| LLM Explainability    | `Llm Explainability Module`    | LLM-generated natural language threat explanations           |
+| Policy Verifier       | `Policy Verifier Module`       | Automated policy conflict detection and resolution           |
 
 ### Category 8: Security Support
 
 | Module                | File                  | Purpose                                            |
 | --------------------- | --------------------- | -------------------------------------------------- |
-| Process Monitor       | `process_monitor.rs`  | Windows process table scanning for tampering tools |
-| Memory Safe Pool      | `memory_safe_pool.rs` | Pre-allocated packet buffers, zero GC overhead     |
-| Hardware Acceleration | `hardware_accel.rs`   | CPU feature detection, SIMD-accelerated hashing    |
+| Process Monitor       | `Process Monitor Module`  | Windows process table scanning for tampering tools |
+| Memory Safe Pool      | `Memory Safe Pool Module` | Pre-allocated packet buffers, zero GC overhead     |
+| Hardware Acceleration | `Hardware Accel Module`   | CPU feature detection, SIMD-accelerated hashing    |
 
 ---
 
@@ -279,10 +286,10 @@ Gossip message format (JSON over UDP):
 
 4. STATEFUL FLOW TRACKING:
    └─ flow_engine creates or updates FlowRecord keyed by 5-tuple
-   └─ stateful.rs maintains TCP state machine (SYN/SYN-ACK/ACK/FIN/RST)
+   └─ Stateful Module maintains TCP state machine (SYN/SYN-ACK/ACK/FIN/RST)
    └─ SYN flood detection: count half-open connections, rate-limit at threshold
 
-5. SINGLE-PASS INSPECTION (dpi.rs + single_pass.rs):
+5. SINGLE-PASS INSPECTION (Dpi Module + Single Pass Module):
    └─ Protocol identification: TCP/UDP/ICMP/QUIC/DNS/HTTP/TLS
    └─ WAF patterns: SQL injection, XSS, RCE, path traversal, SSRF
    └─ DLP patterns: credit card, API key, PII detection in outbound payloads
@@ -322,19 +329,19 @@ Gossip message format (JSON over UDP):
 The primary configuration file is `config/rudras.toml`. It is divided into sections mapping directly to module configurations:
 
 ```toml
-[ai]          # ai_engine.rs, advanced_ml.rs, cyber_immune.rs parameters
-[ids]         # ids_engine.rs rule categories, signatures
-[ips]         # ips_engine.rs response thresholds
-[threat_intel]# threat_intelligence.rs feed paths, refresh intervals
-[dns]         # dns_security.rs blocklist paths, DGA detection
-[zero_trust]  # zero_trust.rs trust score thresholds, posture requirements
-[[zones]]     # micro_segmentation.rs zone definitions
-[metrics]     # metrics.rs port, auth token validity duration
+[ai]          # Ai Engine Module, Advanced Ml Module, Cyber Immune Module parameters
+[ids]         # Ids Engine Module rule categories, signatures
+[ips]         # Ips Engine Module response thresholds
+[threat_intel]# Threat Intelligence Module feed paths, refresh intervals
+[dns]         # Dns Security Module blocklist paths, DGA detection
+[zero_trust]  # Zero Trust Module trust score thresholds, posture requirements
+[[zones]]     # Micro Segmentation Module zone definitions
+[metrics]     # Metrics Module port, auth token validity duration
 [logging]     # log path, rotation policy, IST timezone display
-[capture]     # capture.rs interface, promiscuous mode, buffer sizes
-[swarm]       # distributed_immunity.rs peer node addresses
-[soar]        # soar_engine.rs playbook definitions
-[compliance]  # compliance_engine.rs regulated framework targets
+[capture]     # Capture Module interface, promiscuous mode, buffer sizes
+[swarm]       # Distributed Immunity Module peer node addresses
+[soar]        # Soar Engine Module playbook definitions
+[compliance]  # Compliance Engine Module regulated framework targets
 ```
 
-All configuration is hot-reloadable. The `config.rs` module fires a reload event that each subscribed module receives via a tokio watch channel.
+All configuration is hot-reloadable. The `Config Module` module fires a reload event that each subscribed module receives via a tokio watch channel.

@@ -1,4 +1,4 @@
-# 8. Modules in an example scenario
+# 3.4 Operational Runbooks
 
 ---
 
@@ -99,7 +99,7 @@ This only works correctly for power-of-2 block sizes (all legitimate RIR allocat
 
 ### 2.6 How Rudras Loads GeoIP Data
 
-At startup, `threat_intelligence.rs` reads `data/geoip/*.cidr` and builds an in-memory prefix trie. For each packet, source IP is looked up in the trie in O(32) time (worst-case 32 trie levels for IPv4). If the source IP falls in a blocked country's CIDR range, it is treated as a threat signal (contributes to the comprehensive block score).
+At startup, `Threat Intelligence Module` reads `data/geoip/*.cidr` and builds an in-memory prefix trie. For each packet, source IP is looked up in the trie in O(32) time (worst-case 32 trie levels for IPv4). If the source IP falls in a blocked country's CIDR range, it is treated as a threat signal (contributes to the comprehensive block score).
 
 Note: GeoIP blocking is **not** a hard block by default — it contributes to the weighted scoring system. To configure hard blocking of specific countries, set in `rudras.toml`:
 
@@ -184,7 +184,7 @@ PAYLOAD:VVBUSU1FX1NUQVJUPTM2MDAsT...
 SIGNATURE:a3b5c7d9e1f31...
 ```
 
-**Rust-side validation** (in `advanced_security.rs` anti-tamper module):
+**Rust-side validation** (in `Advanced Security Module` anti-tamper module):
 
 1. Read `maintenance.token` from working directory
 2. Re-derive the same HMAC key using current hostname + boot epoch + username
@@ -296,8 +296,8 @@ This file contains a JSON object where each key is an IP address and each value 
 
 ```json
 {
-  "185.220.101.5": {
-    "ip": "185.220.101.5",
+  "[MALICIOUS_IP_CLASSIFIED]": {
+    "ip": "[MALICIOUS_IP_CLASSIFIED]",
     "source": "Emerging Threats (compromised)",
     "category": "Botnet",
     "confidence": 0.88,
@@ -378,7 +378,7 @@ $token = (Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
 
 ### 5.3 `data/immune/` — CyberImmune Memory
 
-Managed entirely by Rudras — do not edit these files manually. They contain serialised state from `cyber_immune.rs`:
+Managed entirely by Rudras — do not edit these files manually. They contain serialised state from `Cyber Immune Module`:
 
 - `antigens.immune` — Known threat signatures (analogous to antibodies)
 - `memory_cells.immune` — Long-term pattern memory for recurring threats
@@ -467,7 +467,7 @@ foreach ($f in $logFiles) {
 }
 
 # Find all events from a specific suspect IP
-$suspectIp = "185.220.101.5"
+$suspectIp = "[MALICIOUS_IP_CLASSIFIED]"
 Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
   Select-String $suspectIp |
   ForEach-Object { $_ | ConvertFrom-Json -ErrorAction SilentlyContinue } |

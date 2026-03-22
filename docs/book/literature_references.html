@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>1.3 What makes Rudras unique? - Rudras: The Firewall in Practice</title>
+        <title>4.5 Standards &amp; Literature References - Rudras: The Firewall in Practice</title>
 
 
         <!-- Custom HTML head -->
@@ -175,102 +175,68 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="13-what-makes-rudras-unique"><a class="header" href="#13-what-makes-rudras-unique">1.3 What makes Rudras unique?</a></h1>
-<hr>
-<h2 id="1-the-five-core-industry-problems"><a class="header" href="#1-the-five-core-industry-problems">1. The Five Core Industry Problems</a></h2>
-<h3 id="problem-1--the-static-signature-paradox"><a class="header" href="#problem-1--the-static-signature-paradox">Problem 1 — The Static Signature Paradox</a></h3>
-<p>Generation 2–4 firewalls rely exclusively on signature databases (Snort/Suricata rule files). When a novel zero-day forms, there is no signature. The firewall has a <strong>100% failure rate</strong> against novel attacks until a vendor patch is released, often 72+ hours later. Meanwhile, the attacker has full dwell time.</p>
-<p><strong>Quantified Impact:</strong> The average dwell time for a zero-day attack before detection is 197 days (IBM Cost of a Data Breach Report, 2024).</p>
-<h3 id="problem-2--hardware-evasion--os-subjugation"><a class="header" href="#problem-2--hardware-evasion--os-subjugation">Problem 2 — Hardware Evasion / OS Subjugation</a></h3>
-<p>Modern attackers no longer need to “hack in” through the firewall. Once initial access is achieved via phishing or supply chain compromise, they use legitimate Windows admin tools (<code>net.exe</code>, <code>sc.exe</code>, <code>taskkill.exe</code>) to disable the security software from the <em>inside</em> — often running as <code>NT AUTHORITY\SYSTEM</code>. A firewall that trusts the OS admin is already defeated.</p>
-<h3 id="problem-3--the-dos-cryptographic-bottleneck"><a class="header" href="#problem-3--the-dos-cryptographic-bottleneck">Problem 3 — The DoS Cryptographic Bottleneck</a></h3>
-<p>With 100-Gbps fiber and TLS 1.3 ubiquity, a volumetric attack doesn’t need to bypass security — it forces the security system to exhaust itself. An IDS attempting to decrypt and deep-inspect millions of garbage TLS packets per second will cause a self-inflicted CPU DoS, taking the firewall offline and leaving the network unprotected.</p>
-<h3 id="problem-4--the-perimeter-fallacy"><a class="header" href="#problem-4--the-perimeter-fallacy">Problem 4 — The Perimeter Fallacy</a></h3>
-<p>Traditional firewalls assume a trusted interior and an untrusted exterior. Modern infrastructure — cloud workloads, remote workers, BYOD devices, third-party contractors — has no meaningful perimeter. An attacker inside the corporate VPN is indistinguishable from a legitimate employee without continuous behavioral verification.</p>
-<h3 id="problem-5--scale-and-complexity-of-the-modern-threat-landscape"><a class="header" href="#problem-5--scale-and-complexity-of-the-modern-threat-landscape">Problem 5 — Scale and Complexity of the Modern Threat Landscape</a></h3>
-<p>A single enterprise network now faces 100+ simultaneous threat categories: ransomware, APTs, supply chain attacks, OT/SCADA exploitation, container escape, OAuth token theft, DNS tunneling, TLS downgrade attacks, Wi-Fi deauthentication, and dozens more. No human analyst team can monitor all of these simultaneously in real time.</p>
-<hr>
-<h2 id="2-the-rudras-solution-matrix"><a class="header" href="#2-the-rudras-solution-matrix">2. The Rudras Solution Matrix</a></h2>
-<h3 id="solution-1--behavioral-deviation-detection-cyberimmune-ml-engine"><a class="header" href="#solution-1--behavioral-deviation-detection-cyberimmune-ml-engine">Solution 1 — Behavioral Deviation Detection (CyberImmune ML Engine)</a></h3>
-<p><strong>Addresses:</strong> Signature Paradox<br><strong>Module:</strong> <code>Cyber Immune Module</code>, <code>Ai Engine Module</code>, <code>Advanced Ml Module</code></p>
-<p>Rudras does not rely exclusively on signatures. Instead, it builds an <strong>Immutable Behavioral Baseline</strong> for every IP address on first contact. The baseline records: packet rate, byte rate, SYN/ACK ratio, connection duration distribution, port diversity, and entropy metrics.</p>
-<p>The AI engine continuously computes the Exponential Moving Average (EMA) of these metrics. The moment a connection’s behavior diverges beyond a statistical threshold (configurable <code>susp_threshold</code>, [RESTRICTED_THRESHOLD]), graduated response begins — rate limiting, quarantine, or block — <em>without needing a signature match</em>.</p>
-<p>This means a novel ransomware spreading laterally via SMB, which no signature database has ever catalogued, is still detected because its <em>behavior</em> — scanning 2,000 ports in 30 seconds — deviates from the baseline of normal SMB traffic.</p>
-<p><strong>Mathematical Foundation:</strong><br><code>deviation_score = |current_ema - immutable_anchor| / immutable_anchor</code><br>If <code>deviation_score &gt; block_threshold (0.80)</code> → IPS invoked immediately.</p>
-<h3 id="solution-2--anti-tamper--zero-trust-process-verification"><a class="header" href="#solution-2--anti-tamper--zero-trust-process-verification">Solution 2 — Anti-Tamper + Zero Trust Process Verification</a></h3>
-<p><strong>Addresses:</strong> OS Subjugation<br><strong>Module:</strong> <code>Advanced Security Module</code>, <code>Process Monitor Module</code>, <code>Endpoint Security Module</code></p>
-<p>Rudras does not trust the OS administrator. It runs a parallel <code>ProcessMonitorLoop</code> at <code>scan_interval = 10s</code> that examines the Windows process table via <code>sysinfo</code>. If it detects tools associated with network sniffing, reverse engineering, or endpoint tampering — Wireshark, IDA Pro, Ghidra, Metasploit, Mimikatz — it fires an alert (WARN-ONLY mode by default; <code>kill_mode = true</code> requires explicit opt-in with legal approval).</p>
-<p>The Zero Trust engine additionally enforces <strong>device posture scoring</strong>: a device running an outdated OS (patch age &gt; 30 days) or with a low integrity score (&lt; 70%) is denied elevated access regardless of valid credentials.</p>
-<h3 id="solution-3--adaptive-load-shedding--hardware-acceleration"><a class="header" href="#solution-3--adaptive-load-shedding--hardware-acceleration">Solution 3 — Adaptive Load Shedding + Hardware Acceleration</a></h3>
-<p><strong>Addresses:</strong> DoS Cryptographic Bottleneck<br><strong>Module:</strong> <code>Hardware Accel Module</code>, <code>Single Pass Module</code>, <code>Flow Engine Module</code></p>
-<p>Under volumetric attack conditions, Rudras implements <strong>adaptive DPI shedding</strong>: when the IPS detects a flood attack signature (SYN rate &gt; 100 pps, UDP flood &gt; 1000 pps), deep packet inspection is automatically suspended for that source IP and replaced with ultra-fast O(1) hash table lookups against the known-bad IOC list. The firewall survives by shedding expensive cryptographic weight mid-flight.</p>
-<p><strong>Single-Pass Architecture:</strong> The <code>Single Pass Module</code> module implements a unified inspection pass — Layer 2 through Layer 7 analyzed in one traversal of the packet bytes — eliminating redundant data parsing across modules.</p>
-<h3 id="solution-4--zero-trust-micro-segmentation-perimeter-dissolution"><a class="header" href="#solution-4--zero-trust-micro-segmentation-perimeter-dissolution">Solution 4 — Zero Trust Micro-Segmentation (Perimeter Dissolution)</a></h3>
-<p><strong>Addresses:</strong> Perimeter Fallacy<br><strong>Module:</strong> <code>Zero Trust Module</code>, <code>Micro Segmentation Module</code>, <code>Identity Policy Module</code></p>
-<p>Rudras segments the network into <strong>8 security zones</strong> (dmz, app, db, finance, research, corporate, guest, management). Every cross-zone communication requires explicit policy authorization. A compromised guest-zone device cannot reach the db-zone <em>regardless of valid credentials</em> — it would require an authenticated, posture-verified identity with an explicit inter-zone policy rule.</p>
-<p>Lateral movement — the most common post-breach technique — is detected by the GNN engine monitoring topology connections and the UEBA engine detecting behavioral deviation from the user’s established access patterns.</p>
-<h3 id="solution-5--40-layered-defense-modules"><a class="header" href="#solution-5--40-layered-defense-modules">Solution 5 — 40+ Layered Defense Modules</a></h3>
-<p><strong>Addresses:</strong> Scale and Complexity<br><strong>All modules</strong></p>
-<p>No single module handles all threats. The system operates a <strong>defense-in-depth composition</strong> where 40+ independent detection mechanisms overlap:</p>
-<pre><code>Packet → L2 Security → Fast-Path Drops → TI Lookup → IDS Signature Match →
-         DPI/WAF → AI Behavioral Score → DNS Security → IPS Response →
-         SIEM Logging → Forensics Chain → Metrics
-</code></pre>
-<p>Even if multiple intermediate layers produce false negatives, the statistical probability of all 40 layers simultaneously failing on the same attack is dramatically reduced.</p>
-<hr>
-<h2 id="3-threat-model--attacker-personas"><a class="header" href="#3-threat-model--attacker-personas">3. Threat Model — Attacker Personas</a></h2>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Persona</th><th>Capability</th><th>Primary Attack Vector</th><th>Rudras Countermeasure</th></tr>
-</thead>
-<tbody>
-<tr><td><strong>Script Kiddie</strong></td><td>Low</td><td>Port scans, known exploit kits</td><td>IDS signature rules, rate limiting</td></tr>
-<tr><td><strong>Opportunistic Criminal</strong></td><td>Medium</td><td>Phishing C2, ransomware</td><td>C2 beacon detection, DNS blocking, SMB entropy analysis</td></tr>
-<tr><td><strong>Organized Crime</strong></td><td>High</td><td>APT-style multi-stage, credential stuffing</td><td>UEBA deviation, lateral movement GNN, SOAR playbooks</td></tr>
-<tr><td><strong>Nation-State APT</strong></td><td>Very High</td><td>Zero-day, supply chain, firmware implant</td><td>Behavioral AI (zero-day detection), SBOM verification, TPM attestation, formal policy verification</td></tr>
-<tr><td><strong>Insider Threat</strong></td><td>High (trusted access)</td><td>Data exfiltration, DLP bypass, tool abuse</td><td>UEBA behavioral baseline, DLP inspection, process monitor, forensics chain</td></tr>
-<tr><td><strong>Quantum-Capable Adversary</strong> (Future)</td><td>Extreme</td><td>Break RSA/ECC key exchange</td><td>Post-Quantum crypto module (NIST FIPS 203/204/205)</td></tr>
-</tbody>
-</table>
-</div>
-<hr>
-<h2 id="4-defense-posture-by-deployment-mode"><a class="header" href="#4-defense-posture-by-deployment-mode">4. Defense Posture by Deployment Mode</a></h2>
-<h3 id="client-mode-endpointworkstation"><a class="header" href="#client-mode-endpointworkstation">Client Mode (Endpoint/Workstation)</a></h3>
-<p>Focus: <strong>60% outbound monitoring</strong></p>
+                        <h1 id="45-standards--literature-references"><a class="header" href="#45-standards--literature-references">4.5 Standards &amp; Literature References</a></h1>
+<p>Rudras relies heavily on established consensus protocols, NIST cryptographic standards, and peer-reviewed computer science literature. The following is a consolidated list of references utilized throughout the architecture.</p>
+<h2 id="1-federal-and-cryptographic-standards"><a class="header" href="#1-federal-and-cryptographic-standards">1. Federal and Cryptographic Standards</a></h2>
 <ul>
-<li>Monitor outbound C2 callbacks, malware stager downloads, data exfiltration</li>
-<li>DLP scanning on outbound payloads (API keys, credit card patterns)</li>
-<li>Process monitor for LOLBin abuse</li>
-<li>DNS security for C2 domain queries</li>
-<li>Conservative thresholds — minimize false positives on developer traffic</li>
+<li><strong>[NIST SP 800-207]</strong> Zero Trust Architecture. Fundamentals of beyond-perimeter identity and continuous verification.</li>
+<li><strong>[NIST SP 800-162]</strong> Guide to Attribute Based Access Control (ABAC). Enforced via the <code>Identity Policy Module</code> JWT claims logic.</li>
+<li><strong>[NIST SP 800-161r1]</strong> Cybersecurity Supply Chain Risk Management Practices. Implemented via the <code>Supply Chain Verifier Module</code> runtime taint analysis.</li>
+<li><strong>[NIST SP 800-53r5]</strong> Security and Privacy Controls for Information Systems. Automatic mapping generated via the <code>Compliance Engine Module</code>.</li>
+<li><strong>[FIPS 203, 204, &amp; 205 (Drafts)]</strong> Post-Quantum Cryptography Standardization. Rudras enables Kyber key-encapsulation (<code>Advanced Security Module</code>) ahead of the timeline deprecating classical ECC/RSA standards.</li>
+<li><strong>[RFC 8446]</strong> The Transport Layer Security (TLS) Protocol Version 1.3. Enforced natively via <code>Secure Channel Module</code>.</li>
+<li><strong>[RFC 9000]</strong> QUIC: A UDP-Based Multiplexed and Secure Transport. The basis for <code>Quic Inspector Module</code>.</li>
+<li><strong>[TCG TPM 2.0]</strong> Trusted Platform Module Library. Used for device integrity seals in <code>Tpm Attestation Module</code>.</li>
 </ul>
-<h3 id="server-mode-gatewayperimeter"><a class="header" href="#server-mode-gatewayperimeter">Server Mode (Gateway/Perimeter)</a></h3>
-<p>Focus: <strong>80% inbound monitoring</strong></p>
+<h2 id="2-peer-reviewed-academic-literature"><a class="header" href="#2-peer-reviewed-academic-literature">2. Peer-Reviewed Academic Literature</a></h2>
+<ol>
+<li><strong>Forrest, S., Perelson, A. S., Allen, L., &amp; Cherukuri, R. (1994).</strong> <em>Self-nonself discrimination in a computer.</em> IEEE Symposium on Research in Security and Privacy.
 <ul>
-<li>Aggressive inbound inspection — every new connection is suspect</li>
-<li>Full WAF/DPI on all service ports (80, 443, 8080, etc.)</li>
-<li>Port scan detection, brute force detection, exploit signature matching</li>
-<li>Higher sensitivity thresholds — prefer blocking over allowing ambiguous traffic</li>
-<li>Micro-segmentation enforcement between server zones</li>
+<li>Basis for <code>Cyber Immune Module</code> and the Artificial Immune System theory.</li>
 </ul>
-<h3 id="auto-mode"><a class="header" href="#auto-mode">Auto Mode</a></h3>
+</li>
+<li><strong>McMahan, B., Moore, E., Ramage, D., Hampson, S., &amp; y Arcas, B. A. (2017).</strong> <em>Communication-Efficient Learning of Deep Networks from Decentralized Data.</em> Artificial Intelligence and Statistics.
 <ul>
-<li>Queries open listening ports via <code>netstat</code>-equivalent</li>
-<li>If public server ports found (80, 443, 3306, etc.) → Server Mode</li>
-<li>If no public ports found → Client Mode</li>
-<li>Can be overridden with <code>--mode client</code> or <code>--mode server</code> CLI flag</li>
+<li>Foundation for the federated baseline crunching modeled inside <code>Advanced Ml Module</code>.</li>
 </ul>
+</li>
+<li><strong>Mnih, V., Kavukcuoglu, K., Silver, D., et al. (2013).</strong> <em>Playing Atari with Deep Reinforcement Learning.</em> NIPS Deep Learning Workshop.
+<ul>
+<li>The DQN underpinning the Q-learning active response logic found in <code>Rl Policy Module</code>.</li>
+</ul>
+</li>
+<li><strong>AlEroud, A., &amp; Karabatis, G. (2012).</strong> <em>Bypassing intrusion detection systems using contextual anomaly detection.</em>
+<ul>
+<li>Context-aware threat hunting parameters seen in <code>Threat Hunt Module</code>.</li>
+</ul>
+</li>
+<li><strong>Yuan, L., Mai, J., Su, Z., Chen, H., Chuah, C. N., &amp; Mohapatra, P. (2006).</strong> <em>FIREMAN: A Toolkit for FIREwall Modeling and ANalysis.</em> IEEE Symposium on Security and Privacy.
+<ul>
+<li>Direct inspiration for the <code>Formal Verification Module</code> module checking ruleset consistency and shadows via Boolean SAT logic.</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-threat-frameworks--ontologies"><a class="header" href="#3-threat-frameworks--ontologies">3. Threat Frameworks &amp; Ontologies</a></h2>
+<ul>
+<li><strong>[MITRE ATT&amp;CK]</strong> Adversarial Tactics, Techniques, and Common Knowledge. All alerts within <code>Ids Engine Module</code> attach TTK tags for SIEM dashboard mapping.</li>
+<li><strong>[MITRE ENGAGE]</strong> Framework for adversary engagement, deception, and denial. Powers the persona dynamics of <code>Adaptive Honeypot Module</code>.</li>
+<li><strong>[OWASP Core Rule Set (CRS) v4]</strong> Applied universally to <code>Gateway Mode Module</code> (L7 WAF) protecting internal web servers against SQLi, XSS, and broken access controls.</li>
+<li><strong>[SLSA Framework]</strong> Supply-chain Levels for Software Artifacts. Implemented within <code>Supply Chain Verifier Module</code> to audit dependencies.</li>
+</ul>
+<hr>
+<blockquote>
+<p><em>This reference list represents the theoretical and legal underpinning of Rudras v4.0.0. Internal partners auditing the platform should consult these references to validate specific cryptographic or detection heuristics.</em></p>
+</blockquote>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="vision_and_purpose.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="secrets/cryptographic_implementations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="ARCHITECTURE_VISION.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="glossary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -280,11 +246,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="vision_and_purpose.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="secrets/cryptographic_implementations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="ARCHITECTURE_VISION.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="glossary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

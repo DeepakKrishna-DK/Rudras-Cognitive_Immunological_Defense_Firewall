@@ -1,4 +1,4 @@
-# 3.3 Threat Intelligence Capabilities
+# 2.4 Threat Intelligence Capabilities
 
 ---
 
@@ -10,7 +10,7 @@ Threat Intelligence (TI) is the curated knowledge of known malicious infrastruct
 
 ## 1. Threat Intelligence Engine
 
-**Source File:** `src/threat_intelligence.rs`  
+**Module:** `Threat Intelligence Module`  
 **Dataset Sizes (v4.0):**
 
 | Feed                          | Entries   | Update Frequency               |
@@ -35,7 +35,7 @@ The `global_iocs.json` file follows this schema per entry:
 
 ```json
 {
-  "ip": "185.220.101.5",
+  "ip": "[MALICIOUS_IP_CLASSIFIED]",
   "confidence": 0.95,
   "category": "tor_exit_node",
   "first_seen": "2025-06-15",
@@ -103,7 +103,7 @@ When `restart` or a SIGHUP reload is received, the TI engine re-reads all files 
 
 ## 2. DNS Security Engine
 
-**Source File:** `src/dns_security.rs`  
+**Module:** `Dns Security Module`  
 **Role:** DNS-layer threat interception, the last line of defense before C2 connects
 
 ### 2.1 Why DNS Is Critical
@@ -179,7 +179,7 @@ Categories can be individually enabled/disabled in `config/rudras.toml`.
 
 ## 3. Threat Hunt Engine
 
-**Source File:** `src/threat_hunt.rs`  
+**Module:** `Threat Hunt Module`  
 **Role:** Proactive, hypothesis-driven threat hunting  
 **Paradigm:** Distinct from reactive detection — analyst-guided proactive search
 
@@ -187,7 +187,7 @@ Categories can be individually enabled/disabled in `config/rudras.toml`.
 
 Traditional IDS/IPS is **reactive**: it triggers when known attack patterns are present. Threat hunting is **proactive**: a security analyst forms a hypothesis ("I believe there may be an infected host performing slow, low-volume data exfiltration that evades rate-based detection") and then runs targeted queries against historical flow data to test the hypothesis.
 
-The `threat_hunt.rs` module provides the data layer and query primitives for threat hunting operations.
+The `Threat Hunt Module` module provides the data layer and query primitives for threat hunting operations.
 
 ### 3.2 Threat Hunting Queries
 
@@ -254,7 +254,7 @@ severity = "medium"
 
 ## 4. Threat Rules Engine
 
-**Source File:** `src/threat_rules_engine.rs`  
+**Module:** `Threat Rules Engine Module`  
 **Role:** Composite rule evaluation combining multiple detection signals
 
 ### 4.1 Composite Rules vs. Simple Rules
@@ -266,10 +266,10 @@ A composite threat rule combines multiple conditions from multiple modules:
 ```
 RULE: confirmed_c2_callback
   WHEN:
-    - TI score > 0.7 for destination IP                    [from threat_intelligence.rs]
-    - DNS query matched C2 domain pattern in last 60s      [from dns_security.rs]
-    - AI deviation > 0.6 for source IP                     [from ai_engine.rs]
-    - Connection is outbound on port 443 or 80             [from flow_engine.rs]
+    - TI score > 0.7 for destination IP                    [from Threat Intelligence Module]
+    - DNS query matched C2 domain pattern in last 60s      [from Dns Security Module]
+    - AI deviation > 0.6 for source IP                     [from Ai Engine Module]
+    - Connection is outbound on port 443 or 80             [from Flow Engine Module]
   THEN:
     - Severity: CRITICAL
     - Action: BLOCK + SOAR playbook "C2_ISOLATION"

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>3.3 Threat Intelligence Capabilities - Rudras: The Firewall in Practice</title>
+        <title>2.4 Threat Intelligence Capabilities - Rudras: The Firewall in Practice</title>
 
 
         <!-- Custom HTML head -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-4130de7f.css">
+        <link rel="stylesheet" href="custom-3f90df81.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "ayu";
-            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+            window.path_to_searchindex_js = "searchindex-08390e6f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-3594adab.js"></script>
+        <script src="toc-4ff6b2b6.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,13 +175,13 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="33-threat-intelligence-capabilities"><a class="header" href="#33-threat-intelligence-capabilities">3.3 Threat Intelligence Capabilities</a></h1>
+                        <h1 id="24-threat-intelligence-capabilities"><a class="header" href="#24-threat-intelligence-capabilities">2.4 Threat Intelligence Capabilities</a></h1>
 <hr>
 <h2 id="abstract"><a class="header" href="#abstract">Abstract</a></h2>
 <p>Threat Intelligence (TI) is the curated knowledge of known malicious infrastructure — IP addresses, domains, file hashes, and URLs associated with threat actors. Rudras v4.0 operates the largest embedded TI corpus of any open-architecture firewall: 24,358 malicious IPs, 1,250,617 blocked domains, 84,501 malware signatures, and 617 explicitly tracked threat-actor domains. This document describes the TI subsystem architecture, data sources, blocking mechanics, and DNS-layer enforcement.</p>
 <hr>
 <h2 id="1-threat-intelligence-engine"><a class="header" href="#1-threat-intelligence-engine">1. Threat Intelligence Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/threat_intelligence.rs</code><br><strong>Dataset Sizes (v4.0):</strong></p>
+<p><strong>Module:</strong> <code>Threat Intelligence Module</code><br><strong>Dataset Sizes (v4.0):</strong></p>
 <div class="table-wrapper">
 <table>
 <thead>
@@ -204,7 +204,7 @@ data/geoip/                          # GeoIP database for geographic enrichment
 <h3 id="12-ioc-data-schema"><a class="header" href="#12-ioc-data-schema">1.2 IOC Data Schema</a></h3>
 <p>The <code>global_iocs.json</code> file follows this schema per entry:</p>
 <pre><code class="language-json">{
-  "ip": "185.220.101.5",
+  "ip": "[MALICIOUS_IP_CLASSIFIED]",
   "confidence": 0.95,
   "category": "tor_exit_node",
   "first_seen": "2025-06-15",
@@ -266,7 +266,7 @@ malware_hashes: RwLock&lt;HashSet&lt;[u8; 32]&gt;&gt;
 </ol>
 <hr>
 <h2 id="2-dns-security-engine"><a class="header" href="#2-dns-security-engine">2. DNS Security Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/dns_security.rs</code><br><strong>Role:</strong> DNS-layer threat interception, the last line of defense before C2 connects</p>
+<p><strong>Module:</strong> <code>Dns Security Module</code><br><strong>Role:</strong> DNS-layer threat interception, the last line of defense before C2 connects</p>
 <h3 id="21-why-dns-is-critical"><a class="header" href="#21-why-dns-is-critical">2.1 Why DNS Is Critical</a></h3>
 <p>90%+ of malware uses DNS as part of its operation:</p>
 <ul>
@@ -331,10 +331,10 @@ DNS tunneling embeds data in subdomains:</p>
 <p>Categories can be individually enabled/disabled in <code>config/rudras.toml</code>.</p>
 <hr>
 <h2 id="3-threat-hunt-engine"><a class="header" href="#3-threat-hunt-engine">3. Threat Hunt Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/threat_hunt.rs</code><br><strong>Role:</strong> Proactive, hypothesis-driven threat hunting<br><strong>Paradigm:</strong> Distinct from reactive detection — analyst-guided proactive search</p>
+<p><strong>Module:</strong> <code>Threat Hunt Module</code><br><strong>Role:</strong> Proactive, hypothesis-driven threat hunting<br><strong>Paradigm:</strong> Distinct from reactive detection — analyst-guided proactive search</p>
 <h3 id="31-what-is-threat-hunting"><a class="header" href="#31-what-is-threat-hunting">3.1 What Is Threat Hunting?</a></h3>
 <p>Traditional IDS/IPS is <strong>reactive</strong>: it triggers when known attack patterns are present. Threat hunting is <strong>proactive</strong>: a security analyst forms a hypothesis (“I believe there may be an infected host performing slow, low-volume data exfiltration that evades rate-based detection”) and then runs targeted queries against historical flow data to test the hypothesis.</p>
-<p>The <code>threat_hunt.rs</code> module provides the data layer and query primitives for threat hunting operations.</p>
+<p>The <code>Threat Hunt Module</code> module provides the data layer and query primitives for threat hunting operations.</p>
 <h3 id="32-threat-hunting-queries"><a class="header" href="#32-threat-hunting-queries">3.2 Threat Hunting Queries</a></h3>
 <p>Available built-in hunt queries:</p>
 <p><strong>Hunt 1: Beaconing Detection</strong>
@@ -377,16 +377,16 @@ severity = "medium"
 </code></pre>
 <hr>
 <h2 id="4-threat-rules-engine"><a class="header" href="#4-threat-rules-engine">4. Threat Rules Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/threat_rules_engine.rs</code><br><strong>Role:</strong> Composite rule evaluation combining multiple detection signals</p>
+<p><strong>Module:</strong> <code>Threat Rules Engine Module</code><br><strong>Role:</strong> Composite rule evaluation combining multiple detection signals</p>
 <h3 id="41-composite-rules-vs-simple-rules"><a class="header" href="#41-composite-rules-vs-simple-rules">4.1 Composite Rules vs. Simple Rules</a></h3>
 <p>A simple IDS rule matches a single condition: <code>if SYN_rate &gt; 100 then alert</code>.</p>
 <p>A composite threat rule combines multiple conditions from multiple modules:</p>
 <pre><code>RULE: confirmed_c2_callback
   WHEN:
-    - TI score &gt; 0.7 for destination IP                    [from threat_intelligence.rs]
-    - DNS query matched C2 domain pattern in last 60s      [from dns_security.rs]
-    - AI deviation &gt; 0.6 for source IP                     [from ai_engine.rs]
-    - Connection is outbound on port 443 or 80             [from flow_engine.rs]
+    - TI score &gt; 0.7 for destination IP                    [from Threat Intelligence Module]
+    - DNS query matched C2 domain pattern in last 60s      [from Dns Security Module]
+    - AI deviation &gt; 0.6 for source IP                     [from Ai Engine Module]
+    - Connection is outbound on port 443 or 80             [from Flow Engine Module]
   THEN:
     - Severity: CRITICAL
     - Action: BLOCK + SOAR playbook "C2_ISOLATION"

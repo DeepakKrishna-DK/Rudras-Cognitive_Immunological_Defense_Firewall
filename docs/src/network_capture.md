@@ -1,16 +1,16 @@
-# 5.1 Network Capture and Enforcement
+# 3.2 Network Capture and Enforcement
 
 ---
 
 ## Abstract
 
-The network capture and enforcement stack is Rudras's interface with the OS kernel and physical network hardware. This stack must operate at line-rate speeds with sub-millisecond latency — it is the first and last place a packet touches before Rudras acts on it. This document covers the five modules that form this stack: `capture.rs` (packet ingestion), `wfp_engine.rs` (Windows kernel enforcement), `windivert_engine.rs` (userspace interception), `npcap_forensic.rs` (forensic evidence capture), and `l2_engine.rs` (Layer 2 security).
+The network capture and enforcement stack is Rudras's interface with the OS kernel and physical network hardware. This stack must operate at line-rate speeds with sub-millisecond latency — it is the first and last place a packet touches before Rudras acts on it. This document covers the five modules that form this stack: `Capture Module` (packet ingestion), `Wfp Engine Module` (Windows kernel enforcement), `Windivert Engine Module` (userspace interception), `Npcap Forensic Module` (forensic evidence capture), and `L2 Engine Module` (Layer 2 security).
 
 ---
 
 ## 1. Packet Capture Module
 
-**Source File:** `src/capture.rs`  
+**Module:** `Capture Module`  
 **Technology:** libpcap/Npcap  
 **OS Layer:** Data-link layer (below IP)
 
@@ -46,7 +46,7 @@ Npcap uses a kernel ring buffer to hold captured packets before userspace retrie
 A Berkeley Packet Filter (BPF) program can be applied at the kernel level to pre-filter packets before they reach userspace. This reduces the CPU cost of processing packets that Rudras doesn't need to inspect (e.g., filtering out known-good internal monitoring traffic before userspace sees it):
 
 ```
-BPF filter: "not (src net 10.10.70.0/24 and dst net 10.10.70.0/24)"
+BPF filter: "not (src net [MGMT_ZONE_CIDR_REDACTED] and dst net [MGMT_ZONE_CIDR_REDACTED])"
 # Exclude management-to-management internal traffic from capture
 ```
 
@@ -66,7 +66,7 @@ When `interface = "auto"` in config, Rudras:
 
 ## 2. Windows Filtering Platform (WFP) Engine
 
-**Source File:** `src/wfp_engine.rs`  
+**Module:** `Wfp Engine Module`  
 **OS Interface:** Windows Filtering Platform (kernel-mode callout driver interface)  
 **Enforcement Latency:** < 100 μs (kernel-level, no userspace round-trip)
 
@@ -98,7 +98,7 @@ Rudras registers WFP callout filters at the following WFP layers:
 When the IPS engine decides to block an IP:
 
 1. The IP is passed to `wfp_engine.add_block_rule(ip, duration)`
-2. `wfp_engine.rs` calls `FwpmFilterAdd0()` via FFI to register a kernel-mode filter matching the IP
+2. `Wfp Engine Module` calls `FwpmFilterAdd0()` via FFI to register a kernel-mode filter matching the IP
 3. The filter action is `FWP_ACTION_BLOCK`
 4. All subsequent packets from/to that IP are dropped at kernel context — they never reach userspace
 5. The `blocked_rules` HashMap stores `(filter_id, expiry_instant)` for TTL management
@@ -130,13 +130,13 @@ unsafe {
 }
 ```
 
-All unsafe FFI code is contained within `wfp_engine.rs` and `npcap_forensic.rs`. No other module has unsafe code.
+All unsafe FFI code is contained within `Wfp Engine Module` and `Npcap Forensic Module`. No other module has unsafe code.
 
 ---
 
 ## 3. WinDivert Engine
 
-**Source File:** `src/windivert_engine.rs`  
+**Module:** `Windivert Engine Module`  
 **Technology:** WinDivert (third-party Windows userspace network diversion tool)  
 **Capability:** Intercept, modify, or drop packets in userspace
 
@@ -188,12 +188,12 @@ WinDivert can intercept a packet, modify its contents in memory, and reinject it
 
 ## 4. Npcap Forensic Capture
 
-**Source File:** `src/npcap_forensic.rs`  
+**Module:** `Npcap Forensic Module`  
 **Purpose:** Forensic-quality packet capture for incident response and legal evidence
 
 ### 4.1 Forensic vs. Analysis Capture
 
-While `capture.rs` captures packets for analysis (real-time processing), `npcap_forensic.rs` captures packet data for forensic storage:
+While `Capture Module` captures packets for analysis (real-time processing), `Npcap Forensic Module` captures packet data for forensic storage:
 
 - **Lossless:** Unlike analysis capture that may shed packets under load, forensic capture uses a larger buffer and a dedicated thread to ensure no evidence is lost during the capture window
 - **Standard format:** Writes to PCAP-NG format (IEEE 802.15.4 compliant), readable by Wireshark, tcpdump, and forensic tools
@@ -226,7 +226,7 @@ This documentation trail satisfies requirements for digital forensic evidence in
 
 ## 5. Layer 2 Security Engine
 
-**Source File:** `src/l2_engine.rs`  
+**Module:** `L2 Engine Module`  
 **Protocol Coverage:** Ethernet, 802.1Q VLAN, ARP, 802.11 (WiFi)
 
 ### 5.1 Why L2 Security Matters

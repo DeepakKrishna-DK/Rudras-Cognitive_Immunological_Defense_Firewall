@@ -1,10 +1,10 @@
-# 1. How companies can benefit from Rudras
+# 1.2 Vision and Core Problems
 
 ---
 
 ## 1. Vision Statement
 
-To construct the world's first ubiquitous, autonomous, mathematically immune cybersecurity platform — a **Cognitive Immunological Defense System (CIDS)** — that neutralizes zero-day exploits, nation-state APTs, and insider threats natively at NIC line-rate speeds, without human intervention, before any payload reaches the CPU logic layer.
+To construct a ubiquitous, autonomous Cognitive Immunological Defense System (CIDS) — designed to proactively detect zero-day exploits, nation-state APTs, and insider threats at NIC line-rate speeds, minimizing human intervention, before any payload reaches the CPU logic layer.
 
 Rudras v4.0 represents a fundamental departure from the "wall-and-rule" paradigm. It is not a firewall with AI bolted on. It is an AI-native immune system with network enforcement as one of many expression channels.
 
@@ -38,7 +38,7 @@ The human immune system detects foreign proteins not because it has seen them be
 
 ### Pillar 2 — Defense in Depth (40+ Overlapping Layers)
 
-No single module is the last line of defense. Traffic that evades the IDS may be caught by the behavioral AI. Traffic that evades the AI may be caught by the Threat Intelligence feed. Traffic that evades TI may be caught by the DNS security engine. The system assumes every individual layer will occasionally fail; the composition of 40+ overlapping layers approaches mathematical certainty.
+No single module is the last line of defense. Traffic that evades the IDS may be caught by the behavioral AI. Traffic that evades the AI may be caught by the Threat Intelligence feed. Traffic that evades TI may be caught by the DNS security engine. The system assumes every individual layer will occasionally fail; the composition of 40+ overlapping layers dramatically reduces the probability of undetected attacks in practice.
 
 ### Pillar 3 — Zero Trust Everything
 

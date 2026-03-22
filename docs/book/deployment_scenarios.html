@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>1.3 What makes Rudras unique? - Rudras: The Firewall in Practice</title>
+        <title>3.5 Deployment and Usage Scenarios - Rudras: The Firewall in Practice</title>
 
 
         <!-- Custom HTML head -->
@@ -175,102 +175,115 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="13-what-makes-rudras-unique"><a class="header" href="#13-what-makes-rudras-unique">1.3 What makes Rudras unique?</a></h1>
+                        <h1 id="35-deployment-and-usage-scenarios"><a class="header" href="#35-deployment-and-usage-scenarios">3.5 Deployment and Usage Scenarios</a></h1>
+<p>This document provides concrete examples of how Rudras can be configured and deployed in real-world environments. Each scenario highlights the key modules enabled, essential configuration snippets, and the expected operational flow.</p>
 <hr>
-<h2 id="1-the-five-core-industry-problems"><a class="header" href="#1-the-five-core-industry-problems">1. The Five Core Industry Problems</a></h2>
-<h3 id="problem-1--the-static-signature-paradox"><a class="header" href="#problem-1--the-static-signature-paradox">Problem 1 — The Static Signature Paradox</a></h3>
-<p>Generation 2–4 firewalls rely exclusively on signature databases (Snort/Suricata rule files). When a novel zero-day forms, there is no signature. The firewall has a <strong>100% failure rate</strong> against novel attacks until a vendor patch is released, often 72+ hours later. Meanwhile, the attacker has full dwell time.</p>
-<p><strong>Quantified Impact:</strong> The average dwell time for a zero-day attack before detection is 197 days (IBM Cost of a Data Breach Report, 2024).</p>
-<h3 id="problem-2--hardware-evasion--os-subjugation"><a class="header" href="#problem-2--hardware-evasion--os-subjugation">Problem 2 — Hardware Evasion / OS Subjugation</a></h3>
-<p>Modern attackers no longer need to “hack in” through the firewall. Once initial access is achieved via phishing or supply chain compromise, they use legitimate Windows admin tools (<code>net.exe</code>, <code>sc.exe</code>, <code>taskkill.exe</code>) to disable the security software from the <em>inside</em> — often running as <code>NT AUTHORITY\SYSTEM</code>. A firewall that trusts the OS admin is already defeated.</p>
-<h3 id="problem-3--the-dos-cryptographic-bottleneck"><a class="header" href="#problem-3--the-dos-cryptographic-bottleneck">Problem 3 — The DoS Cryptographic Bottleneck</a></h3>
-<p>With 100-Gbps fiber and TLS 1.3 ubiquity, a volumetric attack doesn’t need to bypass security — it forces the security system to exhaust itself. An IDS attempting to decrypt and deep-inspect millions of garbage TLS packets per second will cause a self-inflicted CPU DoS, taking the firewall offline and leaving the network unprotected.</p>
-<h3 id="problem-4--the-perimeter-fallacy"><a class="header" href="#problem-4--the-perimeter-fallacy">Problem 4 — The Perimeter Fallacy</a></h3>
-<p>Traditional firewalls assume a trusted interior and an untrusted exterior. Modern infrastructure — cloud workloads, remote workers, BYOD devices, third-party contractors — has no meaningful perimeter. An attacker inside the corporate VPN is indistinguishable from a legitimate employee without continuous behavioral verification.</p>
-<h3 id="problem-5--scale-and-complexity-of-the-modern-threat-landscape"><a class="header" href="#problem-5--scale-and-complexity-of-the-modern-threat-landscape">Problem 5 — Scale and Complexity of the Modern Threat Landscape</a></h3>
-<p>A single enterprise network now faces 100+ simultaneous threat categories: ransomware, APTs, supply chain attacks, OT/SCADA exploitation, container escape, OAuth token theft, DNS tunneling, TLS downgrade attacks, Wi-Fi deauthentication, and dozens more. No human analyst team can monitor all of these simultaneously in real time.</p>
-<hr>
-<h2 id="2-the-rudras-solution-matrix"><a class="header" href="#2-the-rudras-solution-matrix">2. The Rudras Solution Matrix</a></h2>
-<h3 id="solution-1--behavioral-deviation-detection-cyberimmune-ml-engine"><a class="header" href="#solution-1--behavioral-deviation-detection-cyberimmune-ml-engine">Solution 1 — Behavioral Deviation Detection (CyberImmune ML Engine)</a></h3>
-<p><strong>Addresses:</strong> Signature Paradox<br><strong>Module:</strong> <code>Cyber Immune Module</code>, <code>Ai Engine Module</code>, <code>Advanced Ml Module</code></p>
-<p>Rudras does not rely exclusively on signatures. Instead, it builds an <strong>Immutable Behavioral Baseline</strong> for every IP address on first contact. The baseline records: packet rate, byte rate, SYN/ACK ratio, connection duration distribution, port diversity, and entropy metrics.</p>
-<p>The AI engine continuously computes the Exponential Moving Average (EMA) of these metrics. The moment a connection’s behavior diverges beyond a statistical threshold (configurable <code>susp_threshold</code>, [RESTRICTED_THRESHOLD]), graduated response begins — rate limiting, quarantine, or block — <em>without needing a signature match</em>.</p>
-<p>This means a novel ransomware spreading laterally via SMB, which no signature database has ever catalogued, is still detected because its <em>behavior</em> — scanning 2,000 ports in 30 seconds — deviates from the baseline of normal SMB traffic.</p>
-<p><strong>Mathematical Foundation:</strong><br><code>deviation_score = |current_ema - immutable_anchor| / immutable_anchor</code><br>If <code>deviation_score &gt; block_threshold (0.80)</code> → IPS invoked immediately.</p>
-<h3 id="solution-2--anti-tamper--zero-trust-process-verification"><a class="header" href="#solution-2--anti-tamper--zero-trust-process-verification">Solution 2 — Anti-Tamper + Zero Trust Process Verification</a></h3>
-<p><strong>Addresses:</strong> OS Subjugation<br><strong>Module:</strong> <code>Advanced Security Module</code>, <code>Process Monitor Module</code>, <code>Endpoint Security Module</code></p>
-<p>Rudras does not trust the OS administrator. It runs a parallel <code>ProcessMonitorLoop</code> at <code>scan_interval = 10s</code> that examines the Windows process table via <code>sysinfo</code>. If it detects tools associated with network sniffing, reverse engineering, or endpoint tampering — Wireshark, IDA Pro, Ghidra, Metasploit, Mimikatz — it fires an alert (WARN-ONLY mode by default; <code>kill_mode = true</code> requires explicit opt-in with legal approval).</p>
-<p>The Zero Trust engine additionally enforces <strong>device posture scoring</strong>: a device running an outdated OS (patch age &gt; 30 days) or with a low integrity score (&lt; 70%) is denied elevated access regardless of valid credentials.</p>
-<h3 id="solution-3--adaptive-load-shedding--hardware-acceleration"><a class="header" href="#solution-3--adaptive-load-shedding--hardware-acceleration">Solution 3 — Adaptive Load Shedding + Hardware Acceleration</a></h3>
-<p><strong>Addresses:</strong> DoS Cryptographic Bottleneck<br><strong>Module:</strong> <code>Hardware Accel Module</code>, <code>Single Pass Module</code>, <code>Flow Engine Module</code></p>
-<p>Under volumetric attack conditions, Rudras implements <strong>adaptive DPI shedding</strong>: when the IPS detects a flood attack signature (SYN rate &gt; 100 pps, UDP flood &gt; 1000 pps), deep packet inspection is automatically suspended for that source IP and replaced with ultra-fast O(1) hash table lookups against the known-bad IOC list. The firewall survives by shedding expensive cryptographic weight mid-flight.</p>
-<p><strong>Single-Pass Architecture:</strong> The <code>Single Pass Module</code> module implements a unified inspection pass — Layer 2 through Layer 7 analyzed in one traversal of the packet bytes — eliminating redundant data parsing across modules.</p>
-<h3 id="solution-4--zero-trust-micro-segmentation-perimeter-dissolution"><a class="header" href="#solution-4--zero-trust-micro-segmentation-perimeter-dissolution">Solution 4 — Zero Trust Micro-Segmentation (Perimeter Dissolution)</a></h3>
-<p><strong>Addresses:</strong> Perimeter Fallacy<br><strong>Module:</strong> <code>Zero Trust Module</code>, <code>Micro Segmentation Module</code>, <code>Identity Policy Module</code></p>
-<p>Rudras segments the network into <strong>8 security zones</strong> (dmz, app, db, finance, research, corporate, guest, management). Every cross-zone communication requires explicit policy authorization. A compromised guest-zone device cannot reach the db-zone <em>regardless of valid credentials</em> — it would require an authenticated, posture-verified identity with an explicit inter-zone policy rule.</p>
-<p>Lateral movement — the most common post-breach technique — is detected by the GNN engine monitoring topology connections and the UEBA engine detecting behavioral deviation from the user’s established access patterns.</p>
-<h3 id="solution-5--40-layered-defense-modules"><a class="header" href="#solution-5--40-layered-defense-modules">Solution 5 — 40+ Layered Defense Modules</a></h3>
-<p><strong>Addresses:</strong> Scale and Complexity<br><strong>All modules</strong></p>
-<p>No single module handles all threats. The system operates a <strong>defense-in-depth composition</strong> where 40+ independent detection mechanisms overlap:</p>
-<pre><code>Packet → L2 Security → Fast-Path Drops → TI Lookup → IDS Signature Match →
-         DPI/WAF → AI Behavioral Score → DNS Security → IPS Response →
-         SIEM Logging → Forensics Chain → Metrics
+<h2 id="scenario-1-internet-facing-api-gateway-protection"><a class="header" href="#scenario-1-internet-facing-api-gateway-protection">Scenario 1: Internet-Facing API Gateway Protection</a></h2>
+<p><strong>Goal:</strong> Protect a public-facing API gateway (e.g., serving a mobile application) against volumetric attacks, SQL injection attempts, and automated credential stuffing.</p>
+<h3 id="key-modules-enabled"><a class="header" href="#key-modules-enabled">Key Modules Enabled</a></h3>
+<ul>
+<li><strong>Single-Pass DPI / WAF:</strong> Inspects incoming HTTP/HTTPS payloads for malicious patterns.</li>
+<li><strong>Adaptive Load Shedding:</strong> Automatically drops deep inspection for IPs conducting SYN/UDP floods, switching to fast O(1) hash drops.</li>
+<li><strong>Threat Intelligence (TI) Lookup:</strong> Rapidly rejects traffic from known botnets and anonymizing proxies.</li>
+<li><strong>SOAR Engine:</strong> Executes automated playbooks upon high-severity alerts.</li>
+</ul>
+<h3 id="configuration-snippet-rudrastoml"><a class="header" href="#configuration-snippet-rudrastoml">Configuration Snippet (<code>rudras.toml</code>)</a></h3>
+<pre><code class="language-toml">[mode]
+deployment = "server"
+
+[dpi]
+enabled = true
+inspect_ports = [80, 443, 8080]
+
+[adaptive_shedding]
+syn_flood_threshold_pps = 100
+udp_flood_threshold_pps = 1000
+fallback_to_hash_drops = true
+
+[soar]
+enable_auto_blocking = true
+block_duration_minutes = 60
 </code></pre>
-<p>Even if multiple intermediate layers produce false negatives, the statistical probability of all 40 layers simultaneously failing on the same attack is dramatically reduced.</p>
+<h3 id="operational-flow-soc-view"><a class="header" href="#operational-flow-soc-view">Operational Flow (SOC View)</a></h3>
+<ol>
+<li><strong>Attack Initiated:</strong> A botnet begins a high-volume credential stuffing attack.</li>
+<li><strong>Detection:</strong> The IDS/WAF detects excessive failed login patterns and SQLi signatures. Adaptive load shedding may kick in if volume exceeds the PPS threshold, preserving CPU.</li>
+<li><strong>Response:</strong> The SOAR engine automatically blocks the offending source IPs for 60 minutes.</li>
+<li><strong>SOC Dashboard:</strong> Analysts see a sudden spike in <code>ips_block</code> metrics and WAF violation alerts. The event is automatically forwarded to the SIEM with CEF formatting.</li>
+</ol>
 <hr>
-<h2 id="3-threat-model--attacker-personas"><a class="header" href="#3-threat-model--attacker-personas">3. Threat Model — Attacker Personas</a></h2>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Persona</th><th>Capability</th><th>Primary Attack Vector</th><th>Rudras Countermeasure</th></tr>
-</thead>
-<tbody>
-<tr><td><strong>Script Kiddie</strong></td><td>Low</td><td>Port scans, known exploit kits</td><td>IDS signature rules, rate limiting</td></tr>
-<tr><td><strong>Opportunistic Criminal</strong></td><td>Medium</td><td>Phishing C2, ransomware</td><td>C2 beacon detection, DNS blocking, SMB entropy analysis</td></tr>
-<tr><td><strong>Organized Crime</strong></td><td>High</td><td>APT-style multi-stage, credential stuffing</td><td>UEBA deviation, lateral movement GNN, SOAR playbooks</td></tr>
-<tr><td><strong>Nation-State APT</strong></td><td>Very High</td><td>Zero-day, supply chain, firmware implant</td><td>Behavioral AI (zero-day detection), SBOM verification, TPM attestation, formal policy verification</td></tr>
-<tr><td><strong>Insider Threat</strong></td><td>High (trusted access)</td><td>Data exfiltration, DLP bypass, tool abuse</td><td>UEBA behavioral baseline, DLP inspection, process monitor, forensics chain</td></tr>
-<tr><td><strong>Quantum-Capable Adversary</strong> (Future)</td><td>Extreme</td><td>Break RSA/ECC key exchange</td><td>Post-Quantum crypto module (NIST FIPS 203/204/205)</td></tr>
-</tbody>
-</table>
-</div>
+<h2 id="scenario-2-developer-endpoint-security-client-mode"><a class="header" href="#scenario-2-developer-endpoint-security-client-mode">Scenario 2: Developer Endpoint Security (Client Mode)</a></h2>
+<p><strong>Goal:</strong> Secure a developer’s corporate laptop without overwhelming them with false positives from legitimate development activities (like running local servers or compiling code).</p>
+<h3 id="key-modules-enabled-1"><a class="header" href="#key-modules-enabled-1">Key Modules Enabled</a></h3>
+<ul>
+<li><strong>Process Monitor:</strong> Detects the use of unauthorized sniffing or memory tampering tools (e.g., unauthorized Wireshark, Mimikatz).</li>
+<li><strong>DNS Security:</strong> Monitors and blocks queries to known command-and-control (C2) domains.</li>
+<li><strong>UEBA (User and Entity Behavior Analytics):</strong> Establishes a baseline for the developer’s normal network traffic and flags anomalous exfiltration.</li>
+</ul>
+<h3 id="configuration-snippet-rudrastoml-1"><a class="header" href="#configuration-snippet-rudrastoml-1">Configuration Snippet (<code>rudras.toml</code>)</a></h3>
+<pre><code class="language-toml">[mode]
+deployment = "client"
+
+[process_monitor]
+enabled = true
+scan_interval_sec = 10
+# Alert only; do not auto-kill developer tools unless explicitly blacklisted
+kill_mode = false
+
+[dns_security]
+block_c2_domains = true
+</code></pre>
+<h3 id="operational-flow-soc-view-1"><a class="header" href="#operational-flow-soc-view-1">Operational Flow (SOC View)</a></h3>
+<ol>
+<li><strong>Event:</strong> The developer accidentally runs a compromised npm package containing a reverse shell payload.</li>
+<li><strong>Detection:</strong> The payload attempts to resolve a C2 domain. The DNS Security module immediately intercepts and drops the query. Alternatively, if it uses a hardcoded IP, the UEBA engine flags the sudden outbound connection to an unknown IP as a significant behavioral deviation.</li>
+<li><strong>Response:</strong> The connection is blocked, and an alert is generated.</li>
+<li><strong>SOC Dashboard:</strong> The dashboard highlights an <code>Endpoint Security Alert</code> for the specific machine, allowing the SOC team to isolate the device and investigate the package.</li>
+</ol>
 <hr>
-<h2 id="4-defense-posture-by-deployment-mode"><a class="header" href="#4-defense-posture-by-deployment-mode">4. Defense Posture by Deployment Mode</a></h2>
-<h3 id="client-mode-endpointworkstation"><a class="header" href="#client-mode-endpointworkstation">Client Mode (Endpoint/Workstation)</a></h3>
-<p>Focus: <strong>60% outbound monitoring</strong></p>
+<h2 id="scenario-3-insider-threat--data-exfiltration"><a class="header" href="#scenario-3-insider-threat--data-exfiltration">Scenario 3: Insider Threat &amp; Data Exfiltration</a></h2>
+<p><strong>Goal:</strong> Detect and mitigate a compromised internal account attempting to steal sensitive data from a secure database zone.</p>
+<h3 id="key-modules-enabled-2"><a class="header" href="#key-modules-enabled-2">Key Modules Enabled</a></h3>
 <ul>
-<li>Monitor outbound C2 callbacks, malware stager downloads, data exfiltration</li>
-<li>DLP scanning on outbound payloads (API keys, credit card patterns)</li>
-<li>Process monitor for LOLBin abuse</li>
-<li>DNS security for C2 domain queries</li>
-<li>Conservative thresholds — minimize false positives on developer traffic</li>
+<li><strong>Zero Trust Micro-Segmentation:</strong> Enforces strict boundaries between the corporate zone and the database (DB) zone.</li>
+<li><strong>Data Loss Prevention (DLP):</strong> Scans outbound traffic for sensitive data patterns (e.g., credit card numbers, SSNs).</li>
+<li><strong>GNN Topology Analysis:</strong> Maps normal lateral movement and detects anomalous cross-zone connections.</li>
 </ul>
-<h3 id="server-mode-gatewayperimeter"><a class="header" href="#server-mode-gatewayperimeter">Server Mode (Gateway/Perimeter)</a></h3>
-<p>Focus: <strong>80% inbound monitoring</strong></p>
+<h3 id="configuration-snippet-rudrastoml-2"><a class="header" href="#configuration-snippet-rudrastoml-2">Configuration Snippet (<code>rudras.toml</code>)</a></h3>
+<pre><code class="language-toml">[zero_trust]
+zones = ["corporate", "db", "app", "guest"]
+strict_enforcement = true
+
+[dlp]
+enabled = true
+scan_outbound = true
+
+[ml_engine]
+ueba_deviation_threshold = 0.75
+</code></pre>
+<h3 id="operational-flow-soc-view-2"><a class="header" href="#operational-flow-soc-view-2">Operational Flow (SOC View)</a></h3>
+<ol>
+<li><strong>Event:</strong> A compromised corporate device attempts to directly access the database zone via SSH and bulk-download tables.</li>
+<li><strong>Detection:</strong>
 <ul>
-<li>Aggressive inbound inspection — every new connection is suspect</li>
-<li>Full WAF/DPI on all service ports (80, 443, 8080, etc.)</li>
-<li>Port scan detection, brute force detection, exploit signature matching</li>
-<li>Higher sensitivity thresholds — prefer blocking over allowing ambiguous traffic</li>
-<li>Micro-segmentation enforcement between server zones</li>
+<li><em>Layer 1:</em> Micro-segmentation policy immediately flags direct Corporate-to-DB traffic as unauthorized if no explicit exception exists.</li>
+<li><em>Layer 2:</em> If authorized, the UEBA engine detects that this user has never downloaded 5GB of data at 2 AM.</li>
+<li><em>Layer 3:</em> The DLP engine detects patterns resembling PII in the outbound stream.</li>
 </ul>
-<h3 id="auto-mode"><a class="header" href="#auto-mode">Auto Mode</a></h3>
-<ul>
-<li>Queries open listening ports via <code>netstat</code>-equivalent</li>
-<li>If public server ports found (80, 443, 3306, etc.) → Server Mode</li>
-<li>If no public ports found → Client Mode</li>
-<li>Can be overridden with <code>--mode client</code> or <code>--mode server</code> CLI flag</li>
-</ul>
+</li>
+<li><strong>Response:</strong> Rudras resets the TCP connection mid-stream and triggers a critical SIEM alert.</li>
+<li><strong>SOC Dashboard:</strong> A multi-layered incident is displayed showing policy violation, behavioral anomaly, and DLP trigger. A full forensic SHA3-256 log is captured for regulatory compliance reporting.</li>
+</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="vision_and_purpose.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="operational_runbooks.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="ARCHITECTURE_VISION.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="module_index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -280,11 +293,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="vision_and_purpose.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="operational_runbooks.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="ARCHITECTURE_VISION.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="module_index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

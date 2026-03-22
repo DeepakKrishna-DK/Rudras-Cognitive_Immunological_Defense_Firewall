@@ -99,6 +99,26 @@ tr:last-child td {
   border-bottom: none;
 }
 
+/* Fix alternating row background inherited from mdbook themes */
+tbody tr:nth-child(2n) {
+  background: transparent !important;
+}
+
+/* Fix visibility on light themes (white background) */
+html.light table, html.rust table {
+  background: var(--bg);
+  border: 1px solid var(--sidebar-bg);
+}
+html.light th, html.rust th {
+  background-color: var(--sidebar-bg);
+  color: var(--fg);
+  border-bottom: 1px solid var(--sidebar-bg);
+}
+html.light td, html.rust td {
+  color: var(--fg);
+  border-bottom: 1px solid var(--sidebar-bg);
+}
+
 /* Make codeblocks sleek */
 pre {
   background-color: #070a0f !important;
@@ -116,4 +136,63 @@ blockquote {
   border-bottom-right-radius: 6px;
   margin: 1.5em 0;
   padding: 1em 1.5em;
+}
+
+@media print {
+  @page { margin: 10mm; }
+  #sidebar { display: none !important; }
+  .nav-wrapper { display: none !important; }
+  .page-footer { display: none !important; }
+  a[href]:after { content: none !important; }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  table {
+    background: #fff !important;
+    border: 1px solid #000 !important;
+  }
+  th {
+    background-color: #eee !important;
+    color: #000 !important;
+  }
+  td {
+    color: #000 !important;
+    border-bottom: 1px solid #ccc !important;
+  }
+  
+  .page-break {
+    page-break-after: always;
+    break-after: page;
+  }
+  
+  .cover-container {
+    height: 90vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+  }
+  
+  .cover-image {
+    max-height: 80vh;
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
+
+/* Global Styles for Cover Image (Web view) */
+.cover-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2em;
+}
+
+.cover-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }

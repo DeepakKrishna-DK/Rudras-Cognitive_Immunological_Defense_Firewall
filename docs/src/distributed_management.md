@@ -1,4 +1,4 @@
-# 6. Control Plane and Distributed Management
+# 2.6 Control Plane and Distributed Management
 
 ---
 
@@ -180,7 +180,7 @@ When the control plane receives a critical IOC from an upstream threat feed, it 
   "event_type": "threat_broadcast",
   "data": {
     "ioc_type": "ip",
-    "value": "185.220.101.5",
+    "value": "[MALICIOUS_IP_CLASSIFIED]",
     "category": "TorExitNode",
     "confidence": 0.99,
     "source": "EmergingThreats",

@@ -1,4 +1,4 @@
-# 3.1 Intrusion and malware detection
+# 2.2 Intrusion and Malware Detection
 
 ---
 
@@ -10,7 +10,7 @@ This document provides a complete technical deep-dive into Rudras's signature-ba
 
 ## 1. Intrusion Detection System (IDS Engine)
 
-**Source File:** `src/ids_engine.rs`  
+**Module:** `Ids Engine Module`  
 **Category:** Real-time signature-based threat detection  
 **Performance:** < 0.5 ms per packet (99th percentile)
 
@@ -182,7 +182,7 @@ The IDS engine uses several optimizations to stay within the < 0.5 ms per-packet
 
 ## 2. Intrusion Prevention System (IPS Engine)
 
-**Source File:** `src/ips_engine.rs`  
+**Module:** `Ips Engine Module`  
 **Category:** Active response enforcement  
 **Latency:** < 2 ms from detection to block (WFP kernel rule registered)
 
@@ -201,9 +201,9 @@ The IPS engine implements three response modes:
 ```
 IDS CRITICAL severity  → IMMEDIATE BLOCK (RST + WFP)
 IDS HIGH severity      → QUARANTINE (rate limit + 30s observation, then block if repeats)
-AI deviation > 0.80    → IMMEDIATE BLOCK
-AI deviation 0.70-0.80 → QUARANTINE
-TI confidence > 0.90   → IMMEDIATE BLOCK
+AI deviation > [BLOCK_LIMIT]    → IMMEDIATE BLOCK
+AI deviation [QUARANTINE_RANGE] → QUARANTINE
+TI confidence > [AUTO_BLOCK_LIMIT]   → IMMEDIATE BLOCK
 TI confidence 0.70-0.90 → ALERT + monitor
 SYN flood detected     → SYN cookie mode + rate limit
 UDP flood detected     → Drop excess, alert
@@ -242,7 +242,7 @@ This demonstrates the IPS actively responding to real malicious traffic within s
 
 ## 3. Deep Packet Inspection (DPI Engine and WAF)
 
-**Source Files:** `src/dpi.rs`, `src/single_pass.rs`
+**Modules:** `Dpi Module`, `Single Pass Module`
 
 ### 3.1 What DPI Does
 
@@ -260,7 +260,7 @@ DPI examines the _payload content_ of packets, not just headers. This enables de
 | HTTP/1.1          | Full URL, headers, body                     | WAF logic here                    |
 | HTTP/2            | Header frames, DATA frames                  | Decompressed with hpack           |
 | HTTPS/TLS 1.2-1.3 | SNI, cipher suite, cert CN                  | No decryption — ETA metadata only |
-| QUIC/HTTP3        | Header inspection                           | quic_inspector.rs                 |
+| QUIC/HTTP3        | Header inspection                           | Quic Inspector Module                 |
 | DNS               | Query/response, domain, type                | DNS security here                 |
 | SMTP              | MAIL FROM/TO, Subject, MIME                 | Email security here               |
 | Modbus TCP        | Function code, register access              | OT security here                  |
@@ -301,7 +301,7 @@ DPI examines the _payload content_ of packets, not just headers. This enables de
 
 ### 3.4 Single-Pass Architecture
 
-`single_pass.rs` implements a unified L2-through-L7 inspection that traverses packet bytes exactly once. Traditional multi-pass inspection would:
+`Single Pass Module` implements a unified L2-through-L7 inspection that traverses packet bytes exactly once. Traditional multi-pass inspection would:
 
 1. Pass 1: Parse L2 header
 2. Pass 2: Parse L3 header
@@ -327,7 +327,7 @@ This eliminates redundant memory accesses and dramatically improves cache effici
 
 ## 4. Comprehensive Blocker
 
-**Source File:** `src/comprehensive_blocker.rs`  
+**Module:** `Comprehensive Blocker Module`  
 **Purpose:** Aggregation layer that combines all detection module signals into a final enforcement decision
 
 ### 4.1 Signal Aggregation Model
@@ -336,14 +336,14 @@ The comprehensive blocker receives signals from 8+ detection subsystems:
 
 ```
 Input signals:
-  - ti_score:        0.0-1.0  (from threat_intelligence.rs)
-  - ids_severity:    0-4      (from ids_engine.rs: 0=none, 1=low, 2=med, 3=high, 4=critical)
-  - ai_deviation:    0.0-1.0  (from ai_engine.rs)
-  - dns_blocked:     bool     (from dns_security.rs)
-  - gnn_anomaly:     0.0-1.0  (from gnn_engine.rs, topology deviation)
-  - ueba_score:      0.0-1.0  (from ueba_engine.rs, user behavior deviation)
-  - process_alert:   bool     (from process_monitor.rs)
-  - l2_anomaly:      bool     (from l2_engine.rs: ARP spoof, VLAN violation)
+  - ti_score:        0.0-1.0  (from Threat Intelligence Module)
+  - ids_severity:    0-4      (from Ids Engine Module: 0=none, 1=low, 2=med, 3=high, 4=critical)
+  - ai_deviation:    0.0-1.0  (from Ai Engine Module)
+  - dns_blocked:     bool     (from Dns Security Module)
+  - gnn_anomaly:     0.0-1.0  (from Gnn Engine Module, topology deviation)
+  - ueba_score:      0.0-1.0  (from Ueba Engine Module, user behavior deviation)
+  - process_alert:   bool     (from Process Monitor Module)
+  - l2_anomaly:      bool     (from L2 Engine Module: ARP spoof, VLAN violation)
 ```
 
 ### 4.2 Weighted Scoring Formula
@@ -363,7 +363,7 @@ Where:
   ids_normalized = ids_severity / 4.0
 
 Action:
-  block_score >= 0.80 → BLOCK
+  block_score >= [BLOCK_LIMIT] → BLOCK
   block_score >= 0.60 → QUARANTINE
   block_score >= 0.30 → ALERT
   block_score < 0.30  → ALLOW
@@ -371,7 +371,7 @@ Action:
 
 Certain conditions override the score formula (hard blocks):
 
-- `ti_score > 0.90` → BLOCK regardless of score
+- `ti_score > [AUTO_BLOCK_LIMIT]` → BLOCK regardless of score
 - `ids_severity == CRITICAL` → BLOCK regardless of score
 - IP is in the explict whitelist → ALLOW regardless of score
 
@@ -381,7 +381,7 @@ The blocker implements several strategies to reduce false positives:
 
 1. **Confirmation window for QUARANTINE:** An IP quarantined at block_score 0.60–0.79 is observed for 30 seconds. If no additional triggers arrive, it is promoted back to ALLOW.
 
-2. **Pattern diversity requirement for BLOCK:** A BLOCK decision based only on `ai_deviation` (without IDS or TI confirmation) requires deviation > 0.90 (not 0.80) to account for legitimate traffic spikes.
+2. **Pattern diversity requirement for BLOCK:** A BLOCK decision based only on `ai_deviation` (without IDS or TI confirmation) requires deviation > [AUTO_BLOCK_LIMIT] (not 0.80) to account for legitimate traffic spikes.
 
 3. **Burst allowance for known internal ranges:** The corporate internal CIDR ranges receive a 0.15 score reduction to account for expected higher traffic volumes.
 
@@ -391,7 +391,7 @@ The blocker implements several strategies to reduce false positives:
 
 ## 5. Framework Alignment Module
 
-**Source File:** `src/framework_alignment.rs`  
+**Module:** `Framework Alignment Module`  
 **Purpose:** Maps Rudras detections to industry compliance frameworks
 
 ### 5.1 Supported Frameworks
@@ -421,7 +421,7 @@ The blocker implements several strategies to reduce false positives:
 
 ### 5.3 Compliance Reporting
 
-The `framework_alignment.rs` module generates compliance event records that can be consumed by the `compliance_engine.rs` module (see Research Note 10: Research-Grade Modules) to produce automated GDPR/HIPAA/PCI-DSS compliance reports.
+The `Framework Alignment Module` module generates compliance event records that can be consumed by the `Compliance Engine Module` module (see Research Note 10: Research-Grade Modules) to produce automated GDPR/HIPAA/PCI-DSS compliance reports.
 
 Every IDS alert is tagged with:
 

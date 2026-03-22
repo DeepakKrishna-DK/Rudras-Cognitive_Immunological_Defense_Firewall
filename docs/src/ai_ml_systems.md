@@ -1,4 +1,4 @@
-# 3.2 AI and Machine Learning Systems
+# 2.3 AI and Machine Learning Systems
 
 ---
 
@@ -10,7 +10,7 @@ Rudras v4.0 implements a nine-module AI/ML stack covering four distinct learning
 
 ## 1. AI Engine — EMA Behavioral Baseline
 
-**Source File:** `src/ai_engine.rs`  
+**Module:** `Ai Engine Module`  
 **Paradigm:** Statistical / Time-series anomaly detection  
 **Learning Type:** Unsupervised, online (learns from live traffic)
 
@@ -49,7 +49,7 @@ $$EMA_t = \alpha \cdot X_t + (1-\alpha) \cdot EMA_{t-1}$$
 
 Where:
 
-- $\alpha$ = `ema_alpha` (default 0.3) — higher values mean more weight on recent observations
+- $\alpha$ = `ema_alpha` ([RESTRICTED_ALPHA]) — higher values mean more weight on recent observations
 - $X_t$ = current measured feature values
 - $EMA_{t-1}$ = previous EMA value
 
@@ -66,15 +66,15 @@ Where $\epsilon = 10^{-9}$ prevents division by zero. The deviation is computed 
 | Score Range | Action     | Example Trigger                   |
 | ----------- | ---------- | --------------------------------- |
 | 0.0–0.54    | ALLOW      | Normal traffic                    |
-| 0.55–0.69   | ALERT      | Slightly elevated connection rate |
-| 0.70–0.79   | QUARANTINE | Port scanning behavior            |
+| [ALERT_RANGE]   | ALERT      | Slightly elevated connection rate |
+| [QUARANTINE_RANGE]   | QUARANTINE | Port scanning behavior            |
 | 0.80+       | BLOCK      | Confirmed lateral movement, scan  |
 
 ---
 
 ## 2. CyberImmune Engine
 
-**Source File:** `src/cyber_immune.rs`  
+**Module:** `Cyber Immune Module`  
 **Paradigm:** Biological immune system metaphor  
 **Learning Type:** Unsupervised, pattern reinforcement
 
@@ -89,7 +89,7 @@ The CyberImmune module extends the AI engine's behavioral model using a biologic
 
 ### 2.2 Auto-Generated Detection Rules
 
-When the AI engine confirms a block decision (score > 0.80), the CyberImmune module extracts the behavioral pattern that triggered it and creates an "antibody":
+When the AI engine confirms a block decision (score > [BLOCK_LIMIT]), the CyberImmune module extracts the behavioral pattern that triggered it and creates an "antibody":
 
 ```
 New antibody from event at 2026-03-08T10:45:23+05:30:
@@ -119,13 +119,13 @@ This handles threat actors who:
 
 ## 3. Advanced ML Engine
 
-**Source File:** `src/advanced_ml.rs`  
+**Module:** `Advanced Ml Module`  
 **Paradigm:** Multi-model ensemble anomaly detection  
 **Models:** Isolation Forest + Autoencoder + Statistical baseline
 
 ### 3.1 Ensemble Architecture
 
-Rather than relying on a single ML model, `advanced_ml.rs` runs three complementary models and takes a weighted vote:
+Rather than relying on a single ML model, `Advanced Ml Module` runs three complementary models and takes a weighted vote:
 
 | Model                    | Anomaly Type Detected                             | False Positive Rate |
 | ------------------------ | ------------------------------------------------- | ------------------- |
@@ -183,7 +183,7 @@ The ensemble is more robust than any single model because:
 
 ## 4. Advanced Security Engine
 
-**Source File:** `src/advanced_security.rs`  
+**Module:** `Advanced Security Module`  
 **Paradigm:** Multi-dimensional threat correlation  
 **Purpose:** Correlates signals across time and across multiple detection dimensions
 
@@ -211,7 +211,7 @@ The advanced security engine also correlates anomalies across protocols from the
 
 ## 5. Federated Learning Engine
 
-**Source File:** `src/federated_learning.rs`  
+**Module:** `Federated Learning Module`  
 **Paradigm:** Privacy-preserving distributed ML  
 **Status:** Production-ready, requires swarm peer network
 
@@ -222,7 +222,7 @@ Different Rudras nodes see different network traffic. Node A (at HQ) sees execut
 ### 5.2 How It Works
 
 1. Each node trains a local model update on its observed traffic
-2. The model update (gradient deltas, not raw traffic) is cryptographically aggregated with the Homomorphic Sharing module (`homomorphic_sharing.rs`) so no individual node's data is exposed
+2. The model update (gradient deltas, not raw traffic) is cryptographically aggregated with the Homomorphic Sharing module (`Homomorphic Sharing Module`) so no individual node's data is exposed
 3. The aggregated model update is broadcast to all peer nodes
 4. Each node applies the aggregated update to improve its local model
 
@@ -238,7 +238,7 @@ This is an implementation of the **FedAvg algorithm** (McMahan et al., 2017) wit
 
 ## 6. Graph Neural Network (GNN) Engine
 
-**Source File:** `src/gnn_engine.rs`  
+**Module:** `Gnn Engine Module`  
 **Paradigm:** Graph-theoretic anomaly detection  
 **Specialization:** Lateral movement, topology attacks, infrastructure anomalies
 
@@ -286,7 +286,7 @@ When GNN detects a high-anomaly-score node, it reports the central node IP to th
 
 ## 7. Encrypted Traffic Analysis (ETA) Engine
 
-**Source File:** `src/eta_engine.rs`  
+**Module:** `Eta Engine Module`  
 **Paradigm:** Traffic fingerprinting without decryption  
 **Privacy:** No payload decryption — operates solely on TLS metadata
 
@@ -333,7 +333,7 @@ JA4 (a newer, more collision-resistant algorithm) is also supported for future-p
 
 ## 8. Network DPI ML Engine
 
-**Source File:** `src/network_dpi_ml.rs`  
+**Module:** `Network Dpi Ml Module`  
 **Paradigm:** ML-assisted protocol classification  
 **Purpose:** Identifies protocols and applications from traffic patterns when headers are obfuscated
 
@@ -370,7 +370,7 @@ These features are fed to a random forest classifier trained to distinguish:
 
 ## 9. Reinforcement Learning Policy Engine
 
-**Source File:** `src/rl_policy.rs`  
+**Module:** `Rl Policy Module`  
 **Paradigm:** Reinforcement Learning  
 **Purpose:** Continuous optimization of detection thresholds based on operational feedback
 

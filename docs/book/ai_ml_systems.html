@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>3.2 AI and Machine Learning Systems - Rudras: The Firewall in Practice</title>
+        <title>2.3 AI and Machine Learning Systems - Rudras: The Firewall in Practice</title>
 
 
         <!-- Custom HTML head -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-4130de7f.css">
+        <link rel="stylesheet" href="custom-3f90df81.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "ayu";
-            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+            window.path_to_searchindex_js = "searchindex-08390e6f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-3594adab.js"></script>
+        <script src="toc-4ff6b2b6.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,13 +175,13 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="32-ai-and-machine-learning-systems"><a class="header" href="#32-ai-and-machine-learning-systems">3.2 AI and Machine Learning Systems</a></h1>
+                        <h1 id="23-ai-and-machine-learning-systems"><a class="header" href="#23-ai-and-machine-learning-systems">2.3 AI and Machine Learning Systems</a></h1>
 <hr>
 <h2 id="abstract"><a class="header" href="#abstract">Abstract</a></h2>
 <p>Rudras v4.0 implements a nine-module AI/ML stack covering four distinct learning paradigms: behavioral baseline modeling (EMA/statistical), ensemble anomaly detection (isolation forest, autoencoder), graph-theoretic topology analysis (GNN), and reinforcement learning for adaptive threshold optimization. No module requires pre-labeled training data — all are fully unsupervised, learning from the live traffic stream. This document provides a complete technical reference for each module.</p>
 <hr>
 <h2 id="1-ai-engine--ema-behavioral-baseline"><a class="header" href="#1-ai-engine--ema-behavioral-baseline">1. AI Engine — EMA Behavioral Baseline</a></h2>
-<p><strong>Source File:</strong> <code>src/ai_engine.rs</code><br><strong>Paradigm:</strong> Statistical / Time-series anomaly detection<br><strong>Learning Type:</strong> Unsupervised, online (learns from live traffic)</p>
+<p><strong>Module:</strong> <code>Ai Engine Module</code><br><strong>Paradigm:</strong> Statistical / Time-series anomaly detection<br><strong>Learning Type:</strong> Unsupervised, online (learns from live traffic)</p>
 <h3 id="11-design-philosophy"><a class="header" href="#11-design-philosophy">1.1 Design Philosophy</a></h3>
 <p>The AI engine is inspired by the biological immune system’s concept of “self” vs. “non-self”. Every host on the network has a unique behavioral fingerprint — its normal operating pattern. The AI engine captures this fingerprint on first contact and tracks deviations from it. When a host’s behavior diverges significantly from its established fingerprint, a threat is presumed.</p>
 <h3 id="12-feature-vector"><a class="header" href="#12-feature-vector">1.2 Feature Vector</a></h3>
@@ -213,7 +213,7 @@
 <p>$$EMA_t = \alpha \cdot X_t + (1-\alpha) \cdot EMA_{t-1}$$</p>
 <p>Where:</p>
 <ul>
-<li>$\alpha$ = <code>ema_alpha</code> (default 0.3) — higher values mean more weight on recent observations</li>
+<li>$\alpha$ = <code>ema_alpha</code> ([RESTRICTED_ALPHA]) — higher values mean more weight on recent observations</li>
 <li>$X_t$ = current measured feature values</li>
 <li>$EMA_{t-1}$ = previous EMA value</li>
 </ul>
@@ -229,15 +229,15 @@
 </thead>
 <tbody>
 <tr><td>0.0–0.54</td><td>ALLOW</td><td>Normal traffic</td></tr>
-<tr><td>0.55–0.69</td><td>ALERT</td><td>Slightly elevated connection rate</td></tr>
-<tr><td>0.70–0.79</td><td>QUARANTINE</td><td>Port scanning behavior</td></tr>
+<tr><td>[ALERT_RANGE]</td><td>ALERT</td><td>Slightly elevated connection rate</td></tr>
+<tr><td>[QUARANTINE_RANGE]</td><td>QUARANTINE</td><td>Port scanning behavior</td></tr>
 <tr><td>0.80+</td><td>BLOCK</td><td>Confirmed lateral movement, scan</td></tr>
 </tbody>
 </table>
 </div>
 <hr>
 <h2 id="2-cyberimmune-engine"><a class="header" href="#2-cyberimmune-engine">2. CyberImmune Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/cyber_immune.rs</code><br><strong>Paradigm:</strong> Biological immune system metaphor<br><strong>Learning Type:</strong> Unsupervised, pattern reinforcement</p>
+<p><strong>Module:</strong> <code>Cyber Immune Module</code><br><strong>Paradigm:</strong> Biological immune system metaphor<br><strong>Learning Type:</strong> Unsupervised, pattern reinforcement</p>
 <h3 id="21-the-biological-metaphor"><a class="header" href="#21-the-biological-metaphor">2.1 The Biological Metaphor</a></h3>
 <p>The CyberImmune module extends the AI engine’s behavioral model using a biological immunity metaphor:</p>
 <ul>
@@ -247,7 +247,7 @@
 <li><strong>Vaccination:</strong> When a new threat is confirmed, an “antibody” (rule) is auto-generated and distributed via swarm gossip to all peer nodes</li>
 </ul>
 <h3 id="22-auto-generated-detection-rules"><a class="header" href="#22-auto-generated-detection-rules">2.2 Auto-Generated Detection Rules</a></h3>
-<p>When the AI engine confirms a block decision (score &gt; 0.80), the CyberImmune module extracts the behavioral pattern that triggered it and creates an “antibody”:</p>
+<p>When the AI engine confirms a block decision (score &gt; [BLOCK_LIMIT]), the CyberImmune module extracts the behavioral pattern that triggered it and creates an “antibody”:</p>
 <pre><code>New antibody from event at 2026-03-08T10:45:23+05:30:
   pattern: {
     syn_rate_spike: &gt; 150/sec,
@@ -269,9 +269,9 @@
 </ul>
 <hr>
 <h2 id="3-advanced-ml-engine"><a class="header" href="#3-advanced-ml-engine">3. Advanced ML Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/advanced_ml.rs</code><br><strong>Paradigm:</strong> Multi-model ensemble anomaly detection<br><strong>Models:</strong> Isolation Forest + Autoencoder + Statistical baseline</p>
+<p><strong>Module:</strong> <code>Advanced Ml Module</code><br><strong>Paradigm:</strong> Multi-model ensemble anomaly detection<br><strong>Models:</strong> Isolation Forest + Autoencoder + Statistical baseline</p>
 <h3 id="31-ensemble-architecture"><a class="header" href="#31-ensemble-architecture">3.1 Ensemble Architecture</a></h3>
-<p>Rather than relying on a single ML model, <code>advanced_ml.rs</code> runs three complementary models and takes a weighted vote:</p>
+<p>Rather than relying on a single ML model, <code>Advanced Ml Module</code> runs three complementary models and takes a weighted vote:</p>
 <div class="table-wrapper">
 <table>
 <thead>
@@ -317,7 +317,7 @@ If final_score &gt; 0.75 → escalate to comprehensive_blocker
 </ul>
 <hr>
 <h2 id="4-advanced-security-engine"><a class="header" href="#4-advanced-security-engine">4. Advanced Security Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/advanced_security.rs</code><br><strong>Paradigm:</strong> Multi-dimensional threat correlation<br><strong>Purpose:</strong> Correlates signals across time and across multiple detection dimensions</p>
+<p><strong>Module:</strong> <code>Advanced Security Module</code><br><strong>Paradigm:</strong> Multi-dimensional threat correlation<br><strong>Purpose:</strong> Correlates signals across time and across multiple detection dimensions</p>
 <h3 id="41-temporal-correlation"><a class="header" href="#41-temporal-correlation">4.1 Temporal Correlation</a></h3>
 <p>A single anomalous packet, in isolation, is low confidence. The advanced security engine tracks anomalous events across a sliding time window (configurable, default 5 minutes) for each source IP. If multiple independent anomaly signals arise from the same IP within the window, the correlation score escalates — this is a much higher-confidence threat indicator.</p>
 <pre><code>Correlation example:
@@ -334,13 +334,13 @@ Correlation result at T+3:00:
 <p>The advanced security engine also correlates anomalies across protocols from the same source IP. An IP that causes both HTTP WAF alerts and DNS-layer C2 pattern alerts is treated as dramatically higher confidence than either signal alone — because the likelihood of a legitimate user accidentally triggering anomalous behavior on two independent protocol layers simultaneously is extremely low.</p>
 <hr>
 <h2 id="5-federated-learning-engine"><a class="header" href="#5-federated-learning-engine">5. Federated Learning Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/federated_learning.rs</code><br><strong>Paradigm:</strong> Privacy-preserving distributed ML<br><strong>Status:</strong> Production-ready, requires swarm peer network</p>
+<p><strong>Module:</strong> <code>Federated Learning Module</code><br><strong>Paradigm:</strong> Privacy-preserving distributed ML<br><strong>Status:</strong> Production-ready, requires swarm peer network</p>
 <h3 id="51-the-federated-learning-problem"><a class="header" href="#51-the-federated-learning-problem">5.1 The Federated Learning Problem</a></h3>
 <p>Different Rudras nodes see different network traffic. Node A (at HQ) sees executive email and finance traffic. Node B (at datacenter) sees API server and database traffic. Each builds behavioral baselines specific to its traffic. Federated learning allows sharing <em>what each node has learned</em> without sharing the raw network traffic that could expose private data.</p>
 <h3 id="52-how-it-works"><a class="header" href="#52-how-it-works">5.2 How It Works</a></h3>
 <ol>
 <li>Each node trains a local model update on its observed traffic</li>
-<li>The model update (gradient deltas, not raw traffic) is cryptographically aggregated with the Homomorphic Sharing module (<code>homomorphic_sharing.rs</code>) so no individual node’s data is exposed</li>
+<li>The model update (gradient deltas, not raw traffic) is cryptographically aggregated with the Homomorphic Sharing module (<code>Homomorphic Sharing Module</code>) so no individual node’s data is exposed</li>
 <li>The aggregated model update is broadcast to all peer nodes</li>
 <li>Each node applies the aggregated update to improve its local model</li>
 </ol>
@@ -353,7 +353,7 @@ Correlation result at T+3:00:
 </ul>
 <hr>
 <h2 id="6-graph-neural-network-gnn-engine"><a class="header" href="#6-graph-neural-network-gnn-engine">6. Graph Neural Network (GNN) Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/gnn_engine.rs</code><br><strong>Paradigm:</strong> Graph-theoretic anomaly detection<br><strong>Specialization:</strong> Lateral movement, topology attacks, infrastructure anomalies</p>
+<p><strong>Module:</strong> <code>Gnn Engine Module</code><br><strong>Paradigm:</strong> Graph-theoretic anomaly detection<br><strong>Specialization:</strong> Lateral movement, topology attacks, infrastructure anomalies</p>
 <h3 id="61-why-graphs-for-network-security"><a class="header" href="#61-why-graphs-for-network-security">6.1 Why Graphs for Network Security?</a></h3>
 <p>A network is fundamentally a graph: nodes are IP addresses, edges are connections. Attackers performing lateral movement create unusual graph patterns:</p>
 <ul>
@@ -388,7 +388,7 @@ Correlation result at T+3:00:
 <p>When GNN detects a high-anomaly-score node, it reports the central node IP to the comprehensive blocker with enrichment data about which connections are anomalous.</p>
 <hr>
 <h2 id="7-encrypted-traffic-analysis-eta-engine"><a class="header" href="#7-encrypted-traffic-analysis-eta-engine">7. Encrypted Traffic Analysis (ETA) Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/eta_engine.rs</code><br><strong>Paradigm:</strong> Traffic fingerprinting without decryption<br><strong>Privacy:</strong> No payload decryption — operates solely on TLS metadata</p>
+<p><strong>Module:</strong> <code>Eta Engine Module</code><br><strong>Paradigm:</strong> Traffic fingerprinting without decryption<br><strong>Privacy:</strong> No payload decryption — operates solely on TLS metadata</p>
 <h3 id="71-the-tls-inspection-problem"><a class="header" href="#71-the-tls-inspection-problem">7.1 The TLS Inspection Problem</a></h3>
 <p>Modern enterprise traffic is 90%+ encrypted (TLS 1.3). Traditional deep packet inspection cannot inspect encrypted payloads without a TLS interception proxy (man-in-the-middle), which:</p>
 <ul>
@@ -426,7 +426,7 @@ Correlation result at T+3:00:
 <p>JA4 (a newer, more collision-resistant algorithm) is also supported for future-proofing.</p>
 <hr>
 <h2 id="8-network-dpi-ml-engine"><a class="header" href="#8-network-dpi-ml-engine">8. Network DPI ML Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/network_dpi_ml.rs</code><br><strong>Paradigm:</strong> ML-assisted protocol classification<br><strong>Purpose:</strong> Identifies protocols and applications from traffic patterns when headers are obfuscated</p>
+<p><strong>Module:</strong> <code>Network Dpi Ml Module</code><br><strong>Paradigm:</strong> ML-assisted protocol classification<br><strong>Purpose:</strong> Identifies protocols and applications from traffic patterns when headers are obfuscated</p>
 <h3 id="81-when-headers-lie"><a class="header" href="#81-when-headers-lie">8.1 When Headers Lie</a></h3>
 <p>Sophisticated attackers tunnel malicious traffic over legitimate-looking protocols:</p>
 <ul>
@@ -455,7 +455,7 @@ Correlation result at T+3:00:
 </ul>
 <hr>
 <h2 id="9-reinforcement-learning-policy-engine"><a class="header" href="#9-reinforcement-learning-policy-engine">9. Reinforcement Learning Policy Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/rl_policy.rs</code><br><strong>Paradigm:</strong> Reinforcement Learning<br><strong>Purpose:</strong> Continuous optimization of detection thresholds based on operational feedback</p>
+<p><strong>Module:</strong> <code>Rl Policy Module</code><br><strong>Paradigm:</strong> Reinforcement Learning<br><strong>Purpose:</strong> Continuous optimization of detection thresholds based on operational feedback</p>
 <h3 id="91-the-threshold-optimization-problem"><a class="header" href="#91-the-threshold-optimization-problem">9.1 The Threshold Optimization Problem</a></h3>
 <p>IDS/IPS thresholds are not universal. A development network with engineers doing port scans of test servers should have different <code>syn_flood_threshold</code> values than a production trading system where any unusual connection is suspect. The RL policy engine learns the optimal thresholds for the specific deployment environment from feedback.</p>
 <h3 id="92-rl-problem-formulation"><a class="header" href="#92-rl-problem-formulation">9.2 RL Problem Formulation</a></h3>

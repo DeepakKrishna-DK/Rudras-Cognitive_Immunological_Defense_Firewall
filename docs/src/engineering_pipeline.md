@@ -1,4 +1,4 @@
-# 7. Transparent Development Model
+# 4.1 Transparent Development Model
 
 ---
 
@@ -8,15 +8,15 @@ Every packet flowing through Rudras passes through the following 10-stage pipeli
 
 ### Stage 0: NIC → Kernel Interface
 
-**Module:** Npcap driver (external), `capture.rs`
+**Module:** Npcap driver (external), `Capture Module`
 
-The packet arrives at the NIC and is copied into Npcap's ring buffer in the kernel. The `capture.rs` module owns a PCAP handle opened in promiscuous mode. It sits in a tight loop calling `pcap_next_ex()` and pushing raw bytes into a Tokio `mpsc` channel for processing.
+The packet arrives at the NIC and is copied into Npcap's ring buffer in the kernel. The `Capture Module` module owns a PCAP handle opened in promiscuous mode. It sits in a tight loop calling `pcap_next_ex()` and pushing raw bytes into a Tokio `mpsc` channel for processing.
 
 **Engineering Rule:** Never block the capture loop. Any packet processing that takes > 1ms must be offloaded to a worker thread via channel. The capture loop blocking means backpressure on the ring buffer, which means packet drops.
 
 ### Stage 1: L2 Parsing and Security
 
-**Module:** `l2_engine.rs`
+**Module:** `L2 Engine Module`
 
 The raw bytes are parsed as an Ethernet frame. L2 engine extracts:
 
@@ -29,7 +29,7 @@ The raw bytes are parsed as an Ethernet frame. L2 engine extracts:
 
 ### Stage 2: IP/Transport Parsing
 
-**Module:** `flow_engine.rs`, `stateful.rs`
+**Module:** `Flow Engine Module`, `Stateful Module`
 
 The IP header is parsed for src IP, dst IP, protocol (TCP/UDP/ICMP/etc.). The `flow_engine` creates or updates a `FlowRecord` keyed by the 5-tuple: `(src_ip, dst_ip, src_port, dst_port, protocol)`.
 
@@ -37,7 +37,7 @@ The `stateful` module enforces TCP state machine transitions. A packet arriving 
 
 ### Stage 3: Fast-Path Block Check
 
-**Module:** `threat_intelligence.rs`, `wfp_engine.rs`
+**Module:** `Threat Intelligence Module`, `Wfp Engine Module`
 
 Before any expensive analysis, the source IP is checked against a `RwLock<HashSet<IpAddr>>` (in-memory blocklist). This is an O(1) hash lookup. If the IP matches, the packet is immediately dropped and a counter incremented. This stage handles the millions of already-known-bad IPs without burning CPU on analysis.
 
@@ -45,9 +45,9 @@ Before any expensive analysis, the source IP is checked against a `RwLock<HashSe
 
 ### Stage 4: Deep Packet Inspection
 
-**Module:** `dpi.rs`, `single_pass.rs`
+**Module:** `Dpi Module`, `Single Pass Module`
 
-The payload bytes are inspected for protocol-specific content. `single_pass.rs` ensures this is done in a single traversal through the packet bytes rather than multiple passes.
+The payload bytes are inspected for protocol-specific content. `Single Pass Module` ensures this is done in a single traversal through the packet bytes rather than multiple passes.
 
 DPI inspects:
 
@@ -60,7 +60,7 @@ DPI inspects:
 
 ### Stage 5: AI Behavioral Analysis
 
-**Module:** `ai_engine.rs`, `cyber_immune.rs`, `advanced_ml.rs`, `ueba_engine.rs`
+**Module:** `Ai Engine Module`, `Cyber Immune Module`, `Advanced Ml Module`, `Ueba Engine Module`
 
 For each source IP, the AI engine maintains running statistics:
 
@@ -76,7 +76,7 @@ The deviation score is computed against the immutable baseline established durin
 
 ### Stage 6: IDS Signature Matching
 
-**Module:** `ids_engine.rs`
+**Module:** `Ids Engine Module`
 
 The packet metadata (parsed headers, protocol, DPI results, flow statistics) is matched against the IDS rule set.
 
@@ -95,7 +95,7 @@ Each rule produces an alert with:
 
 ### Stage 7: Threat Intelligence Enrichment
 
-**Module:** `threat_intelligence.rs`, `threat_rules_engine.rs`, `threat_hunt.rs`
+**Module:** `Threat Intelligence Module`, `Threat Rules Engine Module`, `Threat Hunt Module`
 
 The source IP and queried domain are cross-referenced against:
 
@@ -114,7 +114,7 @@ RULE: c2_callback_confirmed
 
 ### Stage 8: Comprehensive Block Decision
 
-**Module:** `comprehensive_blocker.rs`
+**Module:** `Comprehensive Blocker Module`
 
 All signals are aggregated into a final action decision:
 
@@ -122,16 +122,16 @@ All signals are aggregated into a final action decision:
 | ------------------------- | ------------------------------- |
 | TI hit (confidence > 0.9) | BLOCK immediately               |
 | IDS CRITICAL alert        | BLOCK immediately               |
-| AI deviation > 0.80       | BLOCK                           |
+| AI deviation > [BLOCK_LIMIT]       | BLOCK                           |
 | IDS HIGH alert            | QUARANTINE (rate-limit + alert) |
-| AI deviation 0.55–0.80    | ALERT (log + increment metric)  |
+| AI deviation [SUSPICIOUS_RANGE]    | ALERT (log + increment metric)  |
 | All clean                 | ALLOW                           |
 
 The block decision honors a whitelist from the policy config — whitelisted IPs are never blocked regardless of signals (use carefully, document every entry).
 
 ### Stage 9: IPS Enforcement
 
-**Module:** `ips_engine.rs`, `wfp_engine.rs`
+**Module:** `Ips Engine Module`, `Wfp Engine Module`
 
 If the decision is BLOCK:
 
@@ -143,7 +143,7 @@ If the decision is BLOCK:
 
 ### Stage 10: Observability
 
-**Module:** `metrics.rs`, `siem_integration.rs`, `forensics_chain.rs`
+**Module:** `Metrics Module`, `Siem Integration Module`, `Forensics Chain Module`
 
 Every packet decision (ALLOW, ALERT, QUARANTINE, BLOCK) is recorded:
 
@@ -158,7 +158,7 @@ Every packet decision (ALLOW, ALERT, QUARANTINE, BLOCK) is recorded:
 
 ### Rule 1: Never Block the Capture Loop
 
-The `capture.rs` capture thread must process packets at wire speed. Any analysis taking more than ~100 microseconds must be dispatched to a worker thread. Blocking the capture thread causes ring buffer overflow and packet drops.
+The `Capture Module` capture thread must process packets at wire speed. Any analysis taking more than ~100 microseconds must be dispatched to a worker thread. Blocking the capture thread causes ring buffer overflow and packet drops.
 
 ### Rule 2: Always Use RwLock for Shared Read-Heavy Data
 
@@ -180,11 +180,11 @@ There is no "silent drop" in Rudras. Every block, every quarantine, every alert,
 
 ### Rule 5: No `unsafe` Outside the WFP/Npcap Interface
 
-The only acceptable `unsafe` code is in `wfp_engine.rs` (Windows Filtering Platform FFI) and `npcap_forensic.rs` (Npcap C library FFI). All other modules must be safe Rust. If you think you need `unsafe` for a performance reason, profile first — the Rust optimizer is usually able to match the `unsafe` version.
+The only acceptable `unsafe` code is in `Wfp Engine Module` (Windows Filtering Platform FFI) and `Npcap Forensic Module` (Npcap C library FFI). All other modules must be safe Rust. If you think you need `unsafe` for a performance reason, profile first — the Rust optimizer is usually able to match the `unsafe` version.
 
 ### Rule 6: Configuration Changes Must Be Backward Compatible
 
-The `config.rs` deserialization uses `serde` with `#[serde(default)]` on all optional fields. Adding a new config field must provide a sensible default so that existing config files work without modification after upgrade.
+The `Config Module` deserialization uses `serde` with `#[serde(default)]` on all optional fields. Adding a new config field must provide a sensible default so that existing config files work without modification after upgrade.
 
 ### Rule 7: Test With Real Traffic, Not Just Unit Tests
 
@@ -204,7 +204,7 @@ To add a new detection module to Rudras:
 1. **Create the module file** in `src/`
 
    ```rust
-   // src/my_detection.rs
+   // My Detection Module
    pub struct MyDetection { /* config fields */ }
 
    impl MyDetection {
@@ -213,7 +213,7 @@ To add a new detection module to Rudras:
    }
    ```
 
-2. **Add config struct** to `config.rs`
+2. **Add config struct** to `Config Module`
 
    ```rust
    #[derive(Deserialize, Default)]
@@ -232,7 +232,7 @@ To add a new detection module to Rudras:
    # ... other parameters
    ```
 
-4. **Initialize in `main.rs`**
+4. **Initialize in `Main Module`**
 
    ```rust
    let my_detection = MyDetection::new(&config.my_detection);
@@ -240,9 +240,9 @@ To add a new detection module to Rudras:
 
 5. **Wire into pipeline** — call `my_detection.analyze(packet)` in the appropriate pipeline stage (usually Stage 5 or 6)
 
-6. **Add metrics** — add a counter in `metrics.rs` for your detection events
+6. **Add metrics** — add a counter in `Metrics Module` for your detection events
 
-7. **Add to `comprehensive_blocker.rs`** — integrate your alert signal into the block decision logic
+7. **Add to `Comprehensive Blocker Module`** — integrate your alert signal into the block decision logic
 
 8. **Write tests** — add to `src/tests/` and ensure the Testing/ corpus passes
 

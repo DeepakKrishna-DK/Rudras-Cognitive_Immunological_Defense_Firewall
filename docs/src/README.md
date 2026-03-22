@@ -1,4 +1,12 @@
-# Rudras: The Cognitive Firewall in Practice
+<!-- markdownlint-disable MD033 -->
+
+# Rudras: The Firewall in Practice
+
+<div class="cover-container">
+    <img src="assets/main.jpeg" alt="Rudras Platform Cover" class="cover-image" />
+</div>
+
+<div class="page-break"></div>
 
 **Comprehensive IT security and flexibly expandable immunological defense.**
 
@@ -17,7 +25,7 @@ Rudras operates via a decentralized swarm intelligence model that continuously u
 ### The advantages of Rudras at a glance
 
 - **Completely memory-safe** architecture written strictly in Rust
-- **Zero-Day anomaly detection** leveraging an Immutable Behavioral Baseline via `cyber_immune.rs`
+- **Zero-Day anomaly detection** leveraging an Immutable Behavioral Baseline via `Cyber Immune Module`
 - **Zero Trust Process Verification** ensuring host OS administrators cannot subvert the firewall from the inside
 - **Real-time Observability** securely exported via structured JSON logs, a Next.js SOC Dashboard, and CEF-format SIEM events
 - **Hardware-accelerated DPI shedding** to survive volumetric cryptographic DoS attacks
@@ -39,7 +47,7 @@ Unlike traditional firewalls, Rudras utilizes Adaptive Isolation Forests to reco
 
 ### Threat Intelligence & Deception
 
-Server-side malicious detection provides an additional layer of protection. Rudras implements a Global Threat Knowledge System that polls OSINT feeds and a Deception Network (`deception_network.rs`) orchestrating honeypot traps and honeytoken injections to actively deceive scanning adversaries.
+Server-side malicious detection provides an additional layer of protection. Rudras implements a Global Threat Knowledge System that polls OSINT feeds and a Deception Network (`Deception Network Module`) orchestrating honeypot traps and honeytoken injections to actively deceive scanning adversaries.
 
 ---
 

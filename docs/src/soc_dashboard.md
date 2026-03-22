@@ -1,4 +1,4 @@
-# 5.2 Observability and SOC Dashboard
+# 3.3 Observability and SOC Dashboard
 
 ---
 
@@ -30,7 +30,7 @@ Structured JSON logs represent each event as a JSON object:
   "level": "WARN",
   "target": "rudras::ips_engine",
   "event": "ips_block",
-  "src_ip": "185.220.101.5",
+  "src_ip": "[MALICIOUS_IP_CLASSIFIED]",
   "dst_ip": "10.10.20.50",
   "src_port": 49152,
   "dst_port": 443,
@@ -56,7 +56,7 @@ This format enables:
 
 All Rudras logs display timestamps in Indian Standard Time (IST, UTC+5:30). This was implemented in v4.0 by replacing the default `tracing-subscriber` UTC timer with a `ChronoLocal` timer.
 
-Implementation in `src/main.rs`:
+Implementation in `Main Module`:
 
 ```rust
 use tracing_subscriber::fmt::time::ChronoLocal;
@@ -137,7 +137,7 @@ Recommended levels by deployment:
 
 ## 2. Prometheus Metrics Server
 
-**Source File:** `src/metrics.rs`  
+**Module:** `Metrics Module`  
 **Protocol:** Prometheus text format (OpenMetrics compatible)  
 **Endpoint:** `http://127.0.0.1:9091/metrics`  
 **Authentication:** Ephemeral token via `X-Rudras-Auth` header
@@ -349,7 +349,7 @@ Rudras's SOC dashboard was carefully designed to avoid hydration errors:
 
 ## 4. SIEM Integration (Observability Output)
 
-**Source File:** `src/siem_integration.rs`  
+**Module:** `Siem Integration Module`  
 **Purpose:** Real-time security event streaming to external SIEM/SOAR platforms
 
 ### 4.1 CEF Format Events
@@ -383,7 +383,7 @@ By default, CEF events are sent via UDP syslog to the configured SIEM endpoint. 
 
 ## 5. Forensics Chain (Audit Trail)
 
-**Source File:** `src/forensics_chain.rs`  
+**Module:** `Forensics Chain Module`  
 **Purpose:** Tamper-evident cryptographic audit trail for all security decisions
 
 ### 5.1 Chain Structure
@@ -405,7 +405,7 @@ The forensics chain creates an append-only linked list of security events where 
     "timestamp": "2026-03-08T10:45:23.124578+05:30",
     "event_type": "ips_block",
     "data": {
-      "src_ip": "185.220.101.5",
+      "src_ip": "[MALICIOUS_IP_CLASSIFIED]",
       "dst_ip": "10.10.20.50",
       "reason": "ids_critical"
     },

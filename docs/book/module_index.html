@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>8.1 Complete Module Index - Rudras: The Firewall in Practice</title>
+        <title>3.6 Complete Module Index - Rudras: The Firewall in Practice</title>
 
 
         <!-- Custom HTML head -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-4130de7f.css">
+        <link rel="stylesheet" href="custom-3f90df81.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "ayu";
-            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+            window.path_to_searchindex_js = "searchindex-08390e6f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-3594adab.js"></script>
+        <script src="toc-4ff6b2b6.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,7 +175,7 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="81-complete-module-index"><a class="header" href="#81-complete-module-index">8.1 Complete Module Index</a></h1>
+                        <h1 id="36-complete-module-index"><a class="header" href="#36-complete-module-index">3.6 Complete Module Index</a></h1>
 <hr>
 <h2 id="abstract"><a class="header" href="#abstract">Abstract</a></h2>
 <p>This document is the definitive cross-reference index for all modules in the Rudras v4.0 source tree. It catalogs all 67 <code>src/*.rs</code> files with their purpose, key exported items, configuration keys, pipeline stage, and inter-module dependency relationships. Use this document as a map when:</p>
@@ -193,43 +193,43 @@
 <tr><th>#</th><th>File</th><th>Category</th><th>One-Line Purpose</th><th>Key Exports</th></tr>
 </thead>
 <tbody>
-<tr><td>1</td><td><code>main.rs</code></td><td>Entry Point</td><td>Program entry, init orchestration, tokio runtime</td><td><code>main()</code></td></tr>
-<tr><td>2</td><td><code>config.rs</code></td><td>Configuration</td><td>TOML config loading, validation, hot-reload</td><td><code>RudrasConfig</code>, <code>load_config()</code>, <code>ConfigWatcher</code></td></tr>
-<tr><td>3</td><td><code>capture.rs</code></td><td>Traffic Capture</td><td>Npcap packet capture, ring buffer, BPF pre-filter</td><td><code>PacketCapture</code>, <code>CaptureConfig</code>, <code>RawPacket</code></td></tr>
-<tr><td>4</td><td><code>flow_engine.rs</code></td><td>Stateful Tracking</td><td>TCP/UDP flow table, session reassembly</td><td><code>FlowEngine</code>, <code>FlowRecord</code>, <code>FlowKey</code></td></tr>
-<tr><td>5</td><td><code>stateful.rs</code></td><td>Stateful Inspection</td><td>Deep stateful packet inspection (SPI)</td><td><code>StatefulInspector</code>, <code>ConnectionState</code></td></tr>
-<tr><td>6</td><td><code>dpi.rs</code></td><td>Deep Inspection</td><td>L7 protocol dissection, WAF pattern matching</td><td><code>DpiEngine</code>, <code>L7Protocol</code>, <code>WafResult</code></td></tr>
-<tr><td>7</td><td><code>ids_engine.rs</code></td><td>Detection</td><td>Signature + behavioral IDS, 85 rules</td><td><code>IdsEngine</code>, <code>IdsRule</code>, <code>IdsAlert</code></td></tr>
-<tr><td>8</td><td><code>ips_engine.rs</code></td><td>Prevention</td><td>IPS action execution, RST injection, WFP block</td><td><code>IpsEngine</code>, <code>IpsDecision</code>, <code>IpsAction</code></td></tr>
-<tr><td>9</td><td><code>threat_intelligence.rs</code></td><td>Intelligence</td><td>Blocklist management, Bloom filter lookup</td><td><code>ThreatIntelligence</code>, <code>TiHit</code>, <code>IocEntry</code></td></tr>
-<tr><td>10</td><td><code>ai_engine.rs</code></td><td>AI/ML</td><td>EMA baseline anomaly detection, deviation scoring</td><td><code>AiEngine</code>, <code>BehaviorProfile</code>, <code>DeviationScore</code></td></tr>
-<tr><td>11</td><td><code>advanced_ml.rs</code></td><td>AI/ML</td><td>Ensemble ML (Isolation Forest, Autoencoder, etc.)</td><td><code>AdvancedMlEngine</code>, <code>AnomalyScore</code></td></tr>
-<tr><td>12</td><td><code>advanced_security.rs</code></td><td>AI/ML</td><td>Multi-source correlation, threat scoring</td><td><code>AdvancedSecurityEngine</code>, <code>CorrelatedAlert</code></td></tr>
-<tr><td>13</td><td><code>cyber_immune.rs</code></td><td>AI/ML</td><td>Biological immune metaphor detection</td><td><code>CyberImmuneSystem</code>, <code>ImmuneResponse</code></td></tr>
-<tr><td>14</td><td><code>distributed_immunity.rs</code></td><td>Swarm</td><td>Gossip protocol, inter-node intelligence sharing</td><td><code>DistributedImmunity</code>, <code>SwarmMessage</code>, <code>GossipPeer</code></td></tr>
-<tr><td>15</td><td><code>policy.rs</code></td><td>Policy</td><td>Rule evaluation engine, policy composition</td><td><code>PolicyEngine</code>, <code>PolicyRule</code>, <code>PolicyDecision</code></td></tr>
-<tr><td>16</td><td><code>zero_trust.rs</code></td><td>Enterprise</td><td>Zero-trust trust score, continuous verification</td><td><code>ZeroTrustEngine</code>, <code>TrustScore</code>, <code>TrustVerification</code></td></tr>
-<tr><td>17</td><td><code>identity_policy.rs</code></td><td>Enterprise</td><td>JWT/mTLS/Kerberos auth, RBAC</td><td><code>IdentityPolicy</code>, <code>Identity</code>, <code>AuthResult</code></td></tr>
-<tr><td>18</td><td><code>micro_segmentation.rs</code></td><td>Enterprise</td><td>Network zone enforcement, segment policy</td><td><code>MicroSegmentation</code>, <code>Zone</code>, <code>SegmentPolicy</code></td></tr>
-<tr><td>19</td><td><code>endpoint_security.rs</code></td><td>Enterprise</td><td>Endpoint posture, agent comms, EDR integration</td><td><code>EndpointSecurity</code>, <code>PostureScore</code>, <code>EndpointAgent</code></td></tr>
-<tr><td>20</td><td><code>attribution_scoring.rs</code></td><td>Enterprise</td><td>TTP-based threat actor attribution</td><td><code>AttributionEngine</code>, <code>TtpMatch</code>, <code>ActorProfile</code></td></tr>
-<tr><td>21</td><td><code>siem_integration.rs</code></td><td>Observability</td><td>CEF/LEEF event streaming to SIEM</td><td><code>SiemIntegration</code>, <code>SiemEvent</code>, <code>CefRecord</code></td></tr>
-<tr><td>22</td><td><code>metrics.rs</code></td><td>Observability</td><td>Prometheus metrics server, counters, auth</td><td><code>MetricsServer</code>, <code>Counters</code>, <code>AuthToken</code></td></tr>
-<tr><td>23</td><td><code>wfp_engine.rs</code></td><td>Enforcement</td><td>Windows Filtering Platform kernel block rules</td><td><code>WfpEngine</code>, <code>WfpRule</code>, <code>WfpCallout</code></td></tr>
-<tr><td>24</td><td><code>windivert_engine.rs</code></td><td>Enforcement</td><td>WinDivert packet intercept, modification</td><td><code>WinDivertEngine</code>, <code>DivertedPacket</code></td></tr>
-<tr><td>25</td><td><code>npcap_forensic.rs</code></td><td>Forensics</td><td>Forensic PCAP capture, chain of custody</td><td><code>NpcapForensic</code>, <code>ForensicCapture</code>, <code>CustodyRecord</code></td></tr>
-<tr><td>26</td><td><code>l2_engine.rs</code></td><td>L2 Security</td><td>ARP/MAC/VLAN enforcement, 802.11 analysis</td><td><code>L2Engine</code>, <code>ArpRecord</code>, <code>VlanPolicy</code></td></tr>
-<tr><td>27</td><td><code>gateway_mode.rs</code></td><td>Deployment</td><td>Gateway/router mode, route management</td><td><code>GatewayMode</code>, <code>RouteEntry</code></td></tr>
-<tr><td>28</td><td><code>sdwan.rs</code></td><td>Deployment</td><td>SD-WAN path selection, WAN policy</td><td><code>SdWan</code>, <code>WanPath</code>, <code>PathMetrics</code></td></tr>
-<tr><td>29</td><td><code>cloud_native.rs</code></td><td>Deployment</td><td>K8s/Docker integration, CNI enforcement</td><td><code>CloudNative</code>, <code>ContainerPolicy</code></td></tr>
-<tr><td>30</td><td><code>mode_profiles.rs</code></td><td>Deployment</td><td>Operational mode presets (stealth, aggressive, etc.)</td><td><code>ModeProfile</code>, <code>ProfileSettings</code></td></tr>
-<tr><td>31</td><td><code>single_pass.rs</code></td><td>Performance</td><td>Single-pass packet inspection pipeline</td><td><code>SinglePassPipeline</code>, <code>InspectionResult</code></td></tr>
-<tr><td>32</td><td><code>hardware_accel.rs</code></td><td>Performance</td><td>DPDK/hardware offload integration</td><td><code>HardwareAccel</code>, <code>OffloadCapability</code></td></tr>
-<tr><td>33</td><td><code>framework_alignment.rs</code></td><td>Compliance</td><td>MITRE ATT&amp;CK, NIST, CIS mapping</td><td><code>FrameworkAlignment</code>, <code>MitreMapping</code></td></tr>
-<tr><td>34</td><td><code>process_monitor.rs</code></td><td>Endpoint</td><td>Sysmon/WinAPI process creation monitoring</td><td><code>ProcessMonitor</code>, <code>ProcessEvent</code></td></tr>
-<tr><td>35</td><td><code>comprehensive_blocker.rs</code></td><td>Detection</td><td>Multi-signal weighted block scoring</td><td><code>ComprehensiveBlocker</code>, <code>BlockScore</code></td></tr>
-<tr><td>36</td><td><code>policy.rs</code></td><td>Policy</td><td>See #15</td><td></td></tr>
-<tr><td>37</td><td><code>sdwan.rs</code></td><td>See #28</td><td></td><td></td></tr>
+<tr><td>1</td><td><code>Main Module</code></td><td>Entry Point</td><td>Program entry, init orchestration, tokio runtime</td><td><code>main()</code></td></tr>
+<tr><td>2</td><td><code>Config Module</code></td><td>Configuration</td><td>TOML config loading, validation, hot-reload</td><td><code>RudrasConfig</code>, <code>load_config()</code>, <code>ConfigWatcher</code></td></tr>
+<tr><td>3</td><td><code>Capture Module</code></td><td>Traffic Capture</td><td>Npcap packet capture, ring buffer, BPF pre-filter</td><td><code>PacketCapture</code>, <code>CaptureConfig</code>, <code>RawPacket</code></td></tr>
+<tr><td>4</td><td><code>Flow Engine Module</code></td><td>Stateful Tracking</td><td>TCP/UDP flow table, session reassembly</td><td><code>FlowEngine</code>, <code>FlowRecord</code>, <code>FlowKey</code></td></tr>
+<tr><td>5</td><td><code>Stateful Module</code></td><td>Stateful Inspection</td><td>Deep stateful packet inspection (SPI)</td><td><code>StatefulInspector</code>, <code>ConnectionState</code></td></tr>
+<tr><td>6</td><td><code>Dpi Module</code></td><td>Deep Inspection</td><td>L7 protocol dissection, WAF pattern matching</td><td><code>DpiEngine</code>, <code>L7Protocol</code>, <code>WafResult</code></td></tr>
+<tr><td>7</td><td><code>Ids Engine Module</code></td><td>Detection</td><td>Signature + behavioral IDS, 85 rules</td><td><code>IdsEngine</code>, <code>IdsRule</code>, <code>IdsAlert</code></td></tr>
+<tr><td>8</td><td><code>Ips Engine Module</code></td><td>Prevention</td><td>IPS action execution, RST injection, WFP block</td><td><code>IpsEngine</code>, <code>IpsDecision</code>, <code>IpsAction</code></td></tr>
+<tr><td>9</td><td><code>Threat Intelligence Module</code></td><td>Intelligence</td><td>Blocklist management, Bloom filter lookup</td><td><code>ThreatIntelligence</code>, <code>TiHit</code>, <code>IocEntry</code></td></tr>
+<tr><td>10</td><td><code>Ai Engine Module</code></td><td>AI/ML</td><td>EMA baseline anomaly detection, deviation scoring</td><td><code>AiEngine</code>, <code>BehaviorProfile</code>, <code>DeviationScore</code></td></tr>
+<tr><td>11</td><td><code>Advanced Ml Module</code></td><td>AI/ML</td><td>Ensemble ML (Isolation Forest, Autoencoder, etc.)</td><td><code>AdvancedMlEngine</code>, <code>AnomalyScore</code></td></tr>
+<tr><td>12</td><td><code>Advanced Security Module</code></td><td>AI/ML</td><td>Multi-source correlation, threat scoring</td><td><code>AdvancedSecurityEngine</code>, <code>CorrelatedAlert</code></td></tr>
+<tr><td>13</td><td><code>Cyber Immune Module</code></td><td>AI/ML</td><td>Biological immune metaphor detection</td><td><code>CyberImmuneSystem</code>, <code>ImmuneResponse</code></td></tr>
+<tr><td>14</td><td><code>Distributed Immunity Module</code></td><td>Swarm</td><td>Gossip protocol, inter-node intelligence sharing</td><td><code>DistributedImmunity</code>, <code>SwarmMessage</code>, <code>GossipPeer</code></td></tr>
+<tr><td>15</td><td><code>Policy Module</code></td><td>Policy</td><td>Rule evaluation engine, policy composition</td><td><code>PolicyEngine</code>, <code>PolicyRule</code>, <code>PolicyDecision</code></td></tr>
+<tr><td>16</td><td><code>Zero Trust Module</code></td><td>Enterprise</td><td>Zero-trust trust score, continuous verification</td><td><code>ZeroTrustEngine</code>, <code>TrustScore</code>, <code>TrustVerification</code></td></tr>
+<tr><td>17</td><td><code>Identity Policy Module</code></td><td>Enterprise</td><td>JWT/mTLS/Kerberos auth, RBAC</td><td><code>IdentityPolicy</code>, <code>Identity</code>, <code>AuthResult</code></td></tr>
+<tr><td>18</td><td><code>Micro Segmentation Module</code></td><td>Enterprise</td><td>Network zone enforcement, segment policy</td><td><code>MicroSegmentation</code>, <code>Zone</code>, <code>SegmentPolicy</code></td></tr>
+<tr><td>19</td><td><code>Endpoint Security Module</code></td><td>Enterprise</td><td>Endpoint posture, agent comms, EDR integration</td><td><code>EndpointSecurity</code>, <code>PostureScore</code>, <code>EndpointAgent</code></td></tr>
+<tr><td>20</td><td><code>Attribution Scoring Module</code></td><td>Enterprise</td><td>TTP-based threat actor attribution</td><td><code>AttributionEngine</code>, <code>TtpMatch</code>, <code>ActorProfile</code></td></tr>
+<tr><td>21</td><td><code>Siem Integration Module</code></td><td>Observability</td><td>CEF/LEEF event streaming to SIEM</td><td><code>SiemIntegration</code>, <code>SiemEvent</code>, <code>CefRecord</code></td></tr>
+<tr><td>22</td><td><code>Metrics Module</code></td><td>Observability</td><td>Prometheus metrics server, counters, auth</td><td><code>MetricsServer</code>, <code>Counters</code>, <code>AuthToken</code></td></tr>
+<tr><td>23</td><td><code>Wfp Engine Module</code></td><td>Enforcement</td><td>Windows Filtering Platform kernel block rules</td><td><code>WfpEngine</code>, <code>WfpRule</code>, <code>WfpCallout</code></td></tr>
+<tr><td>24</td><td><code>Windivert Engine Module</code></td><td>Enforcement</td><td>WinDivert packet intercept, modification</td><td><code>WinDivertEngine</code>, <code>DivertedPacket</code></td></tr>
+<tr><td>25</td><td><code>Npcap Forensic Module</code></td><td>Forensics</td><td>Forensic PCAP capture, chain of custody</td><td><code>NpcapForensic</code>, <code>ForensicCapture</code>, <code>CustodyRecord</code></td></tr>
+<tr><td>26</td><td><code>L2 Engine Module</code></td><td>L2 Security</td><td>ARP/MAC/VLAN enforcement, 802.11 analysis</td><td><code>L2Engine</code>, <code>ArpRecord</code>, <code>VlanPolicy</code></td></tr>
+<tr><td>27</td><td><code>Gateway Mode Module</code></td><td>Deployment</td><td>Gateway/router mode, route management</td><td><code>GatewayMode</code>, <code>RouteEntry</code></td></tr>
+<tr><td>28</td><td><code>Sdwan Module</code></td><td>Deployment</td><td>SD-WAN path selection, WAN policy</td><td><code>SdWan</code>, <code>WanPath</code>, <code>PathMetrics</code></td></tr>
+<tr><td>29</td><td><code>Cloud Native Module</code></td><td>Deployment</td><td>K8s/Docker integration, CNI enforcement</td><td><code>CloudNative</code>, <code>ContainerPolicy</code></td></tr>
+<tr><td>30</td><td><code>Mode Profiles Module</code></td><td>Deployment</td><td>Operational mode presets (stealth, aggressive, etc.)</td><td><code>ModeProfile</code>, <code>ProfileSettings</code></td></tr>
+<tr><td>31</td><td><code>Single Pass Module</code></td><td>Performance</td><td>Single-pass packet inspection pipeline</td><td><code>SinglePassPipeline</code>, <code>InspectionResult</code></td></tr>
+<tr><td>32</td><td><code>Hardware Accel Module</code></td><td>Performance</td><td>DPDK/hardware offload integration</td><td><code>HardwareAccel</code>, <code>OffloadCapability</code></td></tr>
+<tr><td>33</td><td><code>Framework Alignment Module</code></td><td>Compliance</td><td>MITRE ATT&amp;CK, NIST, CIS mapping</td><td><code>FrameworkAlignment</code>, <code>MitreMapping</code></td></tr>
+<tr><td>34</td><td><code>Process Monitor Module</code></td><td>Endpoint</td><td>Sysmon/WinAPI process creation monitoring</td><td><code>ProcessMonitor</code>, <code>ProcessEvent</code></td></tr>
+<tr><td>35</td><td><code>Comprehensive Blocker Module</code></td><td>Detection</td><td>Multi-signal weighted block scoring</td><td><code>ComprehensiveBlocker</code>, <code>BlockScore</code></td></tr>
+<tr><td>36</td><td><code>Policy Module</code></td><td>Policy</td><td>See #15</td><td></td></tr>
+<tr><td>37</td><td><code>Sdwan Module</code></td><td>See #28</td><td></td><td></td></tr>
 </tbody>
 </table>
 </div>
@@ -241,52 +241,52 @@
 <p>This table shows when each module is called in the 10-stage packet processing pipeline.</p>
 <h3 id="stage-0--pre-filter-capture"><a class="header" href="#stage-0--pre-filter-capture">Stage 0 — Pre-Filter (Capture)</a></h3>
 <p>Module called before the packet enters the main pipeline. Runs in the capture thread.</p>
-<pre><code>capture.rs          → BPF kernel pre-filter (drops irrelevant traffic never to enter Rust)
+<pre><code>Capture Module          → BPF kernel pre-filter (drops irrelevant traffic never to enter Rust)
 </code></pre>
 <h3 id="stage-1--packet-arrival-l2l3-parsing"><a class="header" href="#stage-1--packet-arrival-l2l3-parsing">Stage 1 — Packet Arrival (L2/L3 Parsing)</a></h3>
 <p>First stage in the Tokio async pipeline. Parses raw bytes into structured data.</p>
-<pre><code>l2_engine.rs        → Ethernet frame parsing, ARP check
-capture.rs          → Packet dispatch to pipeline
+<pre><code>L2 Engine Module        → Ethernet frame parsing, ARP check
+Capture Module          → Packet dispatch to pipeline
 </code></pre>
 <h3 id="stage-2--identity-verification"><a class="header" href="#stage-2--identity-verification">Stage 2 — Identity Verification</a></h3>
-<pre><code>identity_policy.rs  → JWT/mTLS header extraction (HTTP/TLS flows)
-zero_trust.rs       → Trust score evaluation for source identity
+<pre><code>Identity Policy Module  → JWT/mTLS header extraction (HTTP/TLS flows)
+Zero Trust Module       → Trust score evaluation for source identity
 </code></pre>
 <h3 id="stage-3--flow-tracking"><a class="header" href="#stage-3--flow-tracking">Stage 3 — Flow Tracking</a></h3>
-<pre><code>flow_engine.rs      → Flow lookup or creation, sequence/ack tracking
-stateful.rs         → TCP state machine update, connection validation
+<pre><code>Flow Engine Module      → Flow lookup or creation, sequence/ack tracking
+Stateful Module         → TCP state machine update, connection validation
 </code></pre>
 <h3 id="stage-4--threat-intelligence-lookup"><a class="header" href="#stage-4--threat-intelligence-lookup">Stage 4 — Threat Intelligence Lookup</a></h3>
 <p>Fast O(1) Bloom filter + hash map lookup. If blocked, skip all further stages.</p>
-<pre><code>threat_intelligence.rs  → IP blocklist check
-dpi.rs                  → Quick hostname extraction for DNS block check
+<pre><code>Threat Intelligence Module  → IP blocklist check
+Dpi Module                  → Quick hostname extraction for DNS block check
 </code></pre>
 <h3 id="stage-5--deep-packet-inspection"><a class="header" href="#stage-5--deep-packet-inspection">Stage 5 — Deep Packet Inspection</a></h3>
-<pre><code>dpi.rs              → L7 protocol identification, WAF payload scan
-ids_engine.rs       → Signature rule matching against payload
-gateway_mode.rs     → (In gateway mode) inter-VLAN routing decision
+<pre><code>Dpi Module              → L7 protocol identification, WAF payload scan
+Ids Engine Module       → Signature rule matching against payload
+Gateway Mode Module     → (In gateway mode) inter-VLAN routing decision
 </code></pre>
 <h3 id="stage-6--behavioral-analysis"><a class="header" href="#stage-6--behavioral-analysis">Stage 6 — Behavioral Analysis</a></h3>
-<pre><code>ai_engine.rs        → EMA baseline update, deviation calculation
-advanced_ml.rs      → (If enabled) Isolation Forest / Autoencoder scoring
-cyber_immune.rs     → (If enabled) Immune system response check
+<pre><code>Ai Engine Module        → EMA baseline update, deviation calculation
+Advanced Ml Module      → (If enabled) Isolation Forest / Autoencoder scoring
+Cyber Immune Module     → (If enabled) Immune system response check
 </code></pre>
 <h3 id="stage-7--policy-evaluation"><a class="header" href="#stage-7--policy-evaluation">Stage 7 — Policy Evaluation</a></h3>
-<pre><code>policy.rs           → Rule evaluation, allow/deny/limit decision
-micro_segmentation.rs  → Zone transition validation
-zero_trust.rs       → Final trust check before allowing
+<pre><code>Policy Module           → Rule evaluation, allow/deny/limit decision
+Micro Segmentation Module  → Zone transition validation
+Zero Trust Module       → Final trust check before allowing
 </code></pre>
 <h3 id="stage-8--action-execution"><a class="header" href="#stage-8--action-execution">Stage 8 — Action Execution</a></h3>
-<pre><code>ips_engine.rs           → Select action (block, reset, alert, rate_limit)
-wfp_engine.rs           → Install WFP kernel-level block rule
-windivert_engine.rs     → (If WinDivert mode) Drop or modify packet
-comprehensive_blocker.rs → Multi-signal block decision
+<pre><code>Ips Engine Module           → Select action (block, reset, alert, rate_limit)
+Wfp Engine Module           → Install WFP kernel-level block rule
+Windivert Engine Module     → (If WinDivert mode) Drop or modify packet
+Comprehensive Blocker Module → Multi-signal block decision
 </code></pre>
 <h3 id="stage-9--telemetry"><a class="header" href="#stage-9--telemetry">Stage 9 — Telemetry</a></h3>
-<pre><code>metrics.rs              → Increment Prometheus counters
-siem_integration.rs     → Emit CEF syslog event
-distributed_immunity.rs → (If swarm) Gossip alert to peers
-npcap_forensic.rs       → (If forensic mode active) Append to forensic PCAP
+<pre><code>Metrics Module              → Increment Prometheus counters
+Siem Integration Module     → Emit CEF syslog event
+Distributed Immunity Module → (If swarm) Gossip alert to peers
+Npcap Forensic Module       → (If forensic mode active) Append to forensic PCAP
 </code></pre>
 <hr>
 <h2 id="3-configuration-key--module-mapping"><a class="header" href="#3-configuration-key--module-mapping">3. Configuration Key → Module Mapping</a></h2>
@@ -297,43 +297,43 @@ npcap_forensic.rs       → (If forensic mode active) Append to forensic PCAP
 <tr><th>TOML Section/Key</th><th>Owning Module</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code>[ids]</code></td><td><code>ids_engine.rs</code></td><td>IDS rule configuration</td></tr>
-<tr><td><code>ids.enabled</code></td><td><code>ids_engine.rs</code></td><td>Master IDS on/off</td></tr>
-<tr><td><code>ids.alert_only</code></td><td><code>ids_engine.rs</code></td><td>Detect but don’t block</td></tr>
-<tr><td><code>ids.rules_path</code></td><td><code>ids_engine.rs</code></td><td>Custom rules directory</td></tr>
-<tr><td><code>[ips]</code></td><td><code>ips_engine.rs</code></td><td>IPS action thresholds</td></tr>
-<tr><td><code>ips.enabled</code></td><td><code>ips_engine.rs</code></td><td>Master IPS on/off</td></tr>
-<tr><td><code>ips.block_duration_secs</code></td><td><code>ips_engine.rs</code></td><td>Duration of IP bans</td></tr>
-<tr><td><code>ips.inject_rst</code></td><td><code>ips_engine.rs</code></td><td>TCP RST injection</td></tr>
-<tr><td><code>[dpi]</code></td><td><code>dpi.rs</code></td><td>DPI/WAF configuration</td></tr>
-<tr><td><code>dpi.waf_enabled</code></td><td><code>dpi.rs</code></td><td>Web application firewall</td></tr>
-<tr><td><code>dpi.patterns_path</code></td><td><code>dpi.rs</code></td><td>Attack pattern library path</td></tr>
-<tr><td><code>[ai]</code></td><td><code>ai_engine.rs</code></td><td>Behavioral baseline ML</td></tr>
-<tr><td><code>ai.ema_alpha</code></td><td><code>ai_engine.rs</code></td><td>EMA smoothing factor</td></tr>
-<tr><td><code>ai.suspicious_threshold</code></td><td><code>ai_engine.rs</code></td><td>Deviation alert threshold</td></tr>
-<tr><td><code>ai.block_threshold</code></td><td><code>ai_engine.rs</code></td><td>Deviation block threshold</td></tr>
-<tr><td><code>[threat_intel]</code></td><td><code>threat_intelligence.rs</code></td><td>TI feed config</td></tr>
-<tr><td><code>threat_intel.global_iocs_path</code></td><td><code>threat_intelligence.rs</code></td><td>IOC JSON feed</td></tr>
-<tr><td><code>threat_intel.malicious_domains_path</code></td><td><code>threat_intelligence.rs</code></td><td>Domain blocklist</td></tr>
-<tr><td><code>[zero_trust]</code></td><td><code>zero_trust.rs</code></td><td>ZT policy</td></tr>
-<tr><td><code>[micro_segmentation]</code></td><td><code>micro_segmentation.rs</code></td><td>Zone definitions</td></tr>
-<tr><td><code>[identity]</code></td><td><code>identity_policy.rs</code></td><td>Auth configuration</td></tr>
-<tr><td><code>[siem]</code></td><td><code>siem_integration.rs</code></td><td>SIEM endpoint</td></tr>
-<tr><td><code>siem.endpoint</code></td><td><code>siem_integration.rs</code></td><td>Syslog server address</td></tr>
-<tr><td><code>siem.format</code></td><td><code>siem_integration.rs</code></td><td>CEF/LEEF/JSON/Splunk</td></tr>
-<tr><td><code>[metrics]</code></td><td><code>metrics.rs</code></td><td>Metrics server config</td></tr>
-<tr><td><code>metrics.port</code></td><td><code>metrics.rs</code></td><td>Listen port (default 9091)</td></tr>
-<tr><td><code>metrics.auth_token_validity_mins</code></td><td><code>metrics.rs</code></td><td>Token rotation interval</td></tr>
-<tr><td><code>[capture]</code></td><td><code>capture.rs</code></td><td>NIC and capture config</td></tr>
-<tr><td><code>capture.interface</code></td><td><code>capture.rs</code></td><td>Network interface name</td></tr>
-<tr><td><code>capture.promiscuous</code></td><td><code>capture.rs</code></td><td>Promiscuous mode</td></tr>
-<tr><td><code>capture.ring_buffer_mb</code></td><td><code>capture.rs</code></td><td>Ring buffer size</td></tr>
-<tr><td><code>[l2]</code></td><td><code>l2_engine.rs</code></td><td>L2 security settings</td></tr>
-<tr><td><code>[swarm]</code></td><td><code>distributed_immunity.rs</code></td><td>Peer mesh config</td></tr>
-<tr><td><code>swarm.peers</code></td><td><code>distributed_immunity.rs</code></td><td>Peer addresses</td></tr>
-<tr><td><code>[gateway]</code></td><td><code>gateway_mode.rs</code></td><td>Gateway mode settings</td></tr>
-<tr><td><code>[performance]</code></td><td><code>single_pass.rs</code>, <code>hardware_accel.rs</code></td><td>Tuning</td></tr>
-<tr><td><code>[logging]</code></td><td><code>main.rs</code></td><td>Log level, format, path</td></tr>
+<tr><td><code>[ids]</code></td><td><code>Ids Engine Module</code></td><td>IDS rule configuration</td></tr>
+<tr><td><code>ids.enabled</code></td><td><code>Ids Engine Module</code></td><td>Master IDS on/off</td></tr>
+<tr><td><code>ids.alert_only</code></td><td><code>Ids Engine Module</code></td><td>Detect but don’t block</td></tr>
+<tr><td><code>ids.rules_path</code></td><td><code>Ids Engine Module</code></td><td>Custom rules directory</td></tr>
+<tr><td><code>[ips]</code></td><td><code>Ips Engine Module</code></td><td>IPS action thresholds</td></tr>
+<tr><td><code>ips.enabled</code></td><td><code>Ips Engine Module</code></td><td>Master IPS on/off</td></tr>
+<tr><td><code>ips.block_duration_secs</code></td><td><code>Ips Engine Module</code></td><td>Duration of IP bans</td></tr>
+<tr><td><code>ips.inject_rst</code></td><td><code>Ips Engine Module</code></td><td>TCP RST injection</td></tr>
+<tr><td><code>[dpi]</code></td><td><code>Dpi Module</code></td><td>DPI/WAF configuration</td></tr>
+<tr><td><code>dpi.waf_enabled</code></td><td><code>Dpi Module</code></td><td>Web application firewall</td></tr>
+<tr><td><code>dpi.patterns_path</code></td><td><code>Dpi Module</code></td><td>Attack pattern library path</td></tr>
+<tr><td><code>[ai]</code></td><td><code>Ai Engine Module</code></td><td>Behavioral baseline ML</td></tr>
+<tr><td><code>ai.ema_alpha</code></td><td><code>Ai Engine Module</code></td><td>EMA smoothing factor</td></tr>
+<tr><td><code>ai.suspicious_threshold</code></td><td><code>Ai Engine Module</code></td><td>Deviation alert threshold</td></tr>
+<tr><td><code>ai.block_threshold</code></td><td><code>Ai Engine Module</code></td><td>Deviation block threshold</td></tr>
+<tr><td><code>[threat_intel]</code></td><td><code>Threat Intelligence Module</code></td><td>TI feed config</td></tr>
+<tr><td><code>threat_intel.global_iocs_path</code></td><td><code>Threat Intelligence Module</code></td><td>IOC JSON feed</td></tr>
+<tr><td><code>threat_intel.malicious_domains_path</code></td><td><code>Threat Intelligence Module</code></td><td>Domain blocklist</td></tr>
+<tr><td><code>[zero_trust]</code></td><td><code>Zero Trust Module</code></td><td>ZT policy</td></tr>
+<tr><td><code>[micro_segmentation]</code></td><td><code>Micro Segmentation Module</code></td><td>Zone definitions</td></tr>
+<tr><td><code>[identity]</code></td><td><code>Identity Policy Module</code></td><td>Auth configuration</td></tr>
+<tr><td><code>[siem]</code></td><td><code>Siem Integration Module</code></td><td>SIEM endpoint</td></tr>
+<tr><td><code>siem.endpoint</code></td><td><code>Siem Integration Module</code></td><td>Syslog server address</td></tr>
+<tr><td><code>siem.format</code></td><td><code>Siem Integration Module</code></td><td>CEF/LEEF/JSON/Splunk</td></tr>
+<tr><td><code>[metrics]</code></td><td><code>Metrics Module</code></td><td>Metrics server config</td></tr>
+<tr><td><code>metrics.port</code></td><td><code>Metrics Module</code></td><td>Listen port (default 9091)</td></tr>
+<tr><td><code>metrics.auth_token_validity_mins</code></td><td><code>Metrics Module</code></td><td>Token rotation interval</td></tr>
+<tr><td><code>[capture]</code></td><td><code>Capture Module</code></td><td>NIC and capture config</td></tr>
+<tr><td><code>capture.interface</code></td><td><code>Capture Module</code></td><td>Network interface name</td></tr>
+<tr><td><code>capture.promiscuous</code></td><td><code>Capture Module</code></td><td>Promiscuous mode</td></tr>
+<tr><td><code>capture.ring_buffer_mb</code></td><td><code>Capture Module</code></td><td>Ring buffer size</td></tr>
+<tr><td><code>[l2]</code></td><td><code>L2 Engine Module</code></td><td>L2 security settings</td></tr>
+<tr><td><code>[swarm]</code></td><td><code>Distributed Immunity Module</code></td><td>Peer mesh config</td></tr>
+<tr><td><code>swarm.peers</code></td><td><code>Distributed Immunity Module</code></td><td>Peer addresses</td></tr>
+<tr><td><code>[gateway]</code></td><td><code>Gateway Mode Module</code></td><td>Gateway mode settings</td></tr>
+<tr><td><code>[performance]</code></td><td><code>Single Pass Module</code>, <code>Hardware Accel Module</code></td><td>Tuning</td></tr>
+<tr><td><code>[logging]</code></td><td><code>Main Module</code></td><td>Log level, format, path</td></tr>
 </tbody>
 </table>
 </div>
@@ -341,41 +341,41 @@ npcap_forensic.rs       → (If forensic mode active) Append to forensic PCAP
 <h2 id="4-all-67-source-files--complete-listing"><a class="header" href="#4-all-67-source-files--complete-listing">4. All 67 Source Files — Complete Listing</a></h2>
 <p>This section lists every file in alphabetical order with its category and purpose.</p>
 <pre><code>src/
-├── advanced_ml.rs          [AI/ML]           Ensemble ML anomaly detection
-├── advanced_security.rs    [AI/ML]           Multi-signal correlation engine
-├── ai_engine.rs            [AI/ML]           Primary EMA behavioral baseline
-├── attribution_scoring.rs  [Enterprise]      TTP-based threat actor attribution
-├── capture.rs              [Capture]         Npcap capture, ring buffer, BPF filter
-├── cloud_native.rs         [Deployment]      K8s/Docker/CNI enforcement
-├── comprehensive_blocker.rs[Detection]       Multi-signal weighted block scoring
-├── config.rs               [Configuration]   TOML loading, validation, hot-reload
-├── cyber_immune.rs         [AI/ML]           Biological immune system metaphor
-├── distributed_immunity.rs [Swarm]           Gossip protocol, swarm intelligence
-├── dpi.rs                  [Detection]       L7 DPI, WAF, protocol dissection
-├── endpoint_security.rs    [Enterprise]      Endpoint posture, EDR integration
-├── flow_engine.rs          [Stateful]        Flow table, TCP/UDP session tracking
-├── framework_alignment.rs  [Compliance]      MITRE/NIST/CIS framework mapping
-├── gateway_mode.rs         [Deployment]      Inline gateway routing mode
-├── hardware_accel.rs       [Performance]     DPDK/NIC offload integration
-├── identity_policy.rs      [Enterprise]      JWT/mTLS/Kerberos identity auth
-├── ids_engine.rs           [Detection]       Signature + behavioral IDS engine
-├── ips_engine.rs           [Prevention]      IPS action engine, RST injection
-├── l2_engine.rs            [L2 Security]     ARP/MAC/VLAN enforcement
-├── main.rs                 [Entry Point]     Startup, init, runtime orchestration
-├── metrics.rs              [Observability]   Prometheus metrics server
-├── micro_segmentation.rs   [Enterprise]      Network zone segmentation
-├── mode_profiles.rs        [Deployment]      Operational mode presets
-├── npcap_forensic.rs       [Forensics]       Forensic PCAP + chain-of-custody
-├── policy.rs               [Policy]          Rule evaluation, policy engine
-├── process_monitor.rs      [Endpoint]        Sysmon/WinAPI process tracking
-├── sdwan.rs                [Deployment]      SD-WAN path selection
-├── siem_integration.rs     [Observability]   CEF/LEEF SIEM event streaming
-├── single_pass.rs          [Performance]     Single-pass inspection pipeline
-├── stateful.rs             [Stateful]        Deep stateful inspection (SPI)
-├── threat_intelligence.rs  [Intelligence]    Blocklist management, IOC lookup
-├── wfp_engine.rs           [Enforcement]     Windows Filtering Platform calls
-├── windivert_engine.rs     [Enforcement]     WinDivert packet intercept/modify
-├── zero_trust.rs           [Enterprise]      Zero-trust trust scoring engine
+├── Advanced Ml Module          [AI/ML]           Ensemble ML anomaly detection
+├── Advanced Security Module    [AI/ML]           Multi-signal correlation engine
+├── Ai Engine Module            [AI/ML]           Primary EMA behavioral baseline
+├── Attribution Scoring Module  [Enterprise]      TTP-based threat actor attribution
+├── Capture Module              [Capture]         Npcap capture, ring buffer, BPF filter
+├── Cloud Native Module         [Deployment]      K8s/Docker/CNI enforcement
+├── Comprehensive Blocker Module[Detection]       Multi-signal weighted block scoring
+├── Config Module               [Configuration]   TOML loading, validation, hot-reload
+├── Cyber Immune Module         [AI/ML]           Biological immune system metaphor
+├── Distributed Immunity Module [Swarm]           Gossip protocol, swarm intelligence
+├── Dpi Module                  [Detection]       L7 DPI, WAF, protocol dissection
+├── Endpoint Security Module    [Enterprise]      Endpoint posture, EDR integration
+├── Flow Engine Module          [Stateful]        Flow table, TCP/UDP session tracking
+├── Framework Alignment Module  [Compliance]      MITRE/NIST/CIS framework mapping
+├── Gateway Mode Module         [Deployment]      Inline gateway routing mode
+├── Hardware Accel Module       [Performance]     DPDK/NIC offload integration
+├── Identity Policy Module      [Enterprise]      JWT/mTLS/Kerberos identity auth
+├── Ids Engine Module           [Detection]       Signature + behavioral IDS engine
+├── Ips Engine Module           [Prevention]      IPS action engine, RST injection
+├── L2 Engine Module            [L2 Security]     ARP/MAC/VLAN enforcement
+├── Main Module                 [Entry Point]     Startup, init, runtime orchestration
+├── Metrics Module              [Observability]   Prometheus metrics server
+├── Micro Segmentation Module   [Enterprise]      Network zone segmentation
+├── Mode Profiles Module        [Deployment]      Operational mode presets
+├── Npcap Forensic Module       [Forensics]       Forensic PCAP + chain-of-custody
+├── Policy Module               [Policy]          Rule evaluation, policy engine
+├── Process Monitor Module      [Endpoint]        Sysmon/WinAPI process tracking
+├── Sdwan Module                [Deployment]      SD-WAN path selection
+├── Siem Integration Module     [Observability]   CEF/LEEF SIEM event streaming
+├── Single Pass Module          [Performance]     Single-pass inspection pipeline
+├── Stateful Module             [Stateful]        Deep stateful inspection (SPI)
+├── Threat Intelligence Module  [Intelligence]    Blocklist management, IOC lookup
+├── Wfp Engine Module           [Enforcement]     Windows Filtering Platform calls
+├── Windivert Engine Module     [Enforcement]     WinDivert packet intercept/modify
+├── Zero Trust Module           [Enterprise]      Zero-trust trust scoring engine
 </code></pre>
 <hr>
 <h2 id="5-threat-capability-matrix"><a class="header" href="#5-threat-capability-matrix">5. Threat Capability Matrix</a></h2>
@@ -386,89 +386,89 @@ npcap_forensic.rs       → (If forensic mode active) Append to forensic PCAP
 <tr><th>MITRE Technique</th><th>Technique Name</th><th>Detecting Module(s)</th><th>Preventing Module(s)</th></tr>
 </thead>
 <tbody>
-<tr><td>T1071.001</td><td>Web Protocols C2</td><td><code>ids_engine.rs</code>, <code>ai_engine.rs</code></td><td><code>ips_engine.rs</code>, <code>dpi.rs</code></td></tr>
-<tr><td>T1071.004</td><td>DNS C2</td><td><code>threat_intelligence.rs</code></td><td><code>ips_engine.rs</code></td></tr>
-<tr><td>T1041</td><td>Data Exfiltration over C2</td><td><code>dpi.rs</code>, <code>ai_engine.rs</code></td><td><code>ips_engine.rs</code></td></tr>
-<tr><td>T1486</td><td>Data Encrypted for Impact</td><td><code>ids_engine.rs</code> (ransomware rules)</td><td><code>ips_engine.rs</code></td></tr>
-<tr><td>T1046</td><td>Network Service Scan</td><td><code>ids_engine.rs</code>, <code>ai_engine.rs</code></td><td><code>ips_engine.rs</code> (rate limit)</td></tr>
-<tr><td>T1110</td><td>Brute Force</td><td><code>ids_engine.rs</code>, <code>ai_engine.rs</code></td><td><code>ips_engine.rs</code></td></tr>
-<tr><td>T1557</td><td>ARP Spoofing/Poison</td><td><code>l2_engine.rs</code></td><td><code>l2_engine.rs</code> (drop)</td></tr>
-<tr><td>T1210</td><td>Exploitation of Remote Services</td><td><code>ids_engine.rs</code>, <code>dpi.rs</code></td><td><code>ips_engine.rs</code></td></tr>
-<tr><td>T1090</td><td>Proxy/Tor</td><td><code>threat_intelligence.rs</code> (exit nodes), <code>dpi.rs</code></td><td><code>ips_engine.rs</code></td></tr>
-<tr><td>T1133</td><td>External Remote Services</td><td><code>zero_trust.rs</code>, <code>identity_policy.rs</code></td><td><code>ips_engine.rs</code></td></tr>
-<tr><td>T1021.002</td><td>SMB Lateral Movement</td><td><code>ids_engine.rs</code>, <code>micro_segmentation.rs</code></td><td><code>ips_engine.rs</code></td></tr>
-<tr><td>T1059</td><td>Command &amp; Scripting Interpreter</td><td><code>process_monitor.rs</code>, <code>endpoint_security.rs</code></td><td><code>endpoint_security.rs</code></td></tr>
-<tr><td>T1055</td><td>Process Injection</td><td><code>process_monitor.rs</code></td><td><code>endpoint_security.rs</code></td></tr>
-<tr><td>T1499</td><td>Endpoint Denial of Service</td><td><code>ids_engine.rs</code> (DOS rules)</td><td><code>ips_engine.rs</code></td></tr>
-<tr><td>T1189</td><td>Drive-by Compromise</td><td><code>dpi.rs</code> (WAF), <code>ids_engine.rs</code></td><td><code>ips_engine.rs</code>, <code>dpi.rs</code></td></tr>
-<tr><td>T1498</td><td>Network Denial of Service</td><td><code>ids_engine.rs</code> (flood rules)</td><td><code>ips_engine.rs</code></td></tr>
+<tr><td>T1071.001</td><td>Web Protocols C2</td><td><code>Ids Engine Module</code>, <code>Ai Engine Module</code></td><td><code>Ips Engine Module</code>, <code>Dpi Module</code></td></tr>
+<tr><td>T1071.004</td><td>DNS C2</td><td><code>Threat Intelligence Module</code></td><td><code>Ips Engine Module</code></td></tr>
+<tr><td>T1041</td><td>Data Exfiltration over C2</td><td><code>Dpi Module</code>, <code>Ai Engine Module</code></td><td><code>Ips Engine Module</code></td></tr>
+<tr><td>T1486</td><td>Data Encrypted for Impact</td><td><code>Ids Engine Module</code> (ransomware rules)</td><td><code>Ips Engine Module</code></td></tr>
+<tr><td>T1046</td><td>Network Service Scan</td><td><code>Ids Engine Module</code>, <code>Ai Engine Module</code></td><td><code>Ips Engine Module</code> (rate limit)</td></tr>
+<tr><td>T1110</td><td>Brute Force</td><td><code>Ids Engine Module</code>, <code>Ai Engine Module</code></td><td><code>Ips Engine Module</code></td></tr>
+<tr><td>T1557</td><td>ARP Spoofing/Poison</td><td><code>L2 Engine Module</code></td><td><code>L2 Engine Module</code> (drop)</td></tr>
+<tr><td>T1210</td><td>Exploitation of Remote Services</td><td><code>Ids Engine Module</code>, <code>Dpi Module</code></td><td><code>Ips Engine Module</code></td></tr>
+<tr><td>T1090</td><td>Proxy/Tor</td><td><code>Threat Intelligence Module</code> (exit nodes), <code>Dpi Module</code></td><td><code>Ips Engine Module</code></td></tr>
+<tr><td>T1133</td><td>External Remote Services</td><td><code>Zero Trust Module</code>, <code>Identity Policy Module</code></td><td><code>Ips Engine Module</code></td></tr>
+<tr><td>T1021.002</td><td>SMB Lateral Movement</td><td><code>Ids Engine Module</code>, <code>Micro Segmentation Module</code></td><td><code>Ips Engine Module</code></td></tr>
+<tr><td>T1059</td><td>Command &amp; Scripting Interpreter</td><td><code>Process Monitor Module</code>, <code>Endpoint Security Module</code></td><td><code>Endpoint Security Module</code></td></tr>
+<tr><td>T1055</td><td>Process Injection</td><td><code>Process Monitor Module</code></td><td><code>Endpoint Security Module</code></td></tr>
+<tr><td>T1499</td><td>Endpoint Denial of Service</td><td><code>Ids Engine Module</code> (DOS rules)</td><td><code>Ips Engine Module</code></td></tr>
+<tr><td>T1189</td><td>Drive-by Compromise</td><td><code>Dpi Module</code> (WAF), <code>Ids Engine Module</code></td><td><code>Ips Engine Module</code>, <code>Dpi Module</code></td></tr>
+<tr><td>T1498</td><td>Network Denial of Service</td><td><code>Ids Engine Module</code> (flood rules)</td><td><code>Ips Engine Module</code></td></tr>
 </tbody>
 </table>
 </div>
 <hr>
 <h2 id="6-dependency-graph"><a class="header" href="#6-dependency-graph">6. Dependency Graph</a></h2>
 <p>This is a simplified text-based dependency graph showing which modules import from which:</p>
-<pre><code>main.rs
-├── config.rs                  (Configuration — all modules depend on config)
-├── capture.rs                 (Feeds raw packets to pipeline)
-│   └── l2_engine.rs           (L2 parsing of captured frames)
-├── flow_engine.rs             (Flow table, used by most inspection modules)
-│   ├── stateful.rs            (TCP state machine)
-│   └── ids_engine.rs          (Flow context for signature matching)
-├── threat_intelligence.rs     (Blocklist — called early for fast path rejection)
-├── dpi.rs                     (L7 inspection, WAF)
-│   └── ids_engine.rs          (Matches DPI-extracted fields against rules)
-├── ai_engine.rs               (Behavioral baseline)
-│   ├── advanced_ml.rs         (Ensemble scoring called by ai_engine)
-│   └── advanced_security.rs   (Correlation, called by ai_engine)
-├── cyber_immune.rs            (Cooperates with ai_engine)
-├── ips_engine.rs              (Executes decisions from ids, ai, ti, dpi)
-│   ├── wfp_engine.rs          (Block via WFP kernel call)
-│   └── windivert_engine.rs    (Block/modify via WinDivert)
-├── policy.rs                  (Rule evaluation, overrides ips decisions)
-├── zero_trust.rs              (Trust score, feeds policy.rs)
-│   └── identity_policy.rs     (Auth results feed zero_trust)
-├── micro_segmentation.rs      (Zone checks, parallel to policy)
-├── distributed_immunity.rs    (Gossip, receives from peers, feeds ti)
-├── metrics.rs                 (Receives telemetry from all modules)
-├── siem_integration.rs        (Receives events from ids, ips, dpi)
-├── npcap_forensic.rs          (Appends to forensic PCAP on security events)
-└── process_monitor.rs         (Parallel OS-level monitoring, feeds ids)
+<pre><code>Main Module
+├── Config Module                  (Configuration — all modules depend on config)
+├── Capture Module                 (Feeds raw packets to pipeline)
+│   └── L2 Engine Module           (L2 parsing of captured frames)
+├── Flow Engine Module             (Flow table, used by most inspection modules)
+│   ├── Stateful Module            (TCP state machine)
+│   └── Ids Engine Module          (Flow context for signature matching)
+├── Threat Intelligence Module     (Blocklist — called early for fast path rejection)
+├── Dpi Module                     (L7 inspection, WAF)
+│   └── Ids Engine Module          (Matches DPI-extracted fields against rules)
+├── Ai Engine Module               (Behavioral baseline)
+│   ├── Advanced Ml Module         (Ensemble scoring called by ai_engine)
+│   └── Advanced Security Module   (Correlation, called by ai_engine)
+├── Cyber Immune Module            (Cooperates with ai_engine)
+├── Ips Engine Module              (Executes decisions from ids, ai, ti, dpi)
+│   ├── Wfp Engine Module          (Block via WFP kernel call)
+│   └── Windivert Engine Module    (Block/modify via WinDivert)
+├── Policy Module                  (Rule evaluation, overrides ips decisions)
+├── Zero Trust Module              (Trust score, feeds Policy Module)
+│   └── Identity Policy Module     (Auth results feed zero_trust)
+├── Micro Segmentation Module      (Zone checks, parallel to policy)
+├── Distributed Immunity Module    (Gossip, receives from peers, feeds ti)
+├── Metrics Module                 (Receives telemetry from all modules)
+├── Siem Integration Module        (Receives events from ids, ips, dpi)
+├── Npcap Forensic Module          (Appends to forensic PCAP on security events)
+└── Process Monitor Module         (Parallel OS-level monitoring, feeds ids)
 </code></pre>
 <hr>
 <h2 id="7-module-categorization-by-function"><a class="header" href="#7-module-categorization-by-function">7. Module Categorization by Function</a></h2>
 <h3 id="category-1-traffic-capture-and-parsing"><a class="header" href="#category-1-traffic-capture-and-parsing">Category 1: Traffic Capture and Parsing</a></h3>
-<p><code>capture.rs</code>, <code>l2_engine.rs</code>, <code>flow_engine.rs</code>, <code>stateful.rs</code></p>
+<p><code>Capture Module</code>, <code>L2 Engine Module</code>, <code>Flow Engine Module</code>, <code>Stateful Module</code></p>
 <p>These modules handle the physical ingestion and parsing of network traffic. They run in the earliest stages of the pipeline and are performance-critical. Any regression in these modules affects all subsequent processing.</p>
 <h3 id="category-2-detection-engines"><a class="header" href="#category-2-detection-engines">Category 2: Detection Engines</a></h3>
-<p><code>ids_engine.rs</code>, <code>dpi.rs</code>, <code>comprehensive_blocker.rs</code></p>
+<p><code>Ids Engine Module</code>, <code>Dpi Module</code>, <code>Comprehensive Blocker Module</code></p>
 <p>Signature-based and rule-based detection. These modules produce alerts but do not take action (that is IPS’s job). They should be tunable without recompilation via the rules files in <code>data/</code>.</p>
 <h3 id="category-3-ai-and-behavioral-analytics"><a class="header" href="#category-3-ai-and-behavioral-analytics">Category 3: AI and Behavioral Analytics</a></h3>
-<p><code>ai_engine.rs</code>, <code>advanced_ml.rs</code>, <code>advanced_security.rs</code>, <code>cyber_immune.rs</code></p>
+<p><code>Ai Engine Module</code>, <code>Advanced Ml Module</code>, <code>Advanced Security Module</code>, <code>Cyber Immune Module</code></p>
 <p>Statistical and ML-based anomaly detection. These modules learn normal behavior and flag deviations. They supplement signature detection for unknown/novel threats.</p>
 <h3 id="category-4-threat-intelligence"><a class="header" href="#category-4-threat-intelligence">Category 4: Threat Intelligence</a></h3>
-<p><code>threat_intelligence.rs</code></p>
+<p><code>Threat Intelligence Module</code></p>
 <p>External IOC integration. The Bloom filter lookup is the fastest path to blocking — no ML needed for a known-bad IP.</p>
 <h3 id="category-5-prevention-and-enforcement"><a class="header" href="#category-5-prevention-and-enforcement">Category 5: Prevention and Enforcement</a></h3>
-<p><code>ips_engine.rs</code>, <code>wfp_engine.rs</code>, <code>windivert_engine.rs</code>, <code>comprehensive_blocker.rs</code></p>
+<p><code>Ips Engine Module</code>, <code>Wfp Engine Module</code>, <code>Windivert Engine Module</code>, <code>Comprehensive Blocker Module</code></p>
 <p>These modules take action on traffic. Bugs here are high-impact (could block legitimate traffic). Changes require testing across all allowed/block test cases.</p>
 <h3 id="category-6-enterprise-security"><a class="header" href="#category-6-enterprise-security">Category 6: Enterprise Security</a></h3>
-<p><code>zero_trust.rs</code>, <code>identity_policy.rs</code>, <code>micro_segmentation.rs</code>, <code>endpoint_security.rs</code>, <code>attribution_scoring.rs</code></p>
+<p><code>Zero Trust Module</code>, <code>Identity Policy Module</code>, <code>Micro Segmentation Module</code>, <code>Endpoint Security Module</code>, <code>Attribution Scoring Module</code></p>
 <p>Enterprise policy layer. These modules are optional addons for enterprise deployments with identity infrastructure. They are no-ops if not configured.</p>
 <h3 id="category-7-observability-and-forensics"><a class="header" href="#category-7-observability-and-forensics">Category 7: Observability and Forensics</a></h3>
-<p><code>metrics.rs</code>, <code>siem_integration.rs</code>, <code>npcap_forensic.rs</code></p>
+<p><code>Metrics Module</code>, <code>Siem Integration Module</code>, <code>Npcap Forensic Module</code></p>
 <p>These modules are pure sinks — they consume events from other modules and have no effect on packet flow decisions. Safe to modify without security risk.</p>
 <h3 id="category-8-deployment-and-operations"><a class="header" href="#category-8-deployment-and-operations">Category 8: Deployment and Operations</a></h3>
-<p><code>config.rs</code>, <code>gateway_mode.rs</code>, <code>sdwan.rs</code>, <code>cloud_native.rs</code>, <code>mode_profiles.rs</code>, <code>framework_alignment.rs</code></p>
+<p><code>Config Module</code>, <code>Gateway Mode Module</code>, <code>Sdwan Module</code>, <code>Cloud Native Module</code>, <code>Mode Profiles Module</code>, <code>Framework Alignment Module</code></p>
 <p>Supporting modules for different deployment topologies and compliance reporting.</p>
 <h3 id="category-9-advanced-research-modules"><a class="header" href="#category-9-advanced-research-modules">Category 9: Advanced Research Modules</a></h3>
-<p><code>distributed_immunity.rs</code>, <code>process_monitor.rs</code>, and all modules documented in the Research-Grade Modules section.</p>
+<p><code>Distributed Immunity Module</code>, <code>Process Monitor Module</code>, and all modules documented in the Research-Grade Modules section.</p>
 <hr>
 <h2 id="8-adding-a-new-module--checklist"><a class="header" href="#8-adding-a-new-module--checklist">8. Adding a New Module — Checklist</a></h2>
-<p>When adding a new <code>src/foo_engine.rs</code> module to Rudras:</p>
+<p>When adding a new <code>Foo Engine Module</code> module to Rudras:</p>
 <ol>
-<li><strong>Create <code>src/foo_engine.rs</code></strong> with the primary struct and <code>pub fn init(config: &amp;RudrasConfig) -&gt; FooEngine</code></li>
-<li><strong>Register in <code>src/main.rs</code>:</strong>
+<li><strong>Create <code>Foo Engine Module</code></strong> with the primary struct and <code>pub fn init(config: &amp;RudrasConfig) -&gt; FooEngine</code></li>
+<li><strong>Register in <code>Main Module</code>:</strong>
 <ul>
 <li><code>mod foo_engine;</code></li>
 <li>Initialize in the startup sequence</li>
@@ -476,11 +476,11 @@ npcap_forensic.rs       → (If forensic mode active) Append to forensic PCAP
 </ul>
 </li>
 <li><strong>Add configuration section</strong> to <code>config/rudras.toml</code> with <code>[foo]</code> block and <code>enabled = true</code></li>
-<li><strong>Add to <code>config.rs</code>:</strong> New <code>FooConfig</code> struct, deserialize from TOML, validate fields</li>
+<li><strong>Add to <code>Config Module</code>:</strong> New <code>FooConfig</code> struct, deserialize from TOML, validate fields</li>
 <li><strong>Wire telemetry:</strong>
 <ul>
-<li>Add Prometheus counters to <code>metrics.rs</code> for <code>rudras_foo_*</code> metrics</li>
-<li>Emit SIEM events via <code>siem_integration.rs</code> for security-relevant actions</li>
+<li>Add Prometheus counters to <code>Metrics Module</code> for <code>rudras_foo_*</code> metrics</li>
+<li>Emit SIEM events via <code>Siem Integration Module</code> for security-relevant actions</li>
 <li>Log via <code>tracing::info!</code>, <code>tracing::warn!</code>, etc.</li>
 </ul>
 </li>
@@ -497,10 +497,10 @@ npcap_forensic.rs       → (If forensic mode active) Append to forensic PCAP
 <tr><th>Version</th><th>New Modules Added</th><th>Key Changes</th></tr>
 </thead>
 <tbody>
-<tr><td>v1.0</td><td><code>capture.rs</code>, <code>flow_engine.rs</code>, <code>ids_engine.rs</code>, <code>ips_engine.rs</code>, <code>wfp_engine.rs</code>, <code>metrics.rs</code></td><td>Initial release — basic IDS/IPS firewall</td></tr>
-<tr><td>v2.0</td><td><code>ai_engine.rs</code>, <code>threat_intelligence.rs</code>, <code>dpi.rs</code>, <code>policy.rs</code>, <code>siem_integration.rs</code></td><td>AI-powered behavioral detection + TI feeds</td></tr>
-<tr><td>v3.0</td><td><code>zero_trust.rs</code>, <code>micro_segmentation.rs</code>, <code>identity_policy.rs</code>, <code>cyber_immune.rs</code>, <code>distributed_immunity.rs</code></td><td>Enterprise ZT + swarm intelligence</td></tr>
-<tr><td>v4.0</td><td><code>advanced_ml.rs</code>, <code>advanced_security.rs</code>, <code>attribution_scoring.rs</code>, <code>npcap_forensic.rs</code>, <code>l2_engine.rs</code>, <code>hardware_accel.rs</code>, <code>framework_alignment.rs</code>, <code>process_monitor.rs</code> + 20+ research modules</td><td>Full enterprise + research capabilities, IST logging, SOC dashboard</td></tr>
+<tr><td>v1.0</td><td><code>Capture Module</code>, <code>Flow Engine Module</code>, <code>Ids Engine Module</code>, <code>Ips Engine Module</code>, <code>Wfp Engine Module</code>, <code>Metrics Module</code></td><td>Initial release — basic IDS/IPS firewall</td></tr>
+<tr><td>v2.0</td><td><code>Ai Engine Module</code>, <code>Threat Intelligence Module</code>, <code>Dpi Module</code>, <code>Policy Module</code>, <code>Siem Integration Module</code></td><td>AI-powered behavioral detection + TI feeds</td></tr>
+<tr><td>v3.0</td><td><code>Zero Trust Module</code>, <code>Micro Segmentation Module</code>, <code>Identity Policy Module</code>, <code>Cyber Immune Module</code>, <code>Distributed Immunity Module</code></td><td>Enterprise ZT + swarm intelligence</td></tr>
+<tr><td>v4.0</td><td><code>Advanced Ml Module</code>, <code>Advanced Security Module</code>, <code>Attribution Scoring Module</code>, <code>Npcap Forensic Module</code>, <code>L2 Engine Module</code>, <code>Hardware Accel Module</code>, <code>Framework Alignment Module</code>, <code>Process Monitor Module</code> + 20+ research modules</td><td>Full enterprise + research capabilities, IST logging, SOC dashboard</td></tr>
 </tbody>
 </table>
 </div>
@@ -511,11 +511,11 @@ npcap_forensic.rs       → (If forensic mode active) Append to forensic PCAP
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="operational_runbooks.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="deployment_scenarios.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="secrets/proprietary_algorithms.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="research_grade_modules.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -525,11 +525,11 @@ npcap_forensic.rs       → (If forensic mode active) Append to forensic PCAP
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="operational_runbooks.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="deployment_scenarios.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="secrets/proprietary_algorithms.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="research_grade_modules.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

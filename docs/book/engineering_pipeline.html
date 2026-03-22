@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>7. Transparent Development Model - Rudras: The Firewall in Practice</title>
+        <title>4.1 Transparent Development Model - Rudras: The Firewall in Practice</title>
 
 
         <!-- Custom HTML head -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-4130de7f.css">
+        <link rel="stylesheet" href="custom-3f90df81.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "ayu";
-            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+            window.path_to_searchindex_js = "searchindex-08390e6f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-3594adab.js"></script>
+        <script src="toc-4ff6b2b6.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,16 +175,16 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="7-transparent-development-model"><a class="header" href="#7-transparent-development-model">7. Transparent Development Model</a></h1>
+                        <h1 id="41-transparent-development-model"><a class="header" href="#41-transparent-development-model">4.1 Transparent Development Model</a></h1>
 <hr>
 <h2 id="1-the-v40-packet-processing-pipeline"><a class="header" href="#1-the-v40-packet-processing-pipeline">1. The v4.0 Packet Processing Pipeline</a></h2>
 <p>Every packet flowing through Rudras passes through the following 10-stage pipeline. Understanding this pipeline is essential for any engineer contributing to the codebase.</p>
 <h3 id="stage-0-nic--kernel-interface"><a class="header" href="#stage-0-nic--kernel-interface">Stage 0: NIC → Kernel Interface</a></h3>
-<p><strong>Module:</strong> Npcap driver (external), <code>capture.rs</code></p>
-<p>The packet arrives at the NIC and is copied into Npcap’s ring buffer in the kernel. The <code>capture.rs</code> module owns a PCAP handle opened in promiscuous mode. It sits in a tight loop calling <code>pcap_next_ex()</code> and pushing raw bytes into a Tokio <code>mpsc</code> channel for processing.</p>
+<p><strong>Module:</strong> Npcap driver (external), <code>Capture Module</code></p>
+<p>The packet arrives at the NIC and is copied into Npcap’s ring buffer in the kernel. The <code>Capture Module</code> module owns a PCAP handle opened in promiscuous mode. It sits in a tight loop calling <code>pcap_next_ex()</code> and pushing raw bytes into a Tokio <code>mpsc</code> channel for processing.</p>
 <p><strong>Engineering Rule:</strong> Never block the capture loop. Any packet processing that takes &gt; 1ms must be offloaded to a worker thread via channel. The capture loop blocking means backpressure on the ring buffer, which means packet drops.</p>
 <h3 id="stage-1-l2-parsing-and-security"><a class="header" href="#stage-1-l2-parsing-and-security">Stage 1: L2 Parsing and Security</a></h3>
-<p><strong>Module:</strong> <code>l2_engine.rs</code></p>
+<p><strong>Module:</strong> <code>L2 Engine Module</code></p>
 <p>The raw bytes are parsed as an Ethernet frame. L2 engine extracts:</p>
 <ul>
 <li>Source/destination MAC addresses</li>
@@ -194,16 +194,16 @@
 </ul>
 <p><strong>Engineering Rule:</strong> ARP spoofing detection requires maintaining a <code>HashMap&lt;IpAddr, MacAddr&gt;</code> binding table. The first ARP for a new IP establishes the binding. Subsequent ARPs claiming the same IP with a different MAC generate a <code>CRITICAL</code> alert.</p>
 <h3 id="stage-2-iptransport-parsing"><a class="header" href="#stage-2-iptransport-parsing">Stage 2: IP/Transport Parsing</a></h3>
-<p><strong>Module:</strong> <code>flow_engine.rs</code>, <code>stateful.rs</code></p>
+<p><strong>Module:</strong> <code>Flow Engine Module</code>, <code>Stateful Module</code></p>
 <p>The IP header is parsed for src IP, dst IP, protocol (TCP/UDP/ICMP/etc.). The <code>flow_engine</code> creates or updates a <code>FlowRecord</code> keyed by the 5-tuple: <code>(src_ip, dst_ip, src_port, dst_port, protocol)</code>.</p>
 <p>The <code>stateful</code> module enforces TCP state machine transitions. A packet arriving in the wrong state (e.g., ACK without SYN) is flagged for TCP state anomaly analysis.</p>
 <h3 id="stage-3-fast-path-block-check"><a class="header" href="#stage-3-fast-path-block-check">Stage 3: Fast-Path Block Check</a></h3>
-<p><strong>Module:</strong> <code>threat_intelligence.rs</code>, <code>wfp_engine.rs</code></p>
+<p><strong>Module:</strong> <code>Threat Intelligence Module</code>, <code>Wfp Engine Module</code></p>
 <p>Before any expensive analysis, the source IP is checked against a <code>RwLock&lt;HashSet&lt;IpAddr&gt;&gt;</code> (in-memory blocklist). This is an O(1) hash lookup. If the IP matches, the packet is immediately dropped and a counter incremented. This stage handles the millions of already-known-bad IPs without burning CPU on analysis.</p>
 <p><strong>Engineering Rule:</strong> Never use <code>Mutex</code> for the blocklist — always <code>RwLock</code>. Reads are 1000x more frequent than writes. A <code>Mutex</code> here would serialize all packet decisions through a single lock and halve throughput.</p>
 <h3 id="stage-4-deep-packet-inspection"><a class="header" href="#stage-4-deep-packet-inspection">Stage 4: Deep Packet Inspection</a></h3>
-<p><strong>Module:</strong> <code>dpi.rs</code>, <code>single_pass.rs</code></p>
-<p>The payload bytes are inspected for protocol-specific content. <code>single_pass.rs</code> ensures this is done in a single traversal through the packet bytes rather than multiple passes.</p>
+<p><strong>Module:</strong> <code>Dpi Module</code>, <code>Single Pass Module</code></p>
+<p>The payload bytes are inspected for protocol-specific content. <code>Single Pass Module</code> ensures this is done in a single traversal through the packet bytes rather than multiple passes.</p>
 <p>DPI inspects:</p>
 <ul>
 <li><strong>HTTP:</strong> URL path, query parameters, headers, body (for WAF patterns)</li>
@@ -214,7 +214,7 @@
 <li><strong>QUIC:</strong> QUIC header inspection for HTTP/3 traffic</li>
 </ul>
 <h3 id="stage-5-ai-behavioral-analysis"><a class="header" href="#stage-5-ai-behavioral-analysis">Stage 5: AI Behavioral Analysis</a></h3>
-<p><strong>Module:</strong> <code>ai_engine.rs</code>, <code>cyber_immune.rs</code>, <code>advanced_ml.rs</code>, <code>ueba_engine.rs</code></p>
+<p><strong>Module:</strong> <code>Ai Engine Module</code>, <code>Cyber Immune Module</code>, <code>Advanced Ml Module</code>, <code>Ueba Engine Module</code></p>
 <p>For each source IP, the AI engine maintains running statistics:</p>
 <ul>
 <li><code>packets_per_sec</code>: EMA-smoothed packet rate</li>
@@ -226,7 +226,7 @@
 <p>The deviation score is computed against the immutable baseline established during the learning period.</p>
 <p><strong>UEBA:</strong> If the packet is associated with an authenticated user (via identity policy JWT claim), the UEBA engine additionally checks the user’s behavioral baseline for anomalies — accessing unusual resources, unusually large downloads, unusual hours.</p>
 <h3 id="stage-6-ids-signature-matching"><a class="header" href="#stage-6-ids-signature-matching">Stage 6: IDS Signature Matching</a></h3>
-<p><strong>Module:</strong> <code>ids_engine.rs</code></p>
+<p><strong>Module:</strong> <code>Ids Engine Module</code></p>
 <p>The packet metadata (parsed headers, protocol, DPI results, flow statistics) is matched against the IDS rule set.</p>
 <p>Rule set statistics:</p>
 <ul>
@@ -242,7 +242,7 @@
 <li><code>description</code>: human-readable description</li>
 </ul>
 <h3 id="stage-7-threat-intelligence-enrichment"><a class="header" href="#stage-7-threat-intelligence-enrichment">Stage 7: Threat Intelligence Enrichment</a></h3>
-<p><strong>Module:</strong> <code>threat_intelligence.rs</code>, <code>threat_rules_engine.rs</code>, <code>threat_hunt.rs</code></p>
+<p><strong>Module:</strong> <code>Threat Intelligence Module</code>, <code>Threat Rules Engine Module</code>, <code>Threat Hunt Module</code></p>
 <p>The source IP and queried domain are cross-referenced against:</p>
 <ul>
 <li><strong>24,358 known malicious IPs</strong> from curated global IOC feeds</li>
@@ -256,7 +256,7 @@
   THEN: CRITICAL alert, immediate block, SOAR playbook C2_RESPONSE triggered
 </code></pre>
 <h3 id="stage-8-comprehensive-block-decision"><a class="header" href="#stage-8-comprehensive-block-decision">Stage 8: Comprehensive Block Decision</a></h3>
-<p><strong>Module:</strong> <code>comprehensive_blocker.rs</code></p>
+<p><strong>Module:</strong> <code>Comprehensive Blocker Module</code></p>
 <p>All signals are aggregated into a final action decision:</p>
 <div class="table-wrapper">
 <table>
@@ -266,16 +266,16 @@
 <tbody>
 <tr><td>TI hit (confidence &gt; 0.9)</td><td>BLOCK immediately</td></tr>
 <tr><td>IDS CRITICAL alert</td><td>BLOCK immediately</td></tr>
-<tr><td>AI deviation &gt; 0.80</td><td>BLOCK</td></tr>
+<tr><td>AI deviation &gt; [BLOCK_LIMIT]</td><td>BLOCK</td></tr>
 <tr><td>IDS HIGH alert</td><td>QUARANTINE (rate-limit + alert)</td></tr>
-<tr><td>AI deviation 0.55–0.80</td><td>ALERT (log + increment metric)</td></tr>
+<tr><td>AI deviation [SUSPICIOUS_RANGE]</td><td>ALERT (log + increment metric)</td></tr>
 <tr><td>All clean</td><td>ALLOW</td></tr>
 </tbody>
 </table>
 </div>
 <p>The block decision honors a whitelist from the policy config — whitelisted IPs are never blocked regardless of signals (use carefully, document every entry).</p>
 <h3 id="stage-9-ips-enforcement"><a class="header" href="#stage-9-ips-enforcement">Stage 9: IPS Enforcement</a></h3>
-<p><strong>Module:</strong> <code>ips_engine.rs</code>, <code>wfp_engine.rs</code></p>
+<p><strong>Module:</strong> <code>Ips Engine Module</code>, <code>Wfp Engine Module</code></p>
 <p>If the decision is BLOCK:</p>
 <ol>
 <li>TCP RST packet is crafted and injected to both connection endpoints (using WinDivert raw send)</li>
@@ -285,7 +285,7 @@
 <li>A <code>forensics_chain</code> entry is appended with full event context</li>
 </ol>
 <h3 id="stage-10-observability"><a class="header" href="#stage-10-observability">Stage 10: Observability</a></h3>
-<p><strong>Module:</strong> <code>metrics.rs</code>, <code>siem_integration.rs</code>, <code>forensics_chain.rs</code></p>
+<p><strong>Module:</strong> <code>Metrics Module</code>, <code>Siem Integration Module</code>, <code>Forensics Chain Module</code></p>
 <p>Every packet decision (ALLOW, ALERT, QUARANTINE, BLOCK) is recorded:</p>
 <ul>
 <li><strong>Metrics:</strong> Prometheus counters incremented atomically</li>
@@ -296,7 +296,7 @@
 <hr>
 <h2 id="2-team-engineering-rules"><a class="header" href="#2-team-engineering-rules">2. Team Engineering Rules</a></h2>
 <h3 id="rule-1-never-block-the-capture-loop"><a class="header" href="#rule-1-never-block-the-capture-loop">Rule 1: Never Block the Capture Loop</a></h3>
-<p>The <code>capture.rs</code> capture thread must process packets at wire speed. Any analysis taking more than ~100 microseconds must be dispatched to a worker thread. Blocking the capture thread causes ring buffer overflow and packet drops.</p>
+<p>The <code>Capture Module</code> capture thread must process packets at wire speed. Any analysis taking more than ~100 microseconds must be dispatched to a worker thread. Blocking the capture thread causes ring buffer overflow and packet drops.</p>
 <h3 id="rule-2-always-use-rwlock-for-shared-read-heavy-data"><a class="header" href="#rule-2-always-use-rwlock-for-shared-read-heavy-data">Rule 2: Always Use RwLock for Shared Read-Heavy Data</a></h3>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -311,9 +311,9 @@ let blocked_ips: Arc&lt;Mutex&lt;HashSet&lt;IpAddr&gt;&gt;&gt; = Arc::new(Mutex:
 <h3 id="rule-4-all-security-decisions-are-logged"><a class="header" href="#rule-4-all-security-decisions-are-logged">Rule 4: All Security Decisions Are Logged</a></h3>
 <p>There is no “silent drop” in Rudras. Every block, every quarantine, every alert, every RST injection — logged to the forensics chain. This is required for compliance and incident response.</p>
 <h3 id="rule-5-no-unsafe-outside-the-wfpnpcap-interface"><a class="header" href="#rule-5-no-unsafe-outside-the-wfpnpcap-interface">Rule 5: No <code>unsafe</code> Outside the WFP/Npcap Interface</a></h3>
-<p>The only acceptable <code>unsafe</code> code is in <code>wfp_engine.rs</code> (Windows Filtering Platform FFI) and <code>npcap_forensic.rs</code> (Npcap C library FFI). All other modules must be safe Rust. If you think you need <code>unsafe</code> for a performance reason, profile first — the Rust optimizer is usually able to match the <code>unsafe</code> version.</p>
+<p>The only acceptable <code>unsafe</code> code is in <code>Wfp Engine Module</code> (Windows Filtering Platform FFI) and <code>Npcap Forensic Module</code> (Npcap C library FFI). All other modules must be safe Rust. If you think you need <code>unsafe</code> for a performance reason, profile first — the Rust optimizer is usually able to match the <code>unsafe</code> version.</p>
 <h3 id="rule-6-configuration-changes-must-be-backward-compatible"><a class="header" href="#rule-6-configuration-changes-must-be-backward-compatible">Rule 6: Configuration Changes Must Be Backward Compatible</a></h3>
-<p>The <code>config.rs</code> deserialization uses <code>serde</code> with <code>#[serde(default)]</code> on all optional fields. Adding a new config field must provide a sensible default so that existing config files work without modification after upgrade.</p>
+<p>The <code>Config Module</code> deserialization uses <code>serde</code> with <code>#[serde(default)]</code> on all optional fields. Adding a new config field must provide a sensible default so that existing config files work without modification after upgrade.</p>
 <h3 id="rule-7-test-with-real-traffic-not-just-unit-tests"><a class="header" href="#rule-7-test-with-real-traffic-not-just-unit-tests">Rule 7: Test With Real Traffic, Not Just Unit Tests</a></h3>
 <p>Unit tests verify logic. Integration tests verify behavior against actual network traffic. Before merging any new detection module, run it against the capture corpus in <code>Testing/</code> directory and verify:</p>
 <ul>
@@ -330,7 +330,7 @@ let blocked_ips: Arc&lt;Mutex&lt;HashSet&lt;IpAddr&gt;&gt;&gt; = Arc::new(Mutex:
 <p><strong>Create the module file</strong> in <code>src/</code></p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>// src/my_detection.rs
+</span>// My Detection Module
 pub struct MyDetection { /* config fields */ }
 
 impl MyDetection {
@@ -340,7 +340,7 @@ impl MyDetection {
 <span class="boring">}</span></code></pre>
 </li>
 <li>
-<p><strong>Add config struct</strong> to <code>config.rs</code></p>
+<p><strong>Add config struct</strong> to <code>Config Module</code></p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[derive(Deserialize, Default)]
@@ -359,7 +359,7 @@ enabled = true
 </code></pre>
 </li>
 <li>
-<p><strong>Initialize in <code>main.rs</code></strong></p>
+<p><strong>Initialize in <code>Main Module</code></strong></p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let my_detection = MyDetection::new(&amp;config.my_detection);
@@ -369,10 +369,10 @@ enabled = true
 <p><strong>Wire into pipeline</strong> — call <code>my_detection.analyze(packet)</code> in the appropriate pipeline stage (usually Stage 5 or 6)</p>
 </li>
 <li>
-<p><strong>Add metrics</strong> — add a counter in <code>metrics.rs</code> for your detection events</p>
+<p><strong>Add metrics</strong> — add a counter in <code>Metrics Module</code> for your detection events</p>
 </li>
 <li>
-<p><strong>Add to <code>comprehensive_blocker.rs</code></strong> — integrate your alert signal into the block decision logic</p>
+<p><strong>Add to <code>Comprehensive Blocker Module</code></strong> — integrate your alert signal into the block decision logic</p>
 </li>
 <li>
 <p><strong>Write tests</strong> — add to <code>src/tests/</code> and ensure the Testing/ corpus passes</p>
@@ -435,11 +435,11 @@ blocked_countries = []   # ISO 3166-1 alpha-2 country codes
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="distributed_management.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="research_grade_modules.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="operational_runbooks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="secrets/proprietary_algorithms.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -449,11 +449,11 @@ blocked_countries = []   # ISO 3166-1 alpha-2 country codes
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="distributed_management.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="research_grade_modules.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="operational_runbooks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="secrets/proprietary_algorithms.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

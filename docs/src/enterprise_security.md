@@ -1,4 +1,4 @@
-# 3.4 Enterprise Security & Identity
+# 2.5 Enterprise Security & Identity
 
 ---
 
@@ -10,7 +10,7 @@ Enterprise security in Rudras v4.0 is implemented through 11 modules covering Ze
 
 ## 1. Zero Trust Engine
 
-**Source File:** `src/zero_trust.rs`  
+**Module:** `Zero Trust Module`  
 **Principle:** "Never trust, always verify" — every connection requires continuous authentication and authorization
 
 ### 1.1 Core Concept
@@ -34,8 +34,8 @@ Each device/IP receives a composite trust score (0.0–1.0):
 ```
 trust_score = Σ(factor_score × factor_weight)
 
-If trust_score < min_trust_threshold (default 0.30) → DENY
-If trust_score < medium_trust_threshold (default 0.55) → ALLOW with step-up auth required
+If trust_score < min_trust_threshold ([RESTRICTED_ALPHA]0) → DENY
+If trust_score < medium_trust_threshold ([RESTRICTED_THRESHOLD]) → ALLOW with step-up auth required
 If trust_score >= medium_trust_threshold → ALLOW
 ```
 
@@ -66,7 +66,7 @@ Zero Trust policy supports explicit exceptions for infrastructure automation:
 ```toml
 [[zero_trust.exceptions]]
 src_cidr = "10.10.1.0/24"
-dst_cidr = "10.10.30.0/24"
+dst_cidr = "[SECURE_ZONE_CIDR_REDACTED]"
 reason = "Kubernetes health probes"
 expiry = "2026-12-31"
 approved_by = "network-security-team"
@@ -77,7 +77,7 @@ approved_by = "network-security-team"
 
 ## 2. Identity Policy Engine
 
-**Source File:** `src/identity_policy.rs`  
+**Module:** `Identity Policy Module`  
 **Role:** Identity-aware policy enforcement, beyond IP-based rules
 
 ### 2.1 Why Identity > IP
@@ -125,7 +125,7 @@ Tokens are verified against the configured identity provider (Keycloak, Okta, Az
 
 ## 3. Micro-Segmentation Engine
 
-**Source File:** `src/micro_segmentation.rs`  
+**Module:** `Micro Segmentation Module`  
 **Role:** Network segmentation at zone level, enforcing explicit inter-zone policy
 
 ### 3.1 Zone Design
@@ -136,12 +136,12 @@ Rudras v4.0 supports up to 16 named security zones. The default zone layout cove
 | ------------ | ---------------- | ---------------------------- | -------------------------- |
 | `dmz`        | 10.10.10.0/24    | internet, corporate          | Public-facing services     |
 | `app`        | 10.10.20.0/24    | dmz, corporate               | Application servers        |
-| `db`         | 10.10.30.0/24    | app                          | Database servers           |
+| `db`         | [SECURE_ZONE_CIDR_REDACTED]    | app                          | Database servers           |
 | `finance`    | 10.10.40.0/24    | corporate (restricted users) | Finance systems            |
 | `research`   | 10.10.50.0/24    | corporate (approved users)   | R&D systems                |
 | `corporate`  | 10.10.60.0/24    | internet (VPN), management   | Employee workstations      |
 | `guest`      | 192.168.100.0/24 | internet only                | Guest WiFi                 |
-| `management` | 10.10.70.0/24    | management hosts only        | Network devices, firewalls |
+| `management` | [MGMT_ZONE_CIDR_REDACTED]    | management hosts only        | Network devices, firewalls |
 
 ### 3.2 Policy Evaluation for Inter-Zone Traffic
 
@@ -173,7 +173,7 @@ Traditional VLANs provide coarse network segmentation. Micro-segmentation provid
 
 ## 4. Endpoint Security Module
 
-**Source File:** `src/endpoint_security.rs`  
+**Module:** `Endpoint Security Module`  
 **Role:** Host-based security assessment, vulnerability awareness, compliance
 
 ### 4.1 Posture Checks
@@ -196,7 +196,7 @@ Network-observable indicators of host compromise:
 
 ### 4.3 Integration with Process Monitor
 
-The `endpoint_security.rs` module shares data with `process_monitor.rs`. The process monitor scans the Windows process table for suspicious processes; endpoint security maps those findings to network behavior context.
+The `Endpoint Security Module` module shares data with `Process Monitor Module`. The process monitor scans the Windows process table for suspicious processes; endpoint security maps those findings to network behavior context.
 
 Example correlation:
 
@@ -213,7 +213,7 @@ Severity: CRITICAL
 
 ## 5. Attribution Scoring Engine
 
-**Source File:** `src/attribution_scoring.rs`  
+**Module:** `Attribution Scoring Module`  
 **Role:** Attacker attribution based on observed TTPs (Tactics, Techniques, Procedures)
 
 ### 5.1 What Is Attribution?
@@ -257,7 +257,7 @@ Attribution is probabilistic, not definitive. The attribution score:
 
 ## 6. SIEM Integration Module
 
-**Source File:** `src/siem_integration.rs`  
+**Module:** `Siem Integration Module`  
 **Role:** Streams security events to external SIEM platforms
 
 ### 6.1 Supported Export Formats
@@ -298,7 +298,7 @@ High-volume environments can generate thousands of SIEM events per minute. The S
 
 ## 7. Distributed Immunity (Swarm)
 
-**Source File:** `src/distributed_immunity.rs`  
+**Module:** `Distributed Immunity Module`  
 **Role:** Epidemiological threat intelligence sharing across a fleet of Rudras nodes
 
 ### 7.1 The Swarm Model
@@ -334,7 +334,7 @@ Node C receives from both A and B → deduplicates → adds to blocklist → re-
 
 ## 8. Gateway Mode
 
-**Source File:** `src/gateway_mode.rs`  
+**Module:** `Gateway Mode Module`  
 **Role:** BGP-aware internet gateway security policy
 
 ### 8.1 Gateway Mode Features
@@ -358,7 +358,7 @@ BGP is not authenticated by default in most deployments. BGP route hijacking all
 
 ## 9. SD-WAN Module
 
-**Source File:** `src/sdwan.rs`  
+**Module:** `Sdwan Module`  
 **Role:** Integrates Rudras security enforcement with SD-WAN infrastructure
 
 ### 9.1 SD-WAN Security Policy Enforcement
@@ -382,7 +382,7 @@ The SD-WAN module correlates Quality of Service decisions with security state:
 
 ## 10. Cloud Native Security Module
 
-**Source File:** `src/cloud_native.rs`  
+**Module:** `Cloud Native Module`  
 **Role:** Security for Kubernetes, containers, and cloud infrastructure
 
 ### 10.1 Kubernetes API Protection
@@ -416,23 +416,23 @@ Rudras detects:
 
 ## 11. Single Pass Engine
 
-**Source File:** `src/single_pass.rs`  
+**Module:** `Single Pass Module`  
 **Role:** Performance optimization — eliminate redundant packet parsing
 
 ### 11.1 The Multi-Pass Problem
 
 naïve packet inspection with multiple security modules each independently parsing the same packet bytes:
 
-- `ids_engine.rs` parses IP+TCP headers
-- `dpi.rs` parses IP+TCP+HTTP headers
-- `ai_engine.rs` parses IP+TCP headers (for flow statistics)
-- `dns_security.rs` parses IP+UDP+DNS headers
+- `Ids Engine Module` parses IP+TCP headers
+- `Dpi Module` parses IP+TCP+HTTP headers
+- `Ai Engine Module` parses IP+TCP headers (for flow statistics)
+- `Dns Security Module` parses IP+UDP+DNS headers
 
 Each parse is a potential cache miss as the packet bytes may be evicted from CPU cache between parsers. For a firewall processing 50,000 packets/second, this represents meaningful CPU overhead.
 
 ### 11.2 Single-Pass Solution
 
-`single_pass.rs` implements a **shared parse context** that traverses all protocol layers once and stores the results in a `ParsedPacket` struct shared across all modules:
+`Single Pass Module` implements a **shared parse context** that traverses all protocol layers once and stores the results in a `ParsedPacket` struct shared across all modules:
 
 ```rust
 pub struct ParsedPacket {

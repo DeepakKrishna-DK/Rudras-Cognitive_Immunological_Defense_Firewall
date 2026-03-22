@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>3.4 Enterprise Security &amp; Identity - Rudras: The Firewall in Practice</title>
+        <title>2.5 Enterprise Security &amp; Identity - Rudras: The Firewall in Practice</title>
 
 
         <!-- Custom HTML head -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-4130de7f.css">
+        <link rel="stylesheet" href="custom-3f90df81.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "ayu";
-            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+            window.path_to_searchindex_js = "searchindex-08390e6f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-3594adab.js"></script>
+        <script src="toc-4ff6b2b6.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,13 +175,13 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="34-enterprise-security--identity"><a class="header" href="#34-enterprise-security--identity">3.4 Enterprise Security &amp; Identity</a></h1>
+                        <h1 id="25-enterprise-security--identity"><a class="header" href="#25-enterprise-security--identity">2.5 Enterprise Security &amp; Identity</a></h1>
 <hr>
 <h2 id="abstract"><a class="header" href="#abstract">Abstract</a></h2>
 <p>Enterprise security in Rudras v4.0 is implemented through 11 modules covering Zero Trust access control, identity-aware policy, network micro-segmentation, endpoint posture assessment, attacker attribution, SIEM integration, distributed immunity, gateway mode, SD-WAN, cloud-native protection, and single-pass performance optimization. Together these modules transform Rudras from a network firewall into a full Security Platform covering the full enterprise control surface.</p>
 <hr>
 <h2 id="1-zero-trust-engine"><a class="header" href="#1-zero-trust-engine">1. Zero Trust Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/zero_trust.rs</code><br><strong>Principle:</strong> “Never trust, always verify” — every connection requires continuous authentication and authorization</p>
+<p><strong>Module:</strong> <code>Zero Trust Module</code><br><strong>Principle:</strong> “Never trust, always verify” — every connection requires continuous authentication and authorization</p>
 <h3 id="11-core-concept"><a class="header" href="#11-core-concept">1.1 Core Concept</a></h3>
 <p>Traditional network security models assume that traffic inside the corporate perimeter is trusted. Zero Trust eliminates this assumption. Every connection — even between two internal servers in the same data center — must be explicitly authorized based on identity, device posture, and context.</p>
 <p>Rudras implements Zero Trust at the network layer, evaluating every flow against a dynamic trust score.</p>
@@ -203,8 +203,8 @@
 </div>
 <pre><code>trust_score = Σ(factor_score × factor_weight)
 
-If trust_score &lt; min_trust_threshold (default 0.30) → DENY
-If trust_score &lt; medium_trust_threshold (default 0.55) → ALLOW with step-up auth required
+If trust_score &lt; min_trust_threshold ([RESTRICTED_ALPHA]0) → DENY
+If trust_score &lt; medium_trust_threshold ([RESTRICTED_THRESHOLD]) → ALLOW with step-up auth required
 If trust_score &gt;= medium_trust_threshold → ALLOW
 </code></pre>
 <h3 id="13-device-posture-assessment"><a class="header" href="#13-device-posture-assessment">1.3 Device Posture Assessment</a></h3>
@@ -228,7 +228,7 @@ If trust_score &gt;= medium_trust_threshold → ALLOW
 <p>Zero Trust policy supports explicit exceptions for infrastructure automation:</p>
 <pre><code class="language-toml">[[zero_trust.exceptions]]
 src_cidr = "10.10.1.0/24"
-dst_cidr = "10.10.30.0/24"
+dst_cidr = "[SECURE_ZONE_CIDR_REDACTED]"
 reason = "Kubernetes health probes"
 expiry = "2026-12-31"
 approved_by = "network-security-team"
@@ -236,7 +236,7 @@ approved_by = "network-security-team"
 </code></pre>
 <hr>
 <h2 id="2-identity-policy-engine"><a class="header" href="#2-identity-policy-engine">2. Identity Policy Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/identity_policy.rs</code><br><strong>Role:</strong> Identity-aware policy enforcement, beyond IP-based rules</p>
+<p><strong>Module:</strong> <code>Identity Policy Module</code><br><strong>Role:</strong> Identity-aware policy enforcement, beyond IP-based rules</p>
 <h3 id="21-why-identity--ip"><a class="header" href="#21-why-identity--ip">2.1 Why Identity &gt; IP</a></h3>
 <p>In cloud-native and remote-work environments, IP addresses are ephemeral. Users receive different IPs from VPN, cloud instances rotate IPs, and Kubernetes pods get new IPs on each restart. IP-based firewall rules become unmaintainable.</p>
 <p>The identity policy engine binds network policy to <strong>user and service identities</strong> instead of IP addresses:</p>
@@ -278,7 +278,7 @@ require_mtls = true
 <p>Tokens are verified against the configured identity provider (Keycloak, Okta, Azure AD, etc.)</p>
 <hr>
 <h2 id="3-micro-segmentation-engine"><a class="header" href="#3-micro-segmentation-engine">3. Micro-Segmentation Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/micro_segmentation.rs</code><br><strong>Role:</strong> Network segmentation at zone level, enforcing explicit inter-zone policy</p>
+<p><strong>Module:</strong> <code>Micro Segmentation Module</code><br><strong>Role:</strong> Network segmentation at zone level, enforcing explicit inter-zone policy</p>
 <h3 id="31-zone-design"><a class="header" href="#31-zone-design">3.1 Zone Design</a></h3>
 <p>Rudras v4.0 supports up to 16 named security zones. The default zone layout covers a typical enterprise:</p>
 <div class="table-wrapper">
@@ -289,12 +289,12 @@ require_mtls = true
 <tbody>
 <tr><td><code>dmz</code></td><td>10.10.10.0/24</td><td>internet, corporate</td><td>Public-facing services</td></tr>
 <tr><td><code>app</code></td><td>10.10.20.0/24</td><td>dmz, corporate</td><td>Application servers</td></tr>
-<tr><td><code>db</code></td><td>10.10.30.0/24</td><td>app</td><td>Database servers</td></tr>
+<tr><td><code>db</code></td><td>[SECURE_ZONE_CIDR_REDACTED]</td><td>app</td><td>Database servers</td></tr>
 <tr><td><code>finance</code></td><td>10.10.40.0/24</td><td>corporate (restricted users)</td><td>Finance systems</td></tr>
 <tr><td><code>research</code></td><td>10.10.50.0/24</td><td>corporate (approved users)</td><td>R&amp;D systems</td></tr>
 <tr><td><code>corporate</code></td><td>10.10.60.0/24</td><td>internet (VPN), management</td><td>Employee workstations</td></tr>
 <tr><td><code>guest</code></td><td>192.168.100.0/24</td><td>internet only</td><td>Guest WiFi</td></tr>
-<tr><td><code>management</code></td><td>10.10.70.0/24</td><td>management hosts only</td><td>Network devices, firewalls</td></tr>
+<tr><td><code>management</code></td><td>[MGMT_ZONE_CIDR_REDACTED]</td><td>management hosts only</td><td>Network devices, firewalls</td></tr>
 </tbody>
 </table>
 </div>
@@ -321,7 +321,7 @@ require_mtls = true
 </ul>
 <hr>
 <h2 id="4-endpoint-security-module"><a class="header" href="#4-endpoint-security-module">4. Endpoint Security Module</a></h2>
-<p><strong>Source File:</strong> <code>src/endpoint_security.rs</code><br><strong>Role:</strong> Host-based security assessment, vulnerability awareness, compliance</p>
+<p><strong>Module:</strong> <code>Endpoint Security Module</code><br><strong>Role:</strong> Host-based security assessment, vulnerability awareness, compliance</p>
 <h3 id="41-posture-checks"><a class="header" href="#41-posture-checks">4.1 Posture Checks</a></h3>
 <p>The endpoint security module performs periodic posture assessments integrating with the Zero Trust trust score:</p>
 <ul>
@@ -339,7 +339,7 @@ require_mtls = true
 <li><strong>Memory injection pattern:</strong> Connecting process has DLL load indicators visible in process metadata</li>
 </ul>
 <h3 id="43-integration-with-process-monitor"><a class="header" href="#43-integration-with-process-monitor">4.3 Integration with Process Monitor</a></h3>
-<p>The <code>endpoint_security.rs</code> module shares data with <code>process_monitor.rs</code>. The process monitor scans the Windows process table for suspicious processes; endpoint security maps those findings to network behavior context.</p>
+<p>The <code>Endpoint Security Module</code> module shares data with <code>Process Monitor Module</code>. The process monitor scans the Windows process table for suspicious processes; endpoint security maps those findings to network behavior context.</p>
 <p>Example correlation:</p>
 <pre><code>process_monitor detects: "mimikatz.exe" running as PID 4892
 endpoint_security correlates: PID 4892 has made 47 authentication attempts to
@@ -350,7 +350,7 @@ Severity: CRITICAL
 </code></pre>
 <hr>
 <h2 id="5-attribution-scoring-engine"><a class="header" href="#5-attribution-scoring-engine">5. Attribution Scoring Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/attribution_scoring.rs</code><br><strong>Role:</strong> Attacker attribution based on observed TTPs (Tactics, Techniques, Procedures)</p>
+<p><strong>Module:</strong> <code>Attribution Scoring Module</code><br><strong>Role:</strong> Attacker attribution based on observed TTPs (Tactics, Techniques, Procedures)</p>
 <h3 id="51-what-is-attribution"><a class="header" href="#51-what-is-attribution">5.1 What Is Attribution?</a></h3>
 <p>Attribution is the process of identifying <em>which threat actor group</em> is responsible for an attack, based on the specific techniques they use. Different APT groups have characteristic playbooks:</p>
 <ul>
@@ -384,7 +384,7 @@ Alert: "HIGH CONFIDENCE: Ransomware actor activity pattern. Isolate affected hos
 </ul>
 <hr>
 <h2 id="6-siem-integration-module"><a class="header" href="#6-siem-integration-module">6. SIEM Integration Module</a></h2>
-<p><strong>Source File:</strong> <code>src/siem_integration.rs</code><br><strong>Role:</strong> Streams security events to external SIEM platforms</p>
+<p><strong>Module:</strong> <code>Siem Integration Module</code><br><strong>Role:</strong> Streams security events to external SIEM platforms</p>
 <h3 id="61-supported-export-formats"><a class="header" href="#61-supported-export-formats">6.1 Supported Export Formats</a></h3>
 <div class="table-wrapper">
 <table>
@@ -421,7 +421,7 @@ CEF:0|Rudras Security|Rudras|4.0|IDS:1047|SQL Injection Attempt|7|
 </ul>
 <hr>
 <h2 id="7-distributed-immunity-swarm"><a class="header" href="#7-distributed-immunity-swarm">7. Distributed Immunity (Swarm)</a></h2>
-<p><strong>Source File:</strong> <code>src/distributed_immunity.rs</code><br><strong>Role:</strong> Epidemiological threat intelligence sharing across a fleet of Rudras nodes</p>
+<p><strong>Module:</strong> <code>Distributed Immunity Module</code><br><strong>Role:</strong> Epidemiological threat intelligence sharing across a fleet of Rudras nodes</p>
 <h3 id="71-the-swarm-model"><a class="header" href="#71-the-swarm-model">7.1 The Swarm Model</a></h3>
 <p>A fleet of Rudras nodes form a swarm where threat discoveries are immediately shared:</p>
 <pre><code>Node A detects new C2 IP → broadcasts gossip to peers B, C, D
@@ -454,7 +454,7 @@ Node C receives from both A and B → deduplicates → adds to blocklist → re-
 </div>
 <hr>
 <h2 id="8-gateway-mode"><a class="header" href="#8-gateway-mode">8. Gateway Mode</a></h2>
-<p><strong>Source File:</strong> <code>src/gateway_mode.rs</code><br><strong>Role:</strong> BGP-aware internet gateway security policy</p>
+<p><strong>Module:</strong> <code>Gateway Mode Module</code><br><strong>Role:</strong> BGP-aware internet gateway security policy</p>
 <h3 id="81-gateway-mode-features"><a class="header" href="#81-gateway-mode-features">8.1 Gateway Mode Features</a></h3>
 <p>When Rudras runs at an internet gateway/edge router:</p>
 <ul>
@@ -472,7 +472,7 @@ Node C receives from both A and B → deduplicates → adds to blocklist → re-
 </ul>
 <hr>
 <h2 id="9-sd-wan-module"><a class="header" href="#9-sd-wan-module">9. SD-WAN Module</a></h2>
-<p><strong>Source File:</strong> <code>src/sdwan.rs</code><br><strong>Role:</strong> Integrates Rudras security enforcement with SD-WAN infrastructure</p>
+<p><strong>Module:</strong> <code>Sdwan Module</code><br><strong>Role:</strong> Integrates Rudras security enforcement with SD-WAN infrastructure</p>
 <h3 id="91-sd-wan-security-policy-enforcement"><a class="header" href="#91-sd-wan-security-policy-enforcement">9.1 SD-WAN Security Policy Enforcement</a></h3>
 <p>In SD-WAN deployments, security policy must follow traffic regardless of which physical path it takes:</p>
 <ul>
@@ -490,7 +490,7 @@ Node C receives from both A and B → deduplicates → adds to blocklist → re-
 </ul>
 <hr>
 <h2 id="10-cloud-native-security-module"><a class="header" href="#10-cloud-native-security-module">10. Cloud Native Security Module</a></h2>
-<p><strong>Source File:</strong> <code>src/cloud_native.rs</code><br><strong>Role:</strong> Security for Kubernetes, containers, and cloud infrastructure</p>
+<p><strong>Module:</strong> <code>Cloud Native Module</code><br><strong>Role:</strong> Security for Kubernetes, containers, and cloud infrastructure</p>
 <h3 id="101-kubernetes-api-protection"><a class="header" href="#101-kubernetes-api-protection">10.1 Kubernetes API Protection</a></h3>
 <p>The Kubernetes API server is a high-value target — compromise provides full cluster control:</p>
 <ul>
@@ -516,18 +516,18 @@ Node C receives from both A and B → deduplicates → adds to blocklist → re-
 </ul>
 <hr>
 <h2 id="11-single-pass-engine"><a class="header" href="#11-single-pass-engine">11. Single Pass Engine</a></h2>
-<p><strong>Source File:</strong> <code>src/single_pass.rs</code><br><strong>Role:</strong> Performance optimization — eliminate redundant packet parsing</p>
+<p><strong>Module:</strong> <code>Single Pass Module</code><br><strong>Role:</strong> Performance optimization — eliminate redundant packet parsing</p>
 <h3 id="111-the-multi-pass-problem"><a class="header" href="#111-the-multi-pass-problem">11.1 The Multi-Pass Problem</a></h3>
 <p>naïve packet inspection with multiple security modules each independently parsing the same packet bytes:</p>
 <ul>
-<li><code>ids_engine.rs</code> parses IP+TCP headers</li>
-<li><code>dpi.rs</code> parses IP+TCP+HTTP headers</li>
-<li><code>ai_engine.rs</code> parses IP+TCP headers (for flow statistics)</li>
-<li><code>dns_security.rs</code> parses IP+UDP+DNS headers</li>
+<li><code>Ids Engine Module</code> parses IP+TCP headers</li>
+<li><code>Dpi Module</code> parses IP+TCP+HTTP headers</li>
+<li><code>Ai Engine Module</code> parses IP+TCP headers (for flow statistics)</li>
+<li><code>Dns Security Module</code> parses IP+UDP+DNS headers</li>
 </ul>
 <p>Each parse is a potential cache miss as the packet bytes may be evicted from CPU cache between parsers. For a firewall processing 50,000 packets/second, this represents meaningful CPU overhead.</p>
 <h3 id="112-single-pass-solution"><a class="header" href="#112-single-pass-solution">11.2 Single-Pass Solution</a></h3>
-<p><code>single_pass.rs</code> implements a <strong>shared parse context</strong> that traverses all protocol layers once and stores the results in a <code>ParsedPacket</code> struct shared across all modules:</p>
+<p><code>Single Pass Module</code> implements a <strong>shared parse context</strong> that traverses all protocol layers once and stores the results in a <code>ParsedPacket</code> struct shared across all modules:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub struct ParsedPacket {
@@ -569,7 +569,7 @@ Node C receives from both A and B → deduplicates → adds to blocklist → re-
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="research_grade_modules.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="distributed_management.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -583,7 +583,7 @@ Node C receives from both A and B → deduplicates → adds to blocklist → re-
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="research_grade_modules.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="distributed_management.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

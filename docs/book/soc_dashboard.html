@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>5.2 Observability and SOC Dashboard - Rudras: The Firewall in Practice</title>
+        <title>3.3 Observability and SOC Dashboard - Rudras: The Firewall in Practice</title>
 
 
         <!-- Custom HTML head -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-4130de7f.css">
+        <link rel="stylesheet" href="custom-3f90df81.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "ayu";
-            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+            window.path_to_searchindex_js = "searchindex-08390e6f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-3594adab.js"></script>
+        <script src="toc-4ff6b2b6.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,7 +175,7 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="52-observability-and-soc-dashboard"><a class="header" href="#52-observability-and-soc-dashboard">5.2 Observability and SOC Dashboard</a></h1>
+                        <h1 id="33-observability-and-soc-dashboard"><a class="header" href="#33-observability-and-soc-dashboard">3.3 Observability and SOC Dashboard</a></h1>
 <hr>
 <p><img src="soc_dashboard.png" alt="Next.js SOC Dashboard">
 <em>Figure 1: The Rudras SOC Dashboard displaying live analytics and threat telemetry.</em></p>
@@ -192,7 +192,7 @@
   "level": "WARN",
   "target": "rudras::ips_engine",
   "event": "ips_block",
-  "src_ip": "185.220.101.5",
+  "src_ip": "[MALICIOUS_IP_CLASSIFIED]",
   "dst_ip": "10.10.20.50",
   "src_port": 49152,
   "dst_port": 443,
@@ -215,7 +215,7 @@
 </ul>
 <h3 id="12-ist-timestamp-implementation"><a class="header" href="#12-ist-timestamp-implementation">1.2 IST Timestamp Implementation</a></h3>
 <p>All Rudras logs display timestamps in Indian Standard Time (IST, UTC+5:30). This was implemented in v4.0 by replacing the default <code>tracing-subscriber</code> UTC timer with a <code>ChronoLocal</code> timer.</p>
-<p>Implementation in <code>src/main.rs</code>:</p>
+<p>Implementation in <code>Main Module</code>:</p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use tracing_subscriber::fmt::time::ChronoLocal;
@@ -286,7 +286,7 @@ level = "info"  # trace | debug | info | warn | error
 </div>
 <hr>
 <h2 id="2-prometheus-metrics-server"><a class="header" href="#2-prometheus-metrics-server">2. Prometheus Metrics Server</a></h2>
-<p><strong>Source File:</strong> <code>src/metrics.rs</code><br><strong>Protocol:</strong> Prometheus text format (OpenMetrics compatible)<br><strong>Endpoint:</strong> <code>http://127.0.0.1:9091/metrics</code><br><strong>Authentication:</strong> Ephemeral token via <code>X-Rudras-Auth</code> header</p>
+<p><strong>Module:</strong> <code>Metrics Module</code><br><strong>Protocol:</strong> Prometheus text format (OpenMetrics compatible)<br><strong>Endpoint:</strong> <code>http://127.0.0.1:9091/metrics</code><br><strong>Authentication:</strong> Ephemeral token via <code>X-Rudras-Auth</code> header</p>
 <h3 id="21-architecture"><a class="header" href="#21-architecture">2.1 Architecture</a></h3>
 <p>The metrics server is a lightweight HTTP server embedded in Rudras (not an external agent). It runs on a dedicated Tokio thread, listening on <code>127.0.0.1:9091</code> (loopback only — not accessible from the network by default).</p>
 <p>The metrics server exposes security counters in Prometheus text exposition format:</p>
@@ -481,7 +481,7 @@ Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
 </ul>
 <hr>
 <h2 id="4-siem-integration-observability-output"><a class="header" href="#4-siem-integration-observability-output">4. SIEM Integration (Observability Output)</a></h2>
-<p><strong>Source File:</strong> <code>src/siem_integration.rs</code><br><strong>Purpose:</strong> Real-time security event streaming to external SIEM/SOAR platforms</p>
+<p><strong>Module:</strong> <code>Siem Integration Module</code><br><strong>Purpose:</strong> Real-time security event streaming to external SIEM/SOAR platforms</p>
 <h3 id="41-cef-format-events"><a class="header" href="#41-cef-format-events">4.1 CEF Format Events</a></h3>
 <p>CEF (Common Event Format) is the industry standard for security event exchange:</p>
 <pre><code>CEF:0|Vendor|Product|Version|EventClassId|Name|Severity|Extensions
@@ -502,7 +502,7 @@ Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
 <p>By default, CEF events are sent via UDP syslog to the configured SIEM endpoint. For reliability, TCP syslog is supported (with exponential backoff retry on connection loss). TLS-encrypted syslog is also supported for environments with compliance requirements for encrypted log transport.</p>
 <hr>
 <h2 id="5-forensics-chain-audit-trail"><a class="header" href="#5-forensics-chain-audit-trail">5. Forensics Chain (Audit Trail)</a></h2>
-<p><strong>Source File:</strong> <code>src/forensics_chain.rs</code><br><strong>Purpose:</strong> Tamper-evident cryptographic audit trail for all security decisions</p>
+<p><strong>Module:</strong> <code>Forensics Chain Module</code><br><strong>Purpose:</strong> Tamper-evident cryptographic audit trail for all security decisions</p>
 <h3 id="51-chain-structure"><a class="header" href="#51-chain-structure">5.1 Chain Structure</a></h3>
 <p>The forensics chain creates an append-only linked list of security events where each entry contains a hash of the previous entry:</p>
 <pre><code class="language-json">[
@@ -519,7 +519,7 @@ Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
     "timestamp": "2026-03-08T10:45:23.124578+05:30",
     "event_type": "ips_block",
     "data": {
-      "src_ip": "185.220.101.5",
+      "src_ip": "[MALICIOUS_IP_CLASSIFIED]",
       "dst_ip": "10.10.20.50",
       "reason": "ids_critical"
     },
@@ -546,7 +546,7 @@ Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="distributed_management.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="operational_runbooks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -560,7 +560,7 @@ Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="distributed_management.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="operational_runbooks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

@@ -1,4 +1,4 @@
-# 5. Using Rudras in Practice
+# 3. Using Rudras in Practice
 
 ---
 
@@ -61,7 +61,7 @@ timezone = "IST"       # Timestamps in Indian Standard Time (UTC+5:30)
 ```toml
 [ai]
 enabled = true
-ema_alpha = 0.3                  # EMA smoothing factor (0.0-1.0). Higher = more reactive.
+ema_alpha = [RESTRICTED_ALPHA]                  # EMA smoothing factor (0.0-1.0). Higher = more reactive.
 suspicious_threshold = 0.55       # Flag for closer inspection
 quarantine_threshold = 0.70       # Rate-limit and alert
 block_threshold = 0.80            # Full WFP block + IPS RST

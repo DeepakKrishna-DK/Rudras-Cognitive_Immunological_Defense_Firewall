@@ -1,4 +1,4 @@
-# 8.3 Anti-Tamper Mechanisms
+# 4.3 Anti-Tamper Mechanisms
 
 **WARNING: EXTREMELY HIGHLY CLASSIFIED. CONTAINS EMERGENCY BYPASS CODES.**
 

@@ -1,4 +1,4 @@
-# 2. What makes Rudras unique?
+# 1.3 What makes Rudras unique?
 
 ---
 
@@ -33,11 +33,11 @@ A single enterprise network now faces 100+ simultaneous threat categories: ranso
 ### Solution 1 — Behavioral Deviation Detection (CyberImmune ML Engine)
 
 **Addresses:** Signature Paradox  
-**Module:** `cyber_immune.rs`, `ai_engine.rs`, `advanced_ml.rs`
+**Module:** `Cyber Immune Module`, `Ai Engine Module`, `Advanced Ml Module`
 
 Rudras does not rely exclusively on signatures. Instead, it builds an **Immutable Behavioral Baseline** for every IP address on first contact. The baseline records: packet rate, byte rate, SYN/ACK ratio, connection duration distribution, port diversity, and entropy metrics.
 
-The AI engine continuously computes the Exponential Moving Average (EMA) of these metrics. The moment a connection's behavior diverges beyond a statistical threshold (configurable `susp_threshold`, default 0.55), graduated response begins — rate limiting, quarantine, or block — _without needing a signature match_.
+The AI engine continuously computes the Exponential Moving Average (EMA) of these metrics. The moment a connection's behavior diverges beyond a statistical threshold (configurable `susp_threshold`, [RESTRICTED_THRESHOLD]), graduated response begins — rate limiting, quarantine, or block — _without needing a signature match_.
 
 This means a novel ransomware spreading laterally via SMB, which no signature database has ever catalogued, is still detected because its _behavior_ — scanning 2,000 ports in 30 seconds — deviates from the baseline of normal SMB traffic.
 
@@ -48,7 +48,7 @@ If `deviation_score > block_threshold (0.80)` → IPS invoked immediately.
 ### Solution 2 — Anti-Tamper + Zero Trust Process Verification
 
 **Addresses:** OS Subjugation  
-**Module:** `advanced_security.rs`, `process_monitor.rs`, `endpoint_security.rs`
+**Module:** `Advanced Security Module`, `Process Monitor Module`, `Endpoint Security Module`
 
 Rudras does not trust the OS administrator. It runs a parallel `ProcessMonitorLoop` at `scan_interval = 10s` that examines the Windows process table via `sysinfo`. If it detects tools associated with network sniffing, reverse engineering, or endpoint tampering — Wireshark, IDA Pro, Ghidra, Metasploit, Mimikatz — it fires an alert (WARN-ONLY mode by default; `kill_mode = true` requires explicit opt-in with legal approval).
 
@@ -57,16 +57,16 @@ The Zero Trust engine additionally enforces **device posture scoring**: a device
 ### Solution 3 — Adaptive Load Shedding + Hardware Acceleration
 
 **Addresses:** DoS Cryptographic Bottleneck  
-**Module:** `hardware_accel.rs`, `single_pass.rs`, `flow_engine.rs`
+**Module:** `Hardware Accel Module`, `Single Pass Module`, `Flow Engine Module`
 
 Under volumetric attack conditions, Rudras implements **adaptive DPI shedding**: when the IPS detects a flood attack signature (SYN rate > 100 pps, UDP flood > 1000 pps), deep packet inspection is automatically suspended for that source IP and replaced with ultra-fast O(1) hash table lookups against the known-bad IOC list. The firewall survives by shedding expensive cryptographic weight mid-flight.
 
-**Single-Pass Architecture:** The `single_pass.rs` module implements a unified inspection pass — Layer 2 through Layer 7 analyzed in one traversal of the packet bytes — eliminating redundant data parsing across modules.
+**Single-Pass Architecture:** The `Single Pass Module` module implements a unified inspection pass — Layer 2 through Layer 7 analyzed in one traversal of the packet bytes — eliminating redundant data parsing across modules.
 
 ### Solution 4 — Zero Trust Micro-Segmentation (Perimeter Dissolution)
 
 **Addresses:** Perimeter Fallacy  
-**Module:** `zero_trust.rs`, `micro_segmentation.rs`, `identity_policy.rs`
+**Module:** `Zero Trust Module`, `Micro Segmentation Module`, `Identity Policy Module`
 
 Rudras segments the network into **8 security zones** (dmz, app, db, finance, research, corporate, guest, management). Every cross-zone communication requires explicit policy authorization. A compromised guest-zone device cannot reach the db-zone _regardless of valid credentials_ — it would require an authenticated, posture-verified identity with an explicit inter-zone policy rule.
 
@@ -85,7 +85,7 @@ Packet → L2 Security → Fast-Path Drops → TI Lookup → IDS Signature Match
          SIEM Logging → Forensics Chain → Metrics
 ```
 
-Even if multiple intermediate layers produce false negatives, the statistical probability of all 40 layers simultaneously failing on the same attack approaches zero.
+Even if multiple intermediate layers produce false negatives, the statistical probability of all 40 layers simultaneously failing on the same attack is dramatically reduced.
 
 ---
 

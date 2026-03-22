@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-4130de7f.css">
+        <link rel="stylesheet" href="custom-3f90df81.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "ayu";
-            window.path_to_searchindex_js = "searchindex-9db3c9fb.js";
+            window.path_to_searchindex_js = "searchindex-08390e6f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-3594adab.js"></script>
+        <script src="toc-4ff6b2b6.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,7 +175,14 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="rudras-the-cognitive-firewall-in-practice"><a class="header" href="#rudras-the-cognitive-firewall-in-practice">Rudras: The Cognitive Firewall in Practice</a></h1>
+                        <!-- markdownlint-disable MD033 -->
+<h1 id="rudras-the-firewall-in-practice"><a class="header" href="#rudras-the-firewall-in-practice">Rudras: The Firewall in Practice</a></h1>
+<div class="cover-container">
+    <img src="assets/main.jpeg" alt="Rudras Platform Cover" class="cover-image" />
+</div>
+
+<div class="page-break"></div>
+
 <p><strong>Comprehensive IT security and flexibly expandable immunological defense.</strong></p>
 <p>IT managers regularly see the networks they manage exposed to new threats. Having the latest signature-based firewall is no longer sufficient. It is much more important to be able to react flexibly instantly to zero-day security risks using real-time behavioral analysis.</p>
 <p>The advanced Rust-based firewall <strong>Rudras</strong> is a digital platform that offers capabilities far beyond traditional packet filtering, such as Machine Learning deviation modeling, Zero Trust micro-segmentation, and active deception honeytokens. In this manual, we present Rudras as an alternative to static commercial firewall solutions. Our focus is on practical use cases in the enterprise context and how the engine’s functionality secures the modern perimeter.</p>
@@ -186,7 +193,7 @@
 <h3 id="the-advantages-of-rudras-at-a-glance"><a class="header" href="#the-advantages-of-rudras-at-a-glance">The advantages of Rudras at a glance</a></h3>
 <ul>
 <li><strong>Completely memory-safe</strong> architecture written strictly in Rust</li>
-<li><strong>Zero-Day anomaly detection</strong> leveraging an Immutable Behavioral Baseline via <code>cyber_immune.rs</code></li>
+<li><strong>Zero-Day anomaly detection</strong> leveraging an Immutable Behavioral Baseline via <code>Cyber Immune Module</code></li>
 <li><strong>Zero Trust Process Verification</strong> ensuring host OS administrators cannot subvert the firewall from the inside</li>
 <li><strong>Real-time Observability</strong> securely exported via structured JSON logs, a Next.js SOC Dashboard, and CEF-format SIEM events</li>
 <li><strong>Hardware-accelerated DPI shedding</strong> to survive volumetric cryptographic DoS attacks</li>
@@ -200,7 +207,7 @@
 <h3 id="ai-and-machine-learning-systems"><a class="header" href="#ai-and-machine-learning-systems">AI and Machine Learning Systems</a></h3>
 <p>Unlike traditional firewalls, Rudras utilizes Adaptive Isolation Forests to recognize behavioral deviation without signatures. The AI engine continuously computes the Exponential Moving Average (EMA) of network flows. The moment a connection’s behavior diverges beyond a statistical threshold, a graduated IPS response blocks the attack autonomously.</p>
 <h3 id="threat-intelligence--deception"><a class="header" href="#threat-intelligence--deception">Threat Intelligence &amp; Deception</a></h3>
-<p>Server-side malicious detection provides an additional layer of protection. Rudras implements a Global Threat Knowledge System that polls OSINT feeds and a Deception Network (<code>deception_network.rs</code>) orchestrating honeypot traps and honeytoken injections to actively deceive scanning adversaries.</p>
+<p>Server-side malicious detection provides an additional layer of protection. Rudras implements a Global Threat Knowledge System that polls OSINT feeds and a Deception Network (<code>Deception Network Module</code>) orchestrating honeypot traps and honeytoken injections to actively deceive scanning adversaries.</p>
 <hr>
 <p><em>Navigate using the sidebar to the left to dive deep into the specific architecture and configuration of these true firewall capabilities.</em></p>
 
@@ -209,7 +216,7 @@
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
 
-                            <a rel="next prefetch" href="vision_and_purpose.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="executive_summary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -220,7 +227,7 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
 
-                    <a rel="next prefetch" href="vision_and_purpose.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="executive_summary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

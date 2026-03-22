@@ -1,4 +1,4 @@
-# 3.5 Research-Grade Modules
+# 4. Research-Grade Modules
 
 ---
 
@@ -10,7 +10,7 @@ Rudras v4.0 adds 30+ research-grade modules that implement capabilities typicall
 
 ## 1. UEBA Engine (User and Entity Behavior Analytics)
 
-**Source File:** `src/ueba_engine.rs`  
+**Module:** `Ueba Engine Module`  
 **Academic Basis:** Behavioral analytics, insider threat detection  
 **Primary Use Case:** Insider threats, privilege misuse, account compromise
 
@@ -53,7 +53,7 @@ UEBA specifically enables detection of:
 
 ## 2. SOAR Engine (Security Orchestration, Automation and Response)
 
-**Source File:** `src/soar_engine.rs`  
+**Module:** `Soar Engine Module`  
 **Academic Basis:** Workflow automation, decision trees, incident response  
 **Primary Use Case:** Automated response to security events, reducing MTTR
 
@@ -110,7 +110,7 @@ For irreversible actions (disable_account, permanent block), SOAR can be configu
 
 ## 3. Deception and Adaptive Honeypot
 
-**Source Files:** `src/deception.rs`, `src/adaptive_honeypot.rs`  
+**Modules:** `Deception Module`, `Adaptive Honeypot Module`  
 **Academic Basis:** Active deception, honeypot theory, attacker fingerprinting
 
 ### 3.1 Deception Strategy
@@ -153,7 +153,7 @@ Fake API endpoint: /api/v1/internal/admin (logs all requests, generates critical
 
 ## 4. OT/ICS Protocol Security
 
-**Source File:** `src/ot_protocols.rs`  
+**Module:** `Ot Protocols Module`  
 **Academic Basis:** Industrial control system security, SCADA protection  
 **Protocols:** Modbus TCP, DNP3, EtherNet/IP (CIP)
 
@@ -198,7 +198,7 @@ EtherNet/IP and the CIP protocol are used in Rockwell PLC and Allen-Bradley auto
 
 ## 5. Post-Quantum Cryptography
 
-**Source File:** `src/post_quantum.rs`  
+**Module:** `Post Quantum Module`  
 **Standards:** NIST FIPS 203, 204, 205 (finalized August 2024)  
 **Purpose:** Quantum-resistant key exchange and digital signatures for Rudras's own communications
 
@@ -222,14 +222,14 @@ Post-quantum cryptography is applied to:
 
 - **Swarm gossip authentication:** Gossip messages between Rudras nodes are signed with ML-DSA to prevent injection of fake threat intelligence from a compromised peer
 - **Config file signatures:** `sign_config.ps1` uses ML-DSA for config file integrity (replacing SHA256-HMAC in future version)
-- **Secure channel establishment:** The `secure_channel.rs` module supports ML-KEM for key exchange in addition to classical ECDHE
+- **Secure channel establishment:** The `Secure Channel Module` module supports ML-KEM for key exchange in addition to classical ECDHE
 - **Forensics chain:** Forensic audit log entries can be signed with SLH-DSA for long-term quantum-resistant integrity proof
 
 ---
 
 ## 6. Formal Policy Verification
 
-**Source File:** `src/formal_verification.rs`  
+**Module:** `Formal Verification Module`  
 **Academic Basis:** Formal methods, model checking, TLA+ specification  
 **Purpose:** Mathematically prove firewall policy is correct before deployment
 
@@ -246,7 +246,7 @@ In production, these errors cause security incidents or service outages. The for
 
 ### 6.2 Verification Approach
 
-The `formal_verification.rs` module converts the Rudras policy into a logical model and checks properties:
+The `Formal Verification Module` module converts the Rudras policy into a logical model and checks properties:
 
 1. **Rule conflict detection:** Does any pair of rules produce contradictory verdicts for the same traffic?
 2. **Completeness checking:** Is there any traffic class with no matching rule (policy gap)?
@@ -277,7 +277,7 @@ PolicyCorrect ==
 
 ## 7. TPM Attestation
 
-**Source File:** `src/tpm_attestation.rs`  
+**Module:** `Tpm Attestation Module`  
 **Standard:** TCG TPM 2.0, TPM Remote Attestation  
 **Purpose:** Hardware root-of-trust for device identity verification
 
@@ -310,7 +310,7 @@ When a device with a TPM connects to a Zero Trust protected resource:
 
 ## 8. Moving Target Defense (MTD)
 
-**Source File:** `src/mtd_engine.rs`  
+**Module:** `Mtd Engine Module`  
 **Academic Basis:** Moving target defense, proactive cyber defense  
 **Purpose:** Make the network harder to attack by continuously changing its observable surface
 
@@ -350,7 +350,7 @@ MTD is distinct from security through obscurity:
 
 ## 9. Homomorphic Threat Intel Sharing
 
-**Source File:** `src/homomorphic_sharing.rs`  
+**Module:** `Homomorphic Sharing Module`  
 **Academic Basis:** Homomorphic encryption, privacy-preserving computation  
 **Purpose:** Share threat intelligence between organizations without exposing private network data
 
@@ -376,7 +376,7 @@ Uses a partial homomorphic encryption scheme (additively homomorphic) sufficient
 
 ## 10. Compliance Engine
 
-**Source File:** `src/compliance_engine.rs`  
+**Module:** `Compliance Engine Module`  
 **Standards Supported:** GDPR, HIPAA, PCI-DSS, SOC 2, ISO 27001
 
 ### 10.1 Automated Compliance Evidence
@@ -410,7 +410,7 @@ Reports include: control description, mapping to framework requirement, evidence
 
 ## 11. eBPF/XDP (Linux Kernel Acceleration)
 
-**Source File:** `src/ebpf_xdp.rs`  
+**Module:** `Ebpf Xdp Module`  
 **Status:** In development (Linux port)  
 **Academic Basis:** Linux kernel extended Berkeley Packet Filter, eXpress Data Path
 
@@ -425,56 +425,56 @@ On Linux deployments, the WFP/WinDivert enforcement layer is replaced by eBPF pr
 
 ### 11.2 Development Status
 
-As of v4.0, the `ebpf_xdp.rs` module contains the Rust control-plane interface and eBPF program loader. The actual eBPF bytecode programs (written in restricted C) are in development. Full eBPF/XDP implementation is targeted for v4.2 (Linux port milestone).
+As of v4.0, the `Ebpf Xdp Module` module contains the Rust control-plane interface and eBPF program loader. The actual eBPF bytecode programs (written in restricted C) are in development. Full eBPF/XDP implementation is targeted for v4.2 (Linux port milestone).
 
 ---
 
 ## 12. Other Research-Grade Modules (Summary)
 
-### `src/email_security.rs`
+### `Email Security Module`
 
 SMTP inspection: DKIM signature validation, SPF record verification, DMARC policy enforcement, phishing domain detection (Levenshtein distance from known trusted domains), BEC (Business Email Compromise) pattern detection, attachment hash checking against malware feeds.
 
-### `src/rasp_engine.rs`
+### `Rasp Engine Module`
 
 Runtime Application Self-Protection hooks: monitors web applications from within for SQL injection execution attempts, deserialization exploits, SSRF to internal services. When an RASP hook fires, the offending request is blocked at the application runtime level while logging full context.
 
-### `src/secure_channel.rs`
+### `Secure Channel Module`
 
 mTLS channel management for all Rudras inter-component and swarm communications: certificate lifecycle management, certificate rotation on expiry, OCSP stapling, certificate pinning for critical communication channels.
 
-### `src/sbom_engine.rs`
+### `Sbom Engine Module`
 
 Software Bill of Materials validation: loads SBOM manifests (SPDX, CycloneDX format), verifies installed software components match the declared manifest, detects unauthorized software installations, correlates components against CVE databases.
 
-### `src/supply_chain_verifier.rs`
+### `Supply Chain Verifier Module`
 
 Cryptographic verification of software supply chain: verifies code signing certificates, package ancestry chains, build provenance attestations (SLSA framework). Detects supply chain compromises where legitimate software has been trojanized.
 
-### `src/forensics_chain.rs`
+### `Forensics Chain Module`
 
 SHA3-256 chained audit log providing tamper-evident evidence chain for all security events. Each log entry contains a hash of the previous entry — any modification of historical entries is immediately detectable. Required for legal-grade incident evidence.
 
-### `src/differential_privacy.rs`
+### `Differential Privacy Module`
 
 Applies differential privacy noise to telemetry data exported to external analytics systems. Prevents re-identification of individual users from aggregate network statistics while preserving statistical utility of the telemetry.
 
-### `src/management_api.rs`
+### `Management Api Module`
 
 REST API for programmatic management: configuration updates, real-time status queries, incident acknowledgment, IOC submission. Secured with the same ephemeral token mechanism as the metrics server. Enables integration with SOAR orchestration platforms and CMDB systems.
 
-### `src/llm_explainability.rs`
+### `Llm Explainability Module`
 
 Generates natural language explanations of security alerts using a local LLM model. Instead of raw alert data like `"T1190 detected: src=185.x.x.x"`, produces: `"A web application exploit attempt was detected from IP 185.x.x.x, suggesting an attacker tried to exploit a vulnerability in your public-facing application (MITRE technique T1190). The AI behavioral analysis also detected unusual port scanning from this IP in the preceding 10 minutes, suggesting pre-attack reconnaissance. Recommend: block IP, investigate web application logs at 10:45:23 IST."` This dramatically reduces analyst fatigue and speeds up triage.
 
-### `src/policy_verifier.rs`
+### `Policy Verifier Module`
 
 Automated detection of policy conflicts and logical errors: finds rules that can never match (shadowed by higher-priority rules), rules that contradict each other, and policy gaps where traffic has no matching rule. Runs on every policy reload and blocks deployment of logically inconsistent policy.
 
-### `src/quic_inspector.rs`
+### `Quic Inspector Module`
 
 QUIC and HTTP/3 protocol analysis: header inspection of QUIC CRYPTO and STREAM frames, detection of HTTP/3 requests carrying known attack patterns, QUIC amplification attack detection.
 
-### `src/p4_offload.rs`
+### `P4 Offload Module` (Planned / Roadmap)
 
 P4 programmable switch offload: generates P4 programs from Rudras policy that can be loaded onto P4-capable network hardware (Tofino ASICs, Barefoot switches) to enforce fast-path rules at terabit-per-second line rates without involving host CPU.
