@@ -1,4 +1,4 @@
-# 3.3 Observability and SOC Dashboard
+# Observability and SOC Dashboard
 
 ---
 

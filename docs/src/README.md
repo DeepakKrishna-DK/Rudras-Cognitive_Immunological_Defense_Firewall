@@ -1,12 +1,16 @@
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD033 MD041 -->
 
 # Rudras: The Firewall in Practice
 
-<div class="cover-container">
-    <img src="assets/main.jpeg" alt="Rudras Platform Cover" class="cover-image" />
+<div style="width: 100vw; max-width: 100%; position: relative; left: 50%; transform: translateX(-50%); text-align: center;">
+<h3 style="margin-top: -0.5em; margin-bottom: 2em; color: var(--sidebar-fg);">By Deepak Krishna</h3>
+
+<div style="display: flex; justify-content: center; align-items: center; min-height: 50vh; margin-bottom: 2em;">
+<img src="assets/main.jpeg" alt="Rudras Platform Cover" style="max-height: 60vh; max-width: 90vw; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);" />
+</div>
 </div>
 
-<div class="page-break"></div>
+<div class="page-break" style="page-break-after: always; break-after: page;"></div>
 
 **Comprehensive IT security and flexibly expandable immunological defense.**
 

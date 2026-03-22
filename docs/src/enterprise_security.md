@@ -1,4 +1,4 @@
-# 2.5 Enterprise Security & Identity
+# Enterprise Security & Identity
 
 ---
 

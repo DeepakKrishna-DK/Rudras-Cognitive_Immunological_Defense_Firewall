@@ -1,4 +1,4 @@
-# 2.2 Intrusion and Malware Detection
+# Intrusion and Malware Detection
 
 ---
 

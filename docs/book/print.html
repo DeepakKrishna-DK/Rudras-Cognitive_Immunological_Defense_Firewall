@@ -29,7 +29,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-3f90df81.css">
+        <link rel="stylesheet" href="custom-90d84448.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -37,10 +37,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "ayu";
-            window.path_to_searchindex_js = "searchindex-08390e6f.js";
+            window.path_to_searchindex_js = "searchindex-6c171d30.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-4ff6b2b6.js"></script>
+        <script src="toc-0ea91dbe.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,13 +176,18 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <!-- markdownlint-disable MD033 -->
+                        <!-- markdownlint-disable MD033 MD041 -->
 <h1 id="rudras-the-firewall-in-practice"><a class="header" href="#rudras-the-firewall-in-practice">Rudras: The Firewall in Practice</a></h1>
-<div class="cover-container">
-    <img src="assets/main.jpeg" alt="Rudras Platform Cover" class="cover-image" />
+<div style="width: 100vw; max-width: 100%; position: relative; left: 50%; transform: translateX(-50%); text-align: center;">
+<h3 style="margin-top: -0.5em; margin-bottom: 2em; color: var(--sidebar-fg);">By Deepak Krishna</h3>
+
+<div style="display: flex; justify-content: center; align-items: center; min-height: 50vh; margin-bottom: 2em;">
+<img src="assets/main.jpeg" alt="Rudras Platform Cover" style="max-height: 60vh; max-width: 90vw; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);" />
 </div>
 
-<div class="page-break"></div>
+</div>
+
+<div class="page-break" style="page-break-after: always; break-after: page;"></div>
 
 <p><strong>Comprehensive IT security and flexibly expandable immunological defense.</strong></p>
 <p>IT managers regularly see the networks they manage exposed to new threats. Having the latest signature-based firewall is no longer sufficient. It is much more important to be able to react flexibly instantly to zero-day security risks using real-time behavioral analysis.</p>
@@ -231,7 +236,7 @@
 <h3 id="target-audience--application"><a class="header" href="#target-audience--application">Target Audience &amp; Application</a></h3>
 <p>This documentation is structured for Chief Information Security Officers (CISOs) evaluating architectural viability, Senior Security Engineers deploying the platform, and academic researchers extending its modules. Whether deployed in <strong>Client Mode</strong> to secure developer endpoints or <strong>Server Mode</strong> as a high-throughput edge gateway, Rudras provides the necessary observability, automation, and mathematical rigor required for modern enterprise defense.</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="11-start-here-overview"><a class="header" href="#11-start-here-overview">1.1 Start Here Overview</a></h1>
+<h1 id="start-here-overview"><a class="header" href="#start-here-overview">Start Here Overview</a></h1>
 <p>Welcome to Rudras v4.0. This overview provides a brief introduction to what Rudras is, its key benefits, and how it is typically deployed.</p>
 <h2 id="what-is-rudras"><a class="header" href="#what-is-rudras">What is Rudras?</a></h2>
 <p>Rudras is a unified Cognitive Immunological Defense System (CIDS) designed to proactively detect zero-day exploits, nation-state APTs, and insider threats safely at NIC line-rate speeds. Unlike traditional firewalls that rely on static signature matching, Rudras acts as an AI-native immune system for your network—building behavioral baselines to detect anomalous traffic patterns continuously.</p>
@@ -260,7 +265,7 @@
 <li><strong>Server Mode (Gateway)</strong>: Focused on inbound monitoring—applying aggressive L7 WAF scanning, tracking port scans, and blocking brute-force application attacks.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="12-vision-and-core-problems"><a class="header" href="#12-vision-and-core-problems">1.2 Vision and Core Problems</a></h1>
+<h1 id="vision-and-core-problems"><a class="header" href="#vision-and-core-problems">Vision and Core Problems</a></h1>
 <hr>
 <h2 id="1-vision-statement"><a class="header" href="#1-vision-statement">1. Vision Statement</a></h2>
 <p>To construct a ubiquitous, autonomous Cognitive Immunological Defense System (CIDS) — designed to proactively detect zero-day exploits, nation-state APTs, and insider threats at NIC line-rate speeds, minimizing human intervention, before any payload reaches the CPU logic layer.</p>
@@ -343,7 +348,7 @@
 </table>
 </div>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="13-what-makes-rudras-unique"><a class="header" href="#13-what-makes-rudras-unique">1.3 What makes Rudras unique?</a></h1>
+<h1 id="what-makes-rudras-unique"><a class="header" href="#what-makes-rudras-unique">What makes Rudras unique?</a></h1>
 <hr>
 <h2 id="1-the-five-core-industry-problems"><a class="header" href="#1-the-five-core-industry-problems">1. The Five Core Industry Problems</a></h2>
 <h3 id="problem-1--the-static-signature-paradox"><a class="header" href="#problem-1--the-static-signature-paradox">Problem 1 — The Static Signature Paradox</a></h3>
@@ -719,7 +724,7 @@ Config:     TOML-based per-module configuration
 <hr>
 <p><em>Last updated: 2026 — Rudras v4.0.0, 34 defense engines, build passing.</em></p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="21-hardware-and-architecture-for-rudras"><a class="header" href="#21-hardware-and-architecture-for-rudras">2.1 Hardware and Architecture for Rudras</a></h1>
+<h1 id="hardware-and-architecture-for-rudras"><a class="header" href="#hardware-and-architecture-for-rudras">Hardware and Architecture for Rudras</a></h1>
 <hr>
 <h2 id="1-architecture-overview"><a class="header" href="#1-architecture-overview">1. Architecture Overview</a></h2>
 <p>Rudras v4.0 is a multi-layer, multi-threaded network security platform written in Rust. At its core, it is a packet processing pipeline that intercepts traffic at the OS kernel interface, analyzes it through 40+ overlapping detection subsystems, and enforces policy decisions.</p>
@@ -1076,7 +1081,7 @@ allowed_destinations = ["app"]
 </code></pre>
 <p>All configuration is hot-reloadable. The <code>Config Module</code> module fires a reload event that each subscribed module receives via a tokio watch channel.</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="22-intrusion-and-malware-detection"><a class="header" href="#22-intrusion-and-malware-detection">2.2 Intrusion and Malware Detection</a></h1>
+<h1 id="intrusion-and-malware-detection"><a class="header" href="#intrusion-and-malware-detection">Intrusion and Malware Detection</a></h1>
 <hr>
 <h2 id="abstract"><a class="header" href="#abstract">Abstract</a></h2>
 <p>This document provides a complete technical deep-dive into Rudras’s signature-based and rule-based detection infrastructure. This covers four core modules: the Intrusion Detection System (IDS), the Intrusion Prevention System (IPS), the Deep Packet Inspector (DPI/WAF), and the Comprehensive Blocker — the aggregation layer that unifies all detection signals into enforceable decisions.</p>
@@ -1480,7 +1485,7 @@ Action:
 <li><code>cis_control</code>: e.g., “7.7”</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="23-ai-and-machine-learning-systems"><a class="header" href="#23-ai-and-machine-learning-systems">2.3 AI and Machine Learning Systems</a></h1>
+<h1 id="ai-and-machine-learning-systems-1"><a class="header" href="#ai-and-machine-learning-systems-1">AI and Machine Learning Systems</a></h1>
 <hr>
 <h2 id="abstract-1"><a class="header" href="#abstract-1">Abstract</a></h2>
 <p>Rudras v4.0 implements a nine-module AI/ML stack covering four distinct learning paradigms: behavioral baseline modeling (EMA/statistical), ensemble anomaly detection (isolation forest, autoencoder), graph-theoretic topology analysis (GNN), and reinforcement learning for adaptive threshold optimization. No module requires pre-labeled training data — all are fully unsupervised, learning from the live traffic stream. This document provides a complete technical reference for each module.</p>
@@ -1785,7 +1790,7 @@ Correlation result at T+3:00:
 <li>If false negative rate exceeds 10%, RL resets to conservative defaults regardless of learned policy (safety override)</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="24-threat-intelligence-capabilities"><a class="header" href="#24-threat-intelligence-capabilities">2.4 Threat Intelligence Capabilities</a></h1>
+<h1 id="threat-intelligence-capabilities"><a class="header" href="#threat-intelligence-capabilities">Threat Intelligence Capabilities</a></h1>
 <hr>
 <h2 id="abstract-2"><a class="header" href="#abstract-2">Abstract</a></h2>
 <p>Threat Intelligence (TI) is the curated knowledge of known malicious infrastructure — IP addresses, domains, file hashes, and URLs associated with threat actors. Rudras v4.0 operates the largest embedded TI corpus of any open-architecture firewall: 24,358 malicious IPs, 1,250,617 blocked domains, 84,501 malware signatures, and 617 explicitly tracked threat-actor domains. This document describes the TI subsystem architecture, data sources, blocking mechanics, and DNS-layer enforcement.</p>
@@ -2024,7 +2029,7 @@ severity = "medium"
 </table>
 </div>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="25-enterprise-security--identity"><a class="header" href="#25-enterprise-security--identity">2.5 Enterprise Security &amp; Identity</a></h1>
+<h1 id="enterprise-security--identity"><a class="header" href="#enterprise-security--identity">Enterprise Security &amp; Identity</a></h1>
 <hr>
 <h2 id="abstract-3"><a class="header" href="#abstract-3">Abstract</a></h2>
 <p>Enterprise security in Rudras v4.0 is implemented through 11 modules covering Zero Trust access control, identity-aware policy, network micro-segmentation, endpoint posture assessment, attacker attribution, SIEM integration, distributed immunity, gateway mode, SD-WAN, cloud-native protection, and single-pass performance optimization. Together these modules transform Rudras from a network firewall into a full Security Platform covering the full enterprise control surface.</p>
@@ -2410,7 +2415,7 @@ Node C receives from both A and B → deduplicates → adds to blocklist → re-
 <span class="boring">}</span></code></pre>
 <p>All detection modules receive a reference to this struct rather than the raw bytes. The parsing cost is paid once; all modules benefit. Benchmark results show this reduces overall packet analysis CPU usage by ~22% at 50,000 packets/second workloads.</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="26-control-plane-and-distributed-management"><a class="header" href="#26-control-plane-and-distributed-management">2.6 Control Plane and Distributed Management</a></h1>
+<h1 id="control-plane-and-distributed-management"><a class="header" href="#control-plane-and-distributed-management">Control Plane and Distributed Management</a></h1>
 <hr>
 <h2 id="abstract-4"><a class="header" href="#abstract-4">Abstract</a></h2>
 <p>Rudras v4.0 includes a distributed control plane layer for managing multiple Rudras data-plane nodes from a single centralised service. This document covers the gRPC API definition, the multi-node topology, the policy synchronisation protocol, and the event streaming architecture. This layer targets enterprise deployments with 5+ nodes across multiple network segments or cloud regions.</p>
@@ -2981,7 +2986,7 @@ Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
 <h3 id="problem-dns-queries-slow-after-enabling-dns-security"><a class="header" href="#problem-dns-queries-slow-after-enabling-dns-security">Problem: DNS queries slow after enabling DNS security</a></h3>
 <p><strong>Cause:</strong> DNS inspection overhead<br><strong>Fix:</strong> Enable <code>dns_cache_size = 50000</code> in <code>[dns]</code> config to cache query results</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="31-performance-and-scale"><a class="header" href="#31-performance-and-scale">3.1 Performance and Scale</a></h1>
+<h1 id="performance-and-scale"><a class="header" href="#performance-and-scale">Performance and Scale</a></h1>
 <p>Rudras is designed for near-zero operational friction, built in Rust to eliminate garbage collection pauses, enforce memory safety at compile-time, and run multi-threaded async workloads at network speed.</p>
 <p>The following benchmarks demonstrate Rudras’s structural capabilities and measured performance profiles.</p>
 <hr>
@@ -3041,7 +3046,7 @@ Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
 <li><strong>P4 Programmable Switches:</strong> Rudras policy engines are natively capable of emitting P4 bytecodes that can be directly mapped to Tofino ASICs, ensuring 100% wire-speed micro-segmentation enforcement on physical data center switches.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="32-network-capture-and-enforcement"><a class="header" href="#32-network-capture-and-enforcement">3.2 Network Capture and Enforcement</a></h1>
+<h1 id="network-capture-and-enforcement"><a class="header" href="#network-capture-and-enforcement">Network Capture and Enforcement</a></h1>
 <hr>
 <h2 id="abstract-5"><a class="header" href="#abstract-5">Abstract</a></h2>
 <p>The network capture and enforcement stack is Rudras’s interface with the OS kernel and physical network hardware. This stack must operate at line-rate speeds with sub-millisecond latency — it is the first and last place a packet touches before Rudras acts on it. This document covers the five modules that form this stack: <code>Capture Module</code> (packet ingestion), <code>Wfp Engine Module</code> (Windows kernel enforcement), <code>Windivert Engine Module</code> (userspace interception), <code>Npcap Forensic Module</code> (forensic evidence capture), and <code>L2 Engine Module</code> (Layer 2 security).</p>
@@ -3275,7 +3280,7 @@ Action: Alert CRITICAL, log both MACs, maintain original binding,
 <li><strong>Protected Management Frame (PMF) enforcement:</strong> If the network supports PMF (802.11w) and a client connects without it, the reduced-security connection is flagged</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="33-observability-and-soc-dashboard"><a class="header" href="#33-observability-and-soc-dashboard">3.3 Observability and SOC Dashboard</a></h1>
+<h1 id="observability-and-soc-dashboard"><a class="header" href="#observability-and-soc-dashboard">Observability and SOC Dashboard</a></h1>
 <hr>
 <p><img src="soc_dashboard.png" alt="Next.js SOC Dashboard">
 <em>Figure 1: The Rudras SOC Dashboard displaying live analytics and threat telemetry.</em></p>
@@ -3638,7 +3643,7 @@ Get-Content logs\Rudras.log.$(Get-Date -Format 'yyyy-MM-dd') |
 </ul>
 <p>This makes the forensics chain appropriate as evidence in legal proceedings and compliance audits.</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="34-operational-runbooks"><a class="header" href="#34-operational-runbooks">3.4 Operational Runbooks</a></h1>
+<h1 id="operational-runbooks"><a class="header" href="#operational-runbooks">Operational Runbooks</a></h1>
 <hr>
 <h2 id="abstract-7"><a class="header" href="#abstract-7">Abstract</a></h2>
 <p>This document covers the operational tooling for running and maintaining Rudras v4.0: the three PowerShell scripts in <code>scripts/</code>, the data directory layout and management lifecycle, and operational runbooks for common maintenance scenarios. Anyone responsible for day-to-day operation (not just development) should read this document.</p>
@@ -4055,7 +4060,7 @@ if ($configHash -eq $storedSig) {
 </table>
 </div>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="35-deployment-and-usage-scenarios"><a class="header" href="#35-deployment-and-usage-scenarios">3.5 Deployment and Usage Scenarios</a></h1>
+<h1 id="deployment-and-usage-scenarios"><a class="header" href="#deployment-and-usage-scenarios">Deployment and Usage Scenarios</a></h1>
 <p>This document provides concrete examples of how Rudras can be configured and deployed in real-world environments. Each scenario highlights the key modules enabled, essential configuration snippets, and the expected operational flow.</p>
 <hr>
 <h2 id="scenario-1-internet-facing-api-gateway-protection"><a class="header" href="#scenario-1-internet-facing-api-gateway-protection">Scenario 1: Internet-Facing API Gateway Protection</a></h2>
@@ -4155,7 +4160,7 @@ ueba_deviation_threshold = 0.75
 <li><strong>SOC Dashboard:</strong> A multi-layered incident is displayed showing policy violation, behavioral anomaly, and DLP trigger. A full forensic SHA3-256 log is captured for regulatory compliance reporting.</li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="36-complete-module-index"><a class="header" href="#36-complete-module-index">3.6 Complete Module Index</a></h1>
+<h1 id="complete-module-index"><a class="header" href="#complete-module-index">Complete Module Index</a></h1>
 <hr>
 <h2 id="abstract-8"><a class="header" href="#abstract-8">Abstract</a></h2>
 <p>This document is the definitive cross-reference index for all modules in the Rudras v4.0 source tree. It catalogs all 67 <code>src/*.rs</code> files with their purpose, key exported items, configuration keys, pipeline stage, and inter-module dependency relationships. Use this document as a map when:</p>
@@ -4853,7 +4858,7 @@ PolicyCorrect ==
 <h3 id="p4-offload-module-planned--roadmap"><a class="header" href="#p4-offload-module-planned--roadmap"><code>P4 Offload Module</code> (Planned / Roadmap)</a></h3>
 <p>P4 programmable switch offload: generates P4 programs from Rudras policy that can be loaded onto P4-capable network hardware (Tofino ASICs, Barefoot switches) to enforce fast-path rules at terabit-per-second line rates without involving host CPU.</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="41-transparent-development-model"><a class="header" href="#41-transparent-development-model">4.1 Transparent Development Model</a></h1>
+<h1 id="transparent-development-model"><a class="header" href="#transparent-development-model">Transparent Development Model</a></h1>
 <hr>
 <h2 id="1-the-v40-packet-processing-pipeline"><a class="header" href="#1-the-v40-packet-processing-pipeline">1. The v4.0 Packet Processing Pipeline</a></h2>
 <p>Every packet flowing through Rudras passes through the following 10-stage pipeline. Understanding this pipeline is essential for any engineer contributing to the codebase.</p>
@@ -5168,7 +5173,7 @@ The hacker will then forge a <code>maintenance.token</code> to give themselves a
 <li><strong>Execution:</strong> Instead of only reading <code>kms_vault/daily.key</code>, the local node now iteratively checks both <code>daily.key</code> and <code>yesterday.key</code>. If either matches the incoming HMAC broadcast, the Swarm rule is verified. This ensures 100% runtime continuity even if the central KMS Vault is permanently destroyed by an explosive cyber-kinetic strike.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="45-standards--literature-references"><a class="header" href="#45-standards--literature-references">4.5 Standards &amp; Literature References</a></h1>
+<h1 id="standards--literature-references"><a class="header" href="#standards--literature-references">Standards &amp; Literature References</a></h1>
 <p>Rudras relies heavily on established consensus protocols, NIST cryptographic standards, and peer-reviewed computer science literature. The following is a consolidated list of references utilized throughout the architecture.</p>
 <h2 id="1-federal-and-cryptographic-standards"><a class="header" href="#1-federal-and-cryptographic-standards">1. Federal and Cryptographic Standards</a></h2>
 <ul>
@@ -5288,7 +5293,7 @@ The hacker will then forge a <code>maintenance.token</code> to give themselves a
 <ul>
 <li>The <strong>NIST SP 800-series</strong> authors for providing the cryptographic and Zero Trust foundations.</li>
 <li>The <strong>MITRE ATT&amp;CK</strong> organizational team for threat ontology.</li>
-<li>The vast array of academic researchers who published the whitepapers underpinning our AI, distributed ledger, and formal verification implementations (see <a href="#45-standards--literature-references">Literature References</a>).</li>
+<li>The vast array of academic researchers who published the whitepapers underpinning our AI, distributed ledger, and formal verification implementations (see <a href="#standards--literature-references">Literature References</a>).</li>
 </ul>
 <hr>
 <blockquote>

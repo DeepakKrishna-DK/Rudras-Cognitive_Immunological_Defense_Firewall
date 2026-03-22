@@ -1,4 +1,4 @@
-# 2.3 AI and Machine Learning Systems
+# AI and Machine Learning Systems
 
 ---
 

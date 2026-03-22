@@ -1,4 +1,4 @@
-# 1.3 What makes Rudras unique?
+# What makes Rudras unique?
 
 ---
 

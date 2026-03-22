@@ -1,4 +1,4 @@
-# 3.6 Complete Module Index
+# Complete Module Index
 
 ---
 

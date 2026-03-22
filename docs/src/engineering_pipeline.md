@@ -1,4 +1,4 @@
-# 4.1 Transparent Development Model
+# Transparent Development Model
 
 ---
 

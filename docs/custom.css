@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
 /* True Dark Accents Theme */
 :root {
   --bg: #0b0f16;         /* Deep Midnight Black */
@@ -22,19 +24,47 @@
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: Georgia, Garamond, "Times New Roman", Times, serif;
+  font-size: 1.1em;
   line-height: 1.6;
   background-color: var(--bg);
   color: var(--fg);
 }
 
+code, kbd, samp, pre {
+  font-family: "Fira Code", source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace !important;
+  font-variant-ligatures: contextual;
+}
+
 h1, h2, h3, h4, h5, h6 {
+  font-family: Arial, Helvetica, sans-serif;
   color: #e2e8f0; /* White/Silver Headers */
   font-weight: 600; 
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 /* Neon Accent on H1 explicitly */
+#rudras-the-firewall-in-practice, #rudras-the-cognitive-firewall-in-practice {
+  text-align: center;
+  border-bottom: none;
+  font-size: 2.8em;
+  padding-bottom: 0px;
+  margin-top: 1em;
+  margin-bottom: 0.2em;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  max-width: 100%;
+  
+  /* The Intense Neon Glow (from User Request) */
+  color: #ffffff !important;
+  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #00b3b3, 0 0 40px #00b3b3 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+}
+
 h1 {
   border-bottom: 1px solid #30363d;
   padding-bottom: 0.3em;
@@ -139,7 +169,7 @@ blockquote {
 }
 
 @media print {
-  @page { margin: 10mm; }
+  @page { margin: 15mm; } 
   #sidebar { display: none !important; }
   .nav-wrapper { display: none !important; }
   .page-footer { display: none !important; }
@@ -147,6 +177,7 @@ blockquote {
   body {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    padding: 0;
   }
   table {
     background: #fff !important;
@@ -161,38 +192,29 @@ blockquote {
     border-bottom: 1px solid #ccc !important;
   }
   
-  .page-break {
-    page-break-after: always;
-    break-after: page;
+  /* Prevent awkward page breaks for blocks */
+  blockquote, pre, code, table, img, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
   
-  .cover-container {
-    height: 90vh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 0;
+  /* Keep headers glued to text */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+    margin-bottom: 0.5em !important;
   }
   
-  .cover-image {
-    max-height: 80vh;
-    box-shadow: none;
-    border-radius: 0;
+  /* Prevent isolated lines completely (Orphans & Widows) */
+  p, li, blockquote, ul, ol {
+    widows: 5 !important;
+    orphans: 5 !important;
+  }
+  
+  /* Tightly compress text mathematically to prevent page overflow */
+  body, p {
+    line-height: 1.4 !important;
+    font-size: 10.5pt !important;
   }
 }
 
-/* Global Styles for Cover Image (Web view) */
-.cover-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2em;
-}
-
-.cover-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}

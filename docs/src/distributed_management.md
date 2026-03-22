@@ -1,4 +1,4 @@
-# 2.6 Control Plane and Distributed Management
+# Control Plane and Distributed Management
 
 ---
 

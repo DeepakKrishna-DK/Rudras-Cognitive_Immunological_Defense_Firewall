@@ -1,4 +1,4 @@
-# 1.1 Start Here Overview
+# Start Here Overview
 
 Welcome to Rudras v4.0. This overview provides a brief introduction to what Rudras is, its key benefits, and how it is typically deployed.
 

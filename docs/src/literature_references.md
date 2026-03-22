@@ -1,4 +1,4 @@
-# 4.5 Standards & Literature References
+# Standards & Literature References
 
 Rudras relies heavily on established consensus protocols, NIST cryptographic standards, and peer-reviewed computer science literature. The following is a consolidated list of references utilized throughout the architecture.
 

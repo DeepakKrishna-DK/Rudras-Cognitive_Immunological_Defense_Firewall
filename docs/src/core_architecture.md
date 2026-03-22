@@ -1,4 +1,4 @@
-# 2.1 Hardware and Architecture for Rudras
+# Hardware and Architecture for Rudras
 
 ---
 

@@ -1,4 +1,4 @@
-# 3.4 Operational Runbooks
+# Operational Runbooks
 
 ---
 

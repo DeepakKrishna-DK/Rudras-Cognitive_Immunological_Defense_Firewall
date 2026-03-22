@@ -1,4 +1,4 @@
-# 3.2 Network Capture and Enforcement
+# Network Capture and Enforcement
 
 ---
 

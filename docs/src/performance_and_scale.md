@@ -1,4 +1,4 @@
-# 3.1 Performance and Scale
+# Performance and Scale
 
 Rudras is designed for near-zero operational friction, built in Rust to eliminate garbage collection pauses, enforce memory safety at compile-time, and run multi-threaded async workloads at network speed.
 

@@ -1,4 +1,4 @@
-# 1.2 Vision and Core Problems
+# Vision and Core Problems
 
 ---
 

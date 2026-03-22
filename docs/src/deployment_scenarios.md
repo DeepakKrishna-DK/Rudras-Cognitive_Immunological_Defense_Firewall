@@ -1,4 +1,4 @@
-# 3.5 Deployment and Usage Scenarios
+# Deployment and Usage Scenarios
 
 This document provides concrete examples of how Rudras can be configured and deployed in real-world environments. Each scenario highlights the key modules enabled, essential configuration snippets, and the expected operational flow.
 
