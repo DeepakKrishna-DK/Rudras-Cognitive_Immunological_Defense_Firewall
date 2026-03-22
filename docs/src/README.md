@@ -1,13 +1,21 @@
 <!-- markdownlint-disable MD033 MD041 -->
 
+<style>
+@media print {
+  @page:first {
+    margin: 0 !important;
+  }
+}
+</style>
+
+<div style="width: 100vw; max-width: 100vw; min-height: 100vh; position: relative; left: 50%; transform: translateX(-50%); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: var(--bg); margin-top: -2em;">
+
 # Rudras: The Firewall in Practice
 
-<div style="width: 100vw; max-width: 100%; position: relative; left: 50%; transform: translateX(-50%); text-align: center;">
-<h3 style="margin-top: -0.5em; margin-bottom: 2em; color: var(--sidebar-fg);">By Deepak Krishna</h3>
+<h3 style="margin-top: -0.5em; margin-bottom: 3em; color: var(--sidebar-fg);">By Deepak Krishna</h3>
 
-<div style="display: flex; justify-content: center; align-items: center; min-height: 50vh; margin-bottom: 2em;">
-<img src="assets/main.jpeg" alt="Rudras Platform Cover" style="max-height: 60vh; max-width: 90vw; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);" />
-</div>
+<img src="assets/main.jpeg" alt="Rudras Platform Cover" style="max-height: 55vh; max-width: 90vw; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);" />
+
 </div>
 
 <div class="page-break" style="page-break-after: always; break-after: page;"></div>
