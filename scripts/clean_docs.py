@@ -1,7 +1,9 @@
 import os
 import re
 
-directories = ['c:/Users/dk-32/OneDrive/Desktop/Project_2/docs/src', 'c:/Users/dk-32/OneDrive/Desktop/Project_2/docs/src/secrets']
+current_dir = os.path.dirname(os.path.abspath(__file__))
+base_docs_path = os.path.join(current_dir, '..', 'docs', 'src')
+directories = [base_docs_path, os.path.join(base_docs_path, 'secrets')]
 
 meta_pattern = re.compile(r'^\*\*(Document Version|Last Updated|Classification|Author):\*\*.*?\n', re.MULTILINE)
 

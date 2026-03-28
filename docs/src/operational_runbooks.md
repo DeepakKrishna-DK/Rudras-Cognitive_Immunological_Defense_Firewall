@@ -17,7 +17,7 @@ scripts/
 └── sign_config.ps1               # SHA-256 sign rudras.toml for anti-tamper
 ```
 
-All scripts are PowerShell 5.1+ compatible and must be run from the project root directory (`C:\Users\dk-32\OneDrive\Desktop\Project_2\` or wherever Rudras is installed).
+All scripts are PowerShell 5.1+ compatible and must be run from the project root directory (`C:\Path\To\Rudras\` or wherever Rudras is installed).
 
 ---
 
@@ -393,7 +393,7 @@ These files are written periodically by Rudras and read at startup to restore im
 ### Runbook 1: Routine Weekly Maintenance
 
 ```powershell
-Set-Location C:\Users\dk-32\OneDrive\Desktop\Project_2
+Set-Location C:\Path\To\Rudras
 
 # 1. Refresh GeoIP data
 .\scripts\fetch_geoip.ps1 -Countries CN,RU,KP,IR

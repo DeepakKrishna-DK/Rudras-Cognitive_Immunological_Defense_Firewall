@@ -6,8 +6,10 @@
 # and writes them to: Testing\ai_test_results.txt
 # ============================================================================
 
-$ResultsFile = "C:\Users\dk-32\OneDrive\Desktop\Project_2\Testing\ai_test_results.txt"
-$LogPath = (Get-ChildItem -Path "C:\Users\dk-32\OneDrive\Desktop\Project_2\logs" | Sort-Object LastWriteTime -Descending)[0].FullName
+$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$ProjectRoot = Split-Path -Parent $ScriptDir
+$ResultsFile = Join-Path $ScriptDir "ai_test_results.txt"
+$LogPath = (Get-ChildItem -Path (Join-Path $ProjectRoot "logs") | Sort-Object LastWriteTime -Descending)[0].FullName
 
 Write-Host "[*] Starting AI Anomaly Simulation..." -ForegroundColor Cyan
 Set-Content -Path $ResultsFile -Value "==========================================="

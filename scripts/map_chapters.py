@@ -1,8 +1,9 @@
 import os
 import re
 
-summary_path = 'c:/Users/dk-32/OneDrive/Desktop/Project_2/docs/src/SUMMARY.md'
-base_path = 'c:/Users/dk-32/OneDrive/Desktop/Project_2/docs/src'
+current_dir = os.path.dirname(os.path.abspath(__file__))
+base_path = os.path.join(current_dir, '..', 'docs', 'src')
+summary_path = os.path.join(base_path, 'SUMMARY.md')
 
 with open(summary_path, 'r', encoding='utf-8') as f:
     summary_lines = f.readlines()

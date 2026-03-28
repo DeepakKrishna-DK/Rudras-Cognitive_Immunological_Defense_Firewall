@@ -15,7 +15,7 @@
 
 ```powershell
 # Build release binary
-cd C:\Users\dk-32\OneDrive\Desktop\Project_2
+cd C:\Path\To\Rudras
 cargo build --release
 
 # Run with PowerShell start script
