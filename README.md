@@ -4,7 +4,7 @@
 
 [![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange.svg)](https://rust-lang.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)](https://docs.microsoft.com/en-us/windows/win32/fwp/windows-filtering-platform-start-page)
-[![Status](https://img.shields.io/badge/Status-in%20development-brightgreen.svg)](https://github.com/DeepakKrishna-DK/Rudras_)
+[![Status](https://img.shields.io/badge/Status-beta-blueviolet.svg)](https://github.com/DeepakKrishna-DK/Rudras_)
 [![Version](https://img.shields.io/badge/Version-4.1-blueviolet.svg)](https://github.com/DeepakKrishna-DK/Rudras_)
 [![Modules](https://img.shields.io/badge/Security%20Modules-45%2B-blue.svg)](https://github.com/DeepakKrishna-DK/Rudras_)
 [![Documentation](https://img.shields.io/badge/Documentation-mdBook-1E293B.svg?logo=markdown)](https://github.com/DeepakKrishna-DK/Rudras_)
