@@ -8,6 +8,7 @@
 [![Version](https://img.shields.io/badge/Version-4.1-blueviolet.svg)](https://github.com/DeepakKrishna-DK/Rudras_)
 [![Modules](https://img.shields.io/badge/Security%20Modules-45%2B-blue.svg)](https://github.com/DeepakKrishna-DK/Rudras_)
 [![Documentation](https://img.shields.io/badge/Documentation-mdBook-1E293B.svg?logo=markdown)](https://github.com/DeepakKrishna-DK/Rudras_)
+[![Resources](https://img.shields.io/badge/Resources-45%2B-blue.svg)](#-supplementary-documents-videos-and-drive-resources)
 
 ![RudraS Logo](https://github.com/DeepakKrishna-DK/Rudras_/raw/main/main.jpeg)
 
