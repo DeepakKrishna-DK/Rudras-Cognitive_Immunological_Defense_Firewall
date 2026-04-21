@@ -32,7 +32,7 @@ The entirety of Rudras’ architecture, philosophy, usage guides, operations, an
 7. [🧬 The CyberImmune System](#-the-cyberimmune-system)  
 8. [🎯 Threat Intelligence & IOC Feeds](#-threat-intelligence--ioc-feeds)  
 9. [⚖️ Ethical & Legal Defaults](#️-ethical--legal-defaults)  
-10. [📖 Official Documentation (mdBook Hub)](#-official-documentation-mdbook-hub)  
+10. [📖 Official Documentation (mdBook Hub)](#-official-documentation)  
 11. [📂 Supplementary Documents, Videos, and Drive Resources](#-supplementary-documents-videos-and-drive-resources)  
 12. [🔧 Build Requirements](#-build-requirements)  
 13. [🧪 Testing & Validation](#-testing--validation)  
@@ -301,12 +301,6 @@ Rudras ships with **conservative, legally‑aware defaults**. Any behavior that 
 | `block_anonymization_networks` | `false` (Tor/I2P allowed) | Blanket blocking of Tor/I2P may impact journalists, researchers, and may violate local policies. |
 
 Administrators are strongly advised to consult legal and compliance teams before enabling any of these flags.
-
-***
-
-## 📖 Official Documentation (mdBook Hub)
-
-The entire Rudras architecture, philosophy, operational guides, internals, and threat models are documented in the copy of **mdBook Documentation Hub**.
 
 ***
 
