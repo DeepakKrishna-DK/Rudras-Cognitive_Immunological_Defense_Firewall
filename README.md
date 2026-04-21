@@ -437,6 +437,6 @@ Security must be built in a way that **earns** trust:
 ## 🔒 License & Legal Notice
 
 **License:** Proprietary — All Rights Reserved.  
-See `LICENSE` for detailed usage, redistribution, and disclosure terms.
+See [LICENSE](https://github.com/DeepakKrishna-DK/Rudras-Cognitive_Immunological_Defense_Firewall/blob/main/License) for detailed usage, redistribution, and disclosure terms.
 
 Rudras must be deployed only on networks and systems you **own or are explicitly authorized to defend**. Misuse against third‑party infrastructure without permission may violate laws in multiple jurisdictions.
