@@ -10,7 +10,7 @@
 [![Documentation](https://img.shields.io/badge/Documentation-mdBook-1E293B.svg?logo=markdown)](https://github.com/DeepakKrishna-DK/Rudras-Cognitive_Immunological_Defense_Firewall/blob/main/Rudras_%20The%20Firewall%20in%20Practice.pdf)
 [![Resources](https://img.shields.io/badge/Resources-blue.svg)](#-supplementary-documents-videos-and-drive-resources)
 
-![RudraS Logo](https://github.com/DeepakKrishna-DK/Rudras_/raw/main/main.jpeg)
+![RudraS Logo](https://github.com/DeepakKrishna-DK/Rudras-Cognitive_Immunological_Defense_Firewall/blob/main/Frontend/main.jpeg)
 
 *Every attack makes Rudras smarter. Every session makes it more accurate.*
 
