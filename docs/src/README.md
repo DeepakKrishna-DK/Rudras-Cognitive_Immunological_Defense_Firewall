@@ -1,12 +1,4 @@
-<!-- markdownlint-disable MD033 MD041 -->
 
-<style>
-@media print {
-  @page:first {
-    margin: 0 !important;
-  }
-}
-</style>
 
 <div style="width: 100vw; max-width: 100vw; min-height: 100vh; position: relative; left: 50%; transform: translateX(-50%); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: var(--bg); margin-top: -2em;">
 
